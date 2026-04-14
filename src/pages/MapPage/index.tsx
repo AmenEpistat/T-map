@@ -1,5 +1,5 @@
-const MapPage = () => {
+const Index = () => {
     return <div>Бест тим евер</div>;
 };
 
-export default MapPage;
+export default Index;

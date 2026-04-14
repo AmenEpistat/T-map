@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
-import MapPage from '@/pages/MapPage.tsx';
+import Index from '@/pages/MapPage';
 
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: React.createElement(MapPage),
+        element: React.createElement(Index),
     },
 ]);
