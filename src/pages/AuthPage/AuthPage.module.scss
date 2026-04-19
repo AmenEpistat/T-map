@@ -3,22 +3,41 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $spacing-lg;
-  background: $color-bg;
+  background: $color-bg-page;
+  padding: $spacing-md;
 }
 
 .container {
   width: 100%;
-  max-width: 400px;
+  max-width: $card-width;
+  background: $color-bg-card;
+  border-radius: $card-radius;
+  padding: $card-padding;
   display: flex;
   flex-direction: column;
-  gap: $spacing-xl;
+  gap: 24px;
 }
 
 .title {
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 36px;
   margin: 0;
+  font-family: $font-family-base;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 28px;
   color: $color-text;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .container {
+    max-width: 100%;
+    border-radius: 0;
+    background: $color-bg-page;
+    padding: 24px 16px;
+  }
+  .page {
+    padding: 0;
+    align-items: flex-start;
+    padding-top: 20vh;
+  }
 }

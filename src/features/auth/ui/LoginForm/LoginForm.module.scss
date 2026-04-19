@@ -1,13 +1,39 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: $spacing-lg;
+  gap: 16px;
+  :global {
+    .ant-form-item-has-error {
+      .ant-input,
+      .ant-input-affix-wrapper,
+      .ant-input-password {
+        background-color: $color-error-bg;
+        border-color: $color-error-bg;
+        box-shadow: none;
+
+        &:hover,
+        &:focus,
+        &:focus-within {
+          background-color: $color-error-bg;
+          border-color: $color-error-bg;
+          box-shadow: none;
+        }
+      }
+
+      // Внутренний input внутри Input.Password — прозрачный
+      .ant-input-affix-wrapper .ant-input {
+        background-color: transparent;
+      }
+    }
+
+
+  }
 }
 
 .fields {
   display: flex;
   flex-direction: column;
-  gap: $spacing-sm;
+  gap: 16px;
 
   :global(.ant-form-item) {
     margin-bottom: 0;
@@ -15,26 +41,28 @@
 }
 
 .serverError {
+  margin: 0;
   color: $color-error;
-  font-size: 13px;
-  line-height: 20px;
-  margin-top: -$spacing-sm;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
 }
 
 .footer {
   display: flex;
   justify-content: center;
-  margin-top: $spacing-sm;
+  margin-top: 8px;
 }
 
 .link {
-  color: $color-text-secondary;
-  font-size: 14px;
-  line-height: 20px;
+  color: $color-link;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  font-weight: 400;
   text-decoration: none;
-  transition: color 0.15s ease;
 
-  &:hover {
-    color: $color-text;
+  &:hover,
+  &:focus-visible {
+    color: $color-link;
+    text-decoration: underline;
   }
 }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { authStore } from '@/features/auth';
+import { isAxiosError } from 'axios';
 import styles from './LoginForm.module.scss';
 
 interface LoginFormValues {
@@ -9,16 +10,42 @@ interface LoginFormValues {
     password: string;
 }
 
+const mapLoginError = (status?: number): string => {
+    switch (status) {
+        case 401:
+            return 'Email или пароль введены неверно.';
+        case 403:
+            return 'Аккаунт заблокирован. Обратитесь в поддержку.';
+        case 400:
+            return 'Проверьте введённые данные.';
+        default:
+            return 'Не удалось войти. Попробуйте позже.';
+    }
+};
+
 export const LoginForm = () => {
     const [form] = Form.useForm<LoginFormValues>();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [serverError, setServerError] = useState<string | null>(null);
     const navigate = useNavigate();
 
     const handleFinish = async (values: LoginFormValues) => {
         setIsSubmitting(true);
+        setServerError(null);
         try {
             await authStore.login(values);
             navigate('/', { replace: true });
+        } catch (error) {
+            const status = isAxiosError(error)
+                ? error.response?.status
+                : undefined;
+            const message = mapLoginError(status);
+            setServerError(message);
+
+            form.setFields([
+                { name: 'email', errors: [''] },
+                { name: 'password', errors: [''] },
+            ]);
         } finally {
             setIsSubmitting(false);
         }
@@ -29,6 +56,13 @@ export const LoginForm = () => {
             form={form}
             layout='vertical'
             onFinish={handleFinish}
+            onValuesChange={() => {
+                setServerError(null);
+                form.setFields([
+                    { name: 'email', errors: [] },
+                    { name: 'password', errors: [] },
+                ]);
+            }}
             className={styles.form}
             requiredMark={false}
             disabled={isSubmitting}
@@ -67,6 +101,11 @@ export const LoginForm = () => {
                     />
                 </Form.Item>
             </div>
+            {serverError && (
+                <p className={styles.serverError} role='alert'>
+                    {serverError}
+                </p>
+            )}
 
             <Form.Item noStyle>
                 <Button
