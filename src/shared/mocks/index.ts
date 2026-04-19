@@ -1,1 +1,1 @@
-export { worker } from "./browser";
+export { worker } from './browser';
