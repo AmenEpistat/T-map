@@ -8,7 +8,8 @@ import type { ClusterDataType } from '@/features/map/model/types.ts';
 
 export const useMapLayers = (data: ClusterDataType[]) => {
     const maxTx = useMemo(() => {
-        return Math.max(...data.map((d) => d.txCount));
+        if (!data || data.length === 0) return 0;
+        return data.reduce((max, d) => Math.max(max, d.txCount), 0);
     }, [data]);
 
     const layers = useMemo(
