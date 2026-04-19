@@ -10,10 +10,12 @@ export interface MockUser {
 
 interface MockDb {
     users: MockUser[];
-    activeRefreshTokens: Set<string>;
+    activeRefreshTokens: Map<string, string>; // token -> userId
+    currentRefreshToken: string | null; // simulates httpOnly cookie
 }
 
 export const mockDb: MockDb = {
     users: [],
-    activeRefreshTokens: new Set(),
+    activeRefreshTokens: new Map(),
+    currentRefreshToken: null,
 };

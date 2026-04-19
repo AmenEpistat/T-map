@@ -27,13 +27,9 @@ const buildAuthResponse = (user: MockUser): AuthResponse => ({
     accessToken: generateAccessToken(user.userId),
 });
 
-const setRefreshCookie = (response: Response, token: string): Response => {
-    mockDb.activeRefreshTokens.add(token);
-    response.headers.set(
-        'Set-Cookie',
-        `refreshToken=${token}; Path=/; HttpOnly; SameSite=Lax`
-    );
-    return response;
+const storeRefreshToken = (token: string, userId: string): void => {
+    mockDb.activeRefreshTokens.set(token, userId);
+    mockDb.currentRefreshToken = token;
 };
 
 const register = http.post<never, RegisterRequest>(
@@ -60,13 +56,10 @@ const register = http.post<never, RegisterRequest>(
         mockDb.users.push(user);
 
         const refreshToken = generateRefreshToken();
-        const response = HttpResponse.json<AuthResponse>(
-            buildAuthResponse(user),
-            {
-                status: 201,
-            }
-        );
-        return setRefreshCookie(response, refreshToken);
+        storeRefreshToken(refreshToken, user.userId);
+        return HttpResponse.json<AuthResponse>(buildAuthResponse(user), {
+            status: 201,
+        });
     }
 );
 
@@ -82,49 +75,90 @@ const login = http.post<never, LoginRequest>(
         }
 
         const refreshToken = generateRefreshToken();
-        const response = HttpResponse.json<AuthResponse>(
-            buildAuthResponse(user),
-            {
-                status: 200,
-            }
-        );
-        return setRefreshCookie(response, refreshToken);
+        storeRefreshToken(refreshToken, user.userId);
+        return HttpResponse.json<AuthResponse>(buildAuthResponse(user), {
+            status: 200,
+        });
     }
 );
 
-const refresh = http.post(`${BASE}/auth/refresh`, async ({ cookies }) => {
-    await delay(LATENCY_MS);
+const refresh = http.post<never, never, AuthResponse | ErrorResponse>(
+    `${BASE}/auth/refresh`,
+    async () => {
+        await delay(LATENCY_MS);
 
-    const token = cookies.refreshToken;
-    if (!token || !mockDb.activeRefreshTokens.has(token)) {
-        return err('UNAUTHORIZED', 'Refresh token is missing or invalid.', 401);
+        const token = mockDb.currentRefreshToken;
+        if (!token || !mockDb.activeRefreshTokens.has(token)) {
+            return err(
+                'UNAUTHORIZED',
+                'Refresh token is missing or invalid.',
+                401
+            );
+        }
+
+        const userId = mockDb.activeRefreshTokens.get(token);
+        const user = mockDb.users.find((u) => u.userId === userId);
+        if (!user) {
+            return err(
+                'UNAUTHORIZED',
+                'No user associated with refresh token.',
+                401
+            );
+        }
+
+        mockDb.activeRefreshTokens.delete(token);
+        const newRefresh = generateRefreshToken();
+        storeRefreshToken(newRefresh, user.userId);
+
+        return HttpResponse.json<AuthResponse>(buildAuthResponse(user), {
+            status: 200,
+        });
+    }
+);
+
+const logout = http.post<never, never, undefined>(
+    `${BASE}/auth/logout`,
+    async () => {
+        await delay(LATENCY_MS);
+        const token = mockDb.currentRefreshToken;
+        if (token) {
+            mockDb.activeRefreshTokens.delete(token);
+        }
+        mockDb.currentRefreshToken = null;
+        return new HttpResponse(null, { status: 204 });
+    }
+);
+
+const profileMe = http.get(`${BASE}/profile/me`, ({ request }) => {
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+        return err('UNAUTHORIZED', 'Access token is missing.', 401);
     }
 
-    mockDb.activeRefreshTokens.delete(token);
+    const token = authHeader.slice('Bearer '.length);
+
+    // Для теста refresh flow: токены, начинающиеся с "expired.", считаем протухшими.
+    if (token.startsWith('expired.')) {
+        return err('UNAUTHORIZED', 'Access token has expired.', 401);
+    }
 
     const user = mockDb.users.at(-1);
     if (!user) {
-        return err(
-            'UNAUTHORIZED',
-            'No user associated with refresh token.',
-            401
-        );
+        return err('UNAUTHORIZED', 'No user found.', 401);
     }
 
-    const newRefresh = generateRefreshToken();
-    const response = HttpResponse.json<AuthResponse>(buildAuthResponse(user), {
-        status: 200,
+    return HttpResponse.json({
+        userId: user.userId,
+        email: user.email,
+        nickname: user.nickname,
+        role: user.role,
     });
-    return setRefreshCookie(response, newRefresh);
 });
 
-const logout = http.post(`${BASE}/auth/logout`, async ({ cookies }) => {
-    await delay(LATENCY_MS);
-    const token = cookies.refreshToken;
-    if (token) {
-        mockDb.activeRefreshTokens.delete(token);
-    }
-    return new HttpResponse(null, { status: 204 });
-});
-
-export const authHandlers: HttpHandler[] = [register, login, refresh, logout];
+export const authHandlers: HttpHandler[] = [
+    register,
+    login,
+    refresh,
+    logout,
+    profileMe,
+];
