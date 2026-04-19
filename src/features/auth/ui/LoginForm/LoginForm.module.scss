@@ -1,0 +1,36 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.serverError {
+  color: $color-error;
+  font-size: 13px;
+  line-height: 20px;
+  margin-top: -$spacing-sm;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  margin-top: $spacing-sm;
+}
+
+.link {
+  color: $color-text-secondary;
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: $color-text;
+  }
+}
