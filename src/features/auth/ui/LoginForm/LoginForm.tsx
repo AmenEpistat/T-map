@@ -24,7 +24,13 @@ export const LoginForm = () => {
             requiredMark={false}
         >
             <div className={styles.fields}>
-                <Form.Item name='email' noStyle>
+                <Form.Item
+                    name='email'
+                    rules={[
+                        { required: true, message: 'Введите email' },
+                        { type: 'email', message: 'Некорректный email' },
+                    ]}
+                >
                     <Input
                         placeholder='Email'
                         size='large'
@@ -32,7 +38,18 @@ export const LoginForm = () => {
                     />
                 </Form.Item>
 
-                <Form.Item name='password' noStyle>
+                <Form.Item
+                    name='password'
+                    rules={[
+                        { required: true, message: 'Введите пароль' },
+                        { min: 8, message: 'Минимум 8 символов' },
+                        {
+                            pattern: /\d/,
+                            message:
+                                'Пароль должен содержать хотя бы одну цифру',
+                        },
+                    ]}
+                >
                     <Input.Password
                         placeholder='Пароль'
                         size='large'
