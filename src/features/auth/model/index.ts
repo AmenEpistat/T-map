@@ -1,2 +1,2 @@
-export { authStore } from './auth.store';
+export { authStore } from './authStore.ts';
 export type { User } from './types';
