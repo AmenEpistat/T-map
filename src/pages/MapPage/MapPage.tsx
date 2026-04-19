@@ -1,4 +1,4 @@
-import MapView from '@/features/map/components/MapView/MapView.tsx';
+import { MapView } from '@/features/map';
 
 export const MapPage = () => {
     return (
