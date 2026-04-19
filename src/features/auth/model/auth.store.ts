@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { setAccessToken } from '@/shared/api';
+import { registerAuthCallbacks, setAccessToken } from '@/shared/api';
 import type {
     AuthResponse,
     LoginRequest,
@@ -15,6 +15,14 @@ class AuthStore {
 
     constructor() {
         makeAutoObservable(this);
+        registerAuthCallbacks({
+            onRefreshSuccess: (token) => {
+                this.accessToken = token;
+            },
+            onRefreshFail: () => {
+                this.clearAuth();
+            },
+        });
     }
 
     get isAuthenticated(): boolean {
