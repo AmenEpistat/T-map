@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { authStore } from '@/features/auth';
 import styles from './LoginForm.module.scss';
 
 interface LoginFormValues {
@@ -9,10 +11,17 @@ interface LoginFormValues {
 
 export const LoginForm = () => {
     const [form] = Form.useForm<LoginFormValues>();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
 
-    const handleFinish = (values: LoginFormValues) => {
-        // eslint-disable-next-line no-console
-        console.log('login submit:', values);
+    const handleFinish = async (values: LoginFormValues) => {
+        setIsSubmitting(true);
+        try {
+            await authStore.login(values);
+            navigate('/', { replace: true });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -22,6 +31,7 @@ export const LoginForm = () => {
             onFinish={handleFinish}
             className={styles.form}
             requiredMark={false}
+            disabled={isSubmitting}
         >
             <div className={styles.fields}>
                 <Form.Item
@@ -59,7 +69,13 @@ export const LoginForm = () => {
             </div>
 
             <Form.Item noStyle>
-                <Button type='primary' htmlType='submit' size='large' block>
+                <Button
+                    type='primary'
+                    htmlType='submit'
+                    size='large'
+                    block
+                    loading={isSubmitting}
+                >
                     Войти
                 </Button>
             </Form.Item>
