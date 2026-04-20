@@ -1,0 +1,22 @@
+.zoom-controls {
+  position: absolute;
+  z-index: 800;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.zoom-controls__button {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+}
+
+.zoom-controls__icon {
+  font-size: 24px;
+  color: $color-text-secondary-hover;
+}

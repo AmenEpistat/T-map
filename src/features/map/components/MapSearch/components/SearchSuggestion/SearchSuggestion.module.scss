@@ -1,0 +1,38 @@
+.suggestion {
+  display: flex;
+  margin-right: auto;
+  justify-content: flex-start;
+  gap: $spacing-xl;
+  align-items: center;
+  height: auto;
+  width: 100%;
+  transition: all 0.6s ease;
+
+  &:hover {
+    background-color: $color-bg-control;
+  }
+}
+
+.suggestion__content {
+  @include text-control;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  align-items: flex-start;
+}
+
+.suggestion__icon {
+  font-size: 18px;
+}
+
+.suggestion__name {
+  font-size: 16px;
+  color: $color-text;
+  margin: 0;
+}
+
+.suggestion__address {
+  font-size: 14px;
+  color: $color-text-secondary;
+  margin: 0;
+}
