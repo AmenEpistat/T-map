@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { authStore } from '@/features/auth';
 import styles from './RegisterForm.module.scss';
 
 interface RegisterFormValues {
@@ -11,9 +13,18 @@ interface RegisterFormValues {
 
 export const RegisterForm = () => {
     const [form] = Form.useForm<RegisterFormValues>();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
 
-    const handleFinish = (values: RegisterFormValues) => {
-        console.log('register submit:', values);
+    const handleFinish = async (values: RegisterFormValues) => {
+        setIsSubmitting(true);
+        try {
+            const { confirmPassword: _confirmPassword, ...payload } = values;
+            await authStore.register(payload);
+            navigate('/', { replace: true });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -23,6 +34,7 @@ export const RegisterForm = () => {
             onFinish={handleFinish}
             className={styles.form}
             requiredMark={false}
+            disabled={isSubmitting}
         >
             <div className={styles.fields}>
                 <Form.Item
@@ -101,7 +113,13 @@ export const RegisterForm = () => {
             </div>
 
             <Form.Item noStyle>
-                <Button type='primary' htmlType='submit' size='large' block>
+                <Button
+                    type='primary'
+                    htmlType='submit'
+                    size='large'
+                    block
+                    loading={isSubmitting}
+                >
                     Продолжить
                 </Button>
             </Form.Item>
