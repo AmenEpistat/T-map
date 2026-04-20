@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { isAxiosError } from 'axios';
 import { Form, Input, Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { authStore } from '@/features/auth';
-import styles from './RegisterForm.module.scss';
+import styles from '../AuthForm.module.scss';
 
 interface RegisterFormValues {
     nickname: string;
@@ -11,17 +12,40 @@ interface RegisterFormValues {
     confirmPassword: string;
 }
 
+const mapRegisterError = (status?: number, message?: string): string => {
+    switch (status) {
+        case 409:
+            return 'Пользователь с таким email уже существует.';
+        case 400:
+            return message ?? 'Проверьте введённые данные.';
+        default:
+            return 'Не удалось зарегистрироваться. Попробуйте позже.';
+    }
+};
+
 export const RegisterForm = () => {
     const [form] = Form.useForm<RegisterFormValues>();
+    const [serverError, setServerError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const handleFinish = async (values: RegisterFormValues) => {
         setIsSubmitting(true);
+        setServerError(null);
         try {
             const { confirmPassword: _confirmPassword, ...payload } = values;
             await authStore.register(payload);
             navigate('/', { replace: true });
+        } catch (error) {
+            const status = isAxiosError(error)
+                ? error.response?.status
+                : undefined;
+            const message = isAxiosError(error)
+                ? error.response?.data?.message
+                : undefined;
+            setServerError(mapRegisterError(status, message));
+
+            form.setFields([{ name: 'email', errors: [''] }]);
         } finally {
             setIsSubmitting(false);
         }
@@ -32,6 +56,10 @@ export const RegisterForm = () => {
             form={form}
             layout='vertical'
             onFinish={handleFinish}
+            onValuesChange={() => {
+                setServerError(null);
+                form.setFields([{ name: 'email', errors: [] }]);
+            }}
             className={styles.form}
             requiredMark={false}
             disabled={isSubmitting}
@@ -111,6 +139,12 @@ export const RegisterForm = () => {
                     />
                 </Form.Item>
             </div>
+
+            {serverError && (
+                <p className={styles.serverError} role='alert'>
+                    {serverError}
+                </p>
+            )}
 
             <Form.Item noStyle>
                 <Button
