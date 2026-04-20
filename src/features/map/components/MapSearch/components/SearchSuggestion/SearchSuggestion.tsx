@@ -7,7 +7,7 @@ type Props = {
     onSelect: (s: any) => void;
 };
 
-const SearchSuggestion = ({ suggestion, onSelect }: Props) => {
+export const SearchSuggestion = ({ suggestion, onSelect }: Props) => {
     if (!suggestion || !suggestion.name) {
         return null;
     }
@@ -33,5 +33,3 @@ const SearchSuggestion = ({ suggestion, onSelect }: Props) => {
         </li>
     );
 };
-
-export default SearchSuggestion;

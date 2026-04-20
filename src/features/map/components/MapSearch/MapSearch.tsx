@@ -2,7 +2,7 @@ import { Button, Input } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import styles from './MapSearch.module.scss';
-import SearchPanel from '@/features/map/components/SearchPanel/SearchPanel';
+import { SearchPanel } from '@/features/map/components/MapSearch/components';
 
 const MapSearch = () => {
     const [isSearchOpen, setSearchOpen] = useState(false);

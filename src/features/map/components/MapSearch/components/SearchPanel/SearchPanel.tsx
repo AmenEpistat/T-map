@@ -2,15 +2,15 @@ import { Button, Divider, Input, Spin } from 'antd';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import styles from './SearchPanel.module.scss';
 import { useSearch } from '@/features/map/hooks/useSearch.ts';
-import SearchSuggestion from '@/features/map/components/SearchSuggestion/SearchSuggestion.tsx';
 import type { Venue } from '@/entities/venue/model/types.ts';
+import { SearchSuggestion } from '@/features/map/components/MapSearch/components/SearchSuggestion/SearchSuggestion.tsx';
 
 type Props = {
     isOpen: boolean;
     onClose: () => void;
 };
 
-const SearchPanel = ({ isOpen, onClose }: Props) => {
+export const SearchPanel = ({ isOpen, onClose }: Props) => {
     const {
         query,
         suggestions,
@@ -75,5 +75,3 @@ const SearchPanel = ({ isOpen, onClose }: Props) => {
         </div>
     );
 };
-
-export default SearchPanel;
