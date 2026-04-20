@@ -42,7 +42,6 @@ export const useSearch = (onClose: () => void) => {
     }, [query]);
 
     const handleSelect = (venue: Venue) => {
-        console.log('тут будет логика честное слово');
         onClose();
     };
 
