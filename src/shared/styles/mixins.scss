@@ -1,0 +1,12 @@
+@mixin text-control {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin overlay {
+  background: rgb(0 0 0 / 60%);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
