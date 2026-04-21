@@ -3,7 +3,7 @@ import {
     EntertainmentFilled,
     FoodFilled,
     ShoppingFilled,
-} from '@/features/map/components/LayerFilter/components/ui';
+} from '@/features/map/ui/LayerFilter/components/Icons';
 
 export const CATEGORY_UI = {
     food: { label: 'Еда', icon: <FoodFilled /> },

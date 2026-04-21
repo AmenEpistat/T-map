@@ -1,4 +1,4 @@
-import { FilterButtons } from '@/features/map/components/LayerFilter/components/FilterButtons/FilterButtons.tsx';
+import { FilterButtons } from '@/features/map/ui/LayerFilter/components/FilterButtons/FilterButtons.tsx';
 import styles from './LayerFilterDesktop.module.scss';
 
 export const LayerFilterDesktop = () => {
