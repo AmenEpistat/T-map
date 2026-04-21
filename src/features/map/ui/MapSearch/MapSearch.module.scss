@@ -18,6 +18,7 @@
 .map-search__button {
   width: 48px;
   height: 48px;
+  flex-shrink: 0;
   border: none;
   box-shadow: none;
 }
@@ -30,5 +31,15 @@
   background-color: $color-bg-control;
   padding: 8px;
   border-radius: $border-radius-base;
+
+  @media (min-width: $desktop) {
+    border: none;
+    background-color: transparent;
+
+    &:hover, &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
 }
 

@@ -47,10 +47,26 @@
 
 .search-panel__input {
   background-color: $color-bg-control;
-  padding: 12px;
+  padding: 8px;
   width: auto;
   border-radius: $border-radius-base;
   flex-grow: 1;
+
+  @media (min-width: $desktop) {
+    border: none;
+    background-color: transparent;
+
+    &:hover, &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.search-panel__divider {
+  @media (min-width: $desktop) {
+    display: none;
+  }
 }
 
 .search-panel__button {
@@ -74,5 +90,9 @@
 
   li {
     margin-bottom: $spacing-md;
+  }
+
+  @media (min-width: $desktop) {
+    border-top: 2px solid $color-bg-control;
   }
 }
