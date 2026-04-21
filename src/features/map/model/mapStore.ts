@@ -1,11 +1,15 @@
 import { makeAutoObservable } from 'mobx';
 import type { ClusterDataType, ViewState } from './types';
 import { INITIAL_VIEW } from '@/features/map/model/constants.ts';
+import { MAP_CATEGORIES, type MapCategory } from '@/entities/map';
 
 class MapStore {
     clusters: ClusterDataType[] = [];
     isLoading = false;
     viewState: ViewState = INITIAL_VIEW;
+
+    selectedCategories: MapCategory[] = [...MAP_CATEGORIES];
+    isAnomaliesVisible: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -27,6 +31,20 @@ class MapStore {
             ...this.viewState,
             zoom: Math.max(this.viewState.zoom - 1, 5),
         };
+    }
+
+    toggleCategory(key: MapCategory) {
+        if (this.selectedCategories.includes(key)) {
+            this.selectedCategories = this.selectedCategories.filter(
+                (c) => c !== key
+            );
+        } else {
+            this.selectedCategories.push(key);
+        }
+    }
+
+    toggleAnomalies() {
+        this.isAnomaliesVisible = !this.isAnomaliesVisible;
     }
 }
 

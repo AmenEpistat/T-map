@@ -1,6 +1,4 @@
-import { MapView } from '@/features/map';
-import ZoomControls from '@/features/map/components/ZoomControls/ZoomControls.tsx';
-import MapSearch from '@/features/map/components/MapSearch/MapSearch.tsx';
+import { LayerFilter, MapSearch, MapView, ZoomControls } from '@/features/map';
 
 export const MapPage = () => {
     return (
@@ -8,6 +6,7 @@ export const MapPage = () => {
             <MapSearch />
             <MapView />
             <ZoomControls />
+            <LayerFilter />
         </section>
     );
 };
