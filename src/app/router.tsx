@@ -10,6 +10,10 @@ export const router = createBrowserRouter([
     },
     {
         path: '/auth/login',
-        element: <AuthPage />,
+        element: <AuthPage mode='login' />,
+    },
+    {
+        path: '/auth/register',
+        element: <AuthPage mode='register' />,
     },
 ]);

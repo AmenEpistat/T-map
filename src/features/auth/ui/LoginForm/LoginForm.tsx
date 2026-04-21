@@ -3,7 +3,7 @@ import { Form, Input, Button } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { authStore } from '@/features/auth';
 import { isAxiosError } from 'axios';
-import styles from './LoginForm.module.scss';
+import styles from '../AuthForm.module.scss';
 
 interface LoginFormValues {
     email: string;
