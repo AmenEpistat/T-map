@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { isAxiosError } from 'axios';
 import { Form, Input, Button } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { authStore } from '@/features/auth';
 import styles from '../AuthForm.module.scss';
 
@@ -28,6 +28,7 @@ export const RegisterForm = () => {
     const [serverError, setServerError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleFinish = async (values: RegisterFormValues) => {
         setIsSubmitting(true);
@@ -35,7 +36,10 @@ export const RegisterForm = () => {
         try {
             const { confirmPassword: _confirmPassword, ...payload } = values;
             await authStore.register(payload);
-            navigate('/', { replace: true });
+            const from =
+                (location.state as { from?: { pathname: string } } | null)?.from
+                    ?.pathname ?? '/';
+            navigate(from, { replace: true });
         } catch (error) {
             const status = isAxiosError(error)
                 ? error.response?.status
