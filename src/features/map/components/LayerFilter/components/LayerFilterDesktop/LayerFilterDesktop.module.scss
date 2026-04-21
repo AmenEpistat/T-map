@@ -1,0 +1,10 @@
+.layer-filter {
+  background-color: $color-bg;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: auto;
+  z-index: 800;
+  border-radius: $border-radius-base;
+  padding: 8px 0;
+}

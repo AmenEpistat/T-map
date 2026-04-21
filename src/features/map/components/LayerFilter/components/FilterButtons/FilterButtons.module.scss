@@ -1,0 +1,58 @@
+.filter-buttons {
+  display: flex;
+  align-items: center;
+
+  .filter-buttons__btn {
+    margin-bottom: 0;
+    padding: 8px 4px;
+    height: 42px;
+
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+.filter-buttons__btn  {
+  width: 100%;
+  display: flex;
+  gap: $spacing-xl;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  height: 40px;
+
+  svg {
+    padding: 8px;
+  }
+
+  &:hover, &:focus-visible {
+    background-color: transparent !important;
+  }
+}
+
+.filter-buttons__btn--active {
+  svg {
+    color: $color-primary-hover;
+    background-color: $color-primary-light;
+    border-radius: 8px;
+  }
+}
+
+.filter-buttons__divider {
+  border-top: 8px solid $color-bg-control;
+  margin-bottom: 16px;
+}
+
+.filter-buttons__btn--anomaly {
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.filter-buttons__btn--active svg{
+    color: $color-error;
+    background-color: $color-error-light;
+  }
+}
