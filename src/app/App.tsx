@@ -1,16 +1,28 @@
+import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
+import { observer } from 'mobx-react-lite';
+import { authStore } from '@/features/auth';
+import { Splash } from '@/shared/ui/Splash';
 import { router } from './router.tsx';
 import { theme } from './theme';
 import '../shared/styles/global.scss';
 
-function App() {
+const App = observer(() => {
+    useEffect(() => {
+        void authStore.initialize();
+    }, []);
+
     return (
         <ConfigProvider theme={theme} locale={ruRU}>
-            <RouterProvider router={router} />
+            {authStore.isInitializing ? (
+                <Splash />
+            ) : (
+                <RouterProvider router={router} />
+            )}
         </ConfigProvider>
     );
-}
+});
 
 export default App;

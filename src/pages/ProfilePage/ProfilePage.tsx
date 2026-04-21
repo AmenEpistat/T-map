@@ -28,7 +28,15 @@ export const ProfilePage = observer(() => {
                     onClick={handleLogout}
                     className={styles['profile-page__logout']}
                 >
-                    Выйти
+                    Выйти из профиля
+                </Button>
+                <Button
+                    type='primary'
+                    size='large'
+                    onClick={() => navigate('/')}
+                    className={styles['profile-page__logout']}
+                >
+                    Назад к карте
                 </Button>
             </div>
         </main>
