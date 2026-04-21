@@ -1,4 +1,4 @@
-export const FoodOutlined = () => {
+export const FoodFilled = () => {
     return (
         <svg
             width='24'

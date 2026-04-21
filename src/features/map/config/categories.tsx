@@ -1,12 +1,12 @@
 import { FireFilled } from '@ant-design/icons';
 import {
     EntertainmentFilled,
-    FoodOutlined,
+    FoodFilled,
     ShoppingFilled,
 } from '@/features/map/components/LayerFilter/components/ui';
 
 export const CATEGORY_UI = {
-    food: { label: 'Еда', icon: <FoodOutlined /> },
+    food: { label: 'Еда', icon: <FoodFilled /> },
     entertainment: { label: 'Развлечения', icon: <EntertainmentFilled /> },
     shopping: { label: 'Шоппинг', icon: <ShoppingFilled /> },
 };
