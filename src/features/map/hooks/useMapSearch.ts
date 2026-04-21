@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { Venue } from '@/entities/venue/model/types';
 import { mockVenues } from '@/features/map/model/mock.ts';
 
-export const useSearch = (onClose: () => void) => {
+export const useMapSearch = (onClose: () => void) => {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState<Venue[]>([]);
     const [loading, setLoading] = useState(false);
@@ -42,6 +42,7 @@ export const useSearch = (onClose: () => void) => {
     }, [query]);
 
     const handleSelect = (venue: Venue) => {
+        handleClear();
         onClose();
     };
 
