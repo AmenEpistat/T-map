@@ -6,5 +6,4 @@ export const INITIAL_VIEW = {
     bearing: 0,
 } as const;
 
-export const MAP_STYLE =
-    'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json';
+export const MAP_STYLE = `https://api.maptiler.com/maps/streets-v4/style.json?key=${import.meta.env.VITE_MAPTILER_API_KEY}`;
