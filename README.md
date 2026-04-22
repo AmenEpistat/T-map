@@ -104,11 +104,14 @@ src/
 │   └── admin/
 │
 ├── widgets/
-|   ├── VenueInfo/
-│   └── VenueCard/              
+|   ├── venue-info/
+|   ├── map-view/
+│   └── venue-card/              
 │
 ├── features/
-│   ├── map/
+│   ├── map-search/
+│   ├── map-layer/
+│   ├── map-zoom/
 │   ├── auth/
 │   ├── venue/
 │   ├── profile/
