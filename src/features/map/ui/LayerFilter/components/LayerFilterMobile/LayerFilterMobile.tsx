@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Button, Drawer } from 'antd';
-import { FilterButtons } from '@/features/map/components/LayerFilter/components/FilterButtons/FilterButtons.tsx';
+import { FilterButtons } from '@/features/map/ui/LayerFilter/components/FilterButtons/FilterButtons.tsx';
 import styles from './LayerFilterMobile.module.scss';
-import { LayerOutlined } from '@/features/map/components/LayerFilter/components/ui';
+import { LayerOutlined } from '@/features/map/ui/LayerFilter/components/Icons';
 
 export const LayerFilterMobile = () => {
     const [open, setOpen] = useState(false);

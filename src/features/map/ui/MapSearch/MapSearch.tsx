@@ -3,7 +3,7 @@ import { MenuOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './MapSearch.module.scss';
-import { SearchPanel } from '@/features/map/components/MapSearch/components';
+import { SearchPanel } from '@/features/map/ui/MapSearch/components';
 
 const MapSearch = () => {
     const [isSearchOpen, setSearchOpen] = useState(false);

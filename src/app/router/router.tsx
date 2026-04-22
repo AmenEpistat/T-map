@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
-import { MapPage } from '@/pages/MapPage';
 import { AuthPage } from '@/pages/AuthPage';
+import { MapPage } from '@/pages/map';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { ProtectedRoute } from '@/shared/ui';
 

@@ -21,7 +21,7 @@ export const useMapLayers = (data: ClusterDataType[]) => {
                 elevationScale: 0,
                 stroked: true,
                 extruded: false,
-                getLineWidth: 2,
+                getLineWidth: 3,
                 coverage: 0.955,
                 getLineColor: (d) => getBorderColor(d.txCount, maxTx),
                 getFillColor: (d) => getClusterColor(d.txCount, maxTx),

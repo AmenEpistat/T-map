@@ -90,19 +90,18 @@ npm run type-check
 src/
 │
 ├── app/
-│   ├── App.tsx
-│   └── router.tsx
+│   ├── providers
+│   ├── router
+|   ├── styles
+│   └── App.tsx
 │
 ├── pages/
-│   ├── MapPage/
-│   ├── AuthPage/
-│   ├── VenuesPage/ 
-|   ├── VenuePage/    
-|   ├── LoyaltiesPage/
-|   ├── LoyaltyScanPage/
-│   ├── ProfilePage/
-│   ├── RequestPage/  
-│   └── AdminPage/
+│   ├── map/
+│   ├── auth/
+│   ├── venue/ 
+|   ├── profile/    
+|   ├── business/  
+│   └── admin/
 │
 ├── widgets/
 |   ├── VenueInfo/
@@ -117,17 +116,19 @@ src/
 │   └── admin/
 │
 ├── entities/
-│   ├── venue
-│   ├── promo
-│   ├── loyalty-rule
-│   └── user
+│   ├── venue/
+│   ├── promo/
+|   ├── map/
+│   ├── loyalty-rule/
+│   └── user/
 │
 └── shared/
     ├── api/
     ├── ui/
     ├── hooks/
     ├── utils/
-    ├── types/
+    ├── model/
+    ├── config/
     └── styles/
 ```
 

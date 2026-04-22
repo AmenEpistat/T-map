@@ -1,9 +1,9 @@
 import { Button, Divider, Input, Spin } from 'antd';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import styles from './SearchPanel.module.scss';
-import { useSearch } from '@/features/map/hooks/useSearch.ts';
+import { useMapSearch } from '@/features/map/hooks/useMapSearch.ts';
 import type { Venue } from '@/entities/venue/model/types.ts';
-import { SearchSuggestion } from '@/features/map/components/MapSearch/components/SearchSuggestion/SearchSuggestion.tsx';
+import { SearchSuggestion } from '@/features/map/ui/MapSearch/components/SearchSuggestion/SearchSuggestion.tsx';
 
 type Props = {
     isOpen: boolean;
@@ -18,7 +18,7 @@ export const SearchPanel = ({ isOpen, onClose }: Props) => {
         handleChange,
         handleSelect,
         handleClear,
-    } = useSearch(onClose);
+    } = useMapSearch(onClose);
 
     if (!isOpen) return null;
 
@@ -51,14 +51,17 @@ export const SearchPanel = ({ isOpen, onClose }: Props) => {
                     />
                     <Button
                         className={styles['search-panel__button']}
-                        onClick={onClose}
+                        onClick={() => {
+                            handleClear();
+                            onClose();
+                        }}
                         type='text'
                     >
                         Отменить
                     </Button>
                 </div>
 
-                <Divider />
+                <Divider className={styles['search-panel__divider']} />
 
                 {suggestions.length > 0 && (
                     <ul className={styles['search-panel__list']}>

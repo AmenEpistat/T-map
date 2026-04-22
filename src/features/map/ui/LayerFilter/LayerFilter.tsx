@@ -1,7 +1,7 @@
 import {
     LayerFilterDesktop,
     LayerFilterMobile,
-} from '@/features/map/components/LayerFilter/components';
+} from '@/features/map/ui/LayerFilter/components';
 import { useIsMobile } from '@/shared/hooks/useIsMobile.ts';
 
 const LayerFilter = () => {
