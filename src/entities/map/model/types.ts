@@ -1,2 +1,16 @@
 export type MapCategory = 'food' | 'entertainment' | 'shopping';
 export type MapLayer = 'anomalies';
+
+export type ViewState = {
+    longitude: number;
+    latitude: number;
+    zoom: number;
+    pitch: number;
+    bearing: number;
+};
+
+export type ClusterDataType = {
+    h3Index: string;
+    txCount: number;
+    avgCheck: number;
+};
