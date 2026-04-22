@@ -3,7 +3,7 @@ import React from 'react';
 import { MapPage } from '@/pages/MapPage';
 import { AuthPage } from '@/pages/AuthPage';
 import { ProfilePage } from '@/pages/ProfilePage';
-import { ProtectedRoute } from '@/shared/ui/ProtectedRoute';
+import { ProtectedRoute } from '@/shared/ui';
 
 export const router = createBrowserRouter([
     {

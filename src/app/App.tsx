@@ -4,7 +4,7 @@ import { ConfigProvider } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
 import { observer } from 'mobx-react-lite';
 import { authStore } from '@/features/auth';
-import { Splash } from '@/shared/ui/Splash';
+import { Splash } from '@/shared/ui';
 import { router } from './router.tsx';
 import { theme } from './theme';
 import '../shared/styles/global.scss';
