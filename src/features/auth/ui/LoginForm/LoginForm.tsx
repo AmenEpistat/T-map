@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { authStore } from '@/features/auth';
 import { isAxiosError } from 'axios';
 import styles from '../AuthForm.module.scss';
@@ -28,13 +28,17 @@ export const LoginForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [serverError, setServerError] = useState<string | null>(null);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleFinish = async (values: LoginFormValues) => {
         setIsSubmitting(true);
         setServerError(null);
         try {
             await authStore.login(values);
-            navigate('/', { replace: true });
+            const from =
+                (location.state as { from?: { pathname: string } } | null)?.from
+                    ?.pathname ?? '/';
+            navigate(from, { replace: true });
         } catch (error) {
             const status = isAxiosError(error)
                 ? error.response?.status

@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 import { AuthPage } from '@/pages/AuthPage';
 import { MapPage } from '@/pages/map';
+import { ProfilePage } from '@/pages/ProfilePage';
+import { ProtectedRoute } from '@/shared/ui';
 
 export const router = createBrowserRouter([
     {
@@ -15,5 +17,13 @@ export const router = createBrowserRouter([
     {
         path: '/auth/register',
         element: <AuthPage mode='register' />,
+    },
+    {
+        path: '/profile',
+        element: (
+            <ProtectedRoute>
+                <ProfilePage />
+            </ProtectedRoute>
+        ),
     },
 ]);
