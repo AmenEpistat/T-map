@@ -4,26 +4,44 @@ import { Map } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useMapLayers } from '@/widgets/map-view/hooks/useMapLayers.ts';
 import { MAP_STYLE } from '@/widgets/map-view/model/constants.ts';
-import { mockClusters } from '@/widgets/map-view/model/mock.ts';
 import styles from './MapView.module.scss';
-
-import type { ViewState } from '@/entities/map/model/types.ts';
 import { mapStore } from '@/entities/map';
+import { useHeatmapData } from '@/widgets/map-view/hooks/useHeatmapData.ts';
+import { useCallback } from 'react';
+import type { ViewStateChangeEvent } from 'react-map-gl/mapbox-legacy';
 
 const MapView = observer(() => {
-    const layers = useMapLayers(mockClusters);
+    useHeatmapData();
+    const layers = useMapLayers(mapStore.clusters.data?.clusters || []);
+
+    const handleMapChange = useCallback((e: ViewStateChangeEvent) => {
+        const bounds = e.target.getBounds();
+        mapStore.setBounds({
+            swLat: bounds.getSouthWest().lat,
+            swLng: bounds.getSouthWest().lng,
+            neLat: bounds.getNorthEast().lat,
+            neLng: bounds.getNorthEast().lng,
+        });
+    }, []);
+
+    const handleViewStateChange = useCallback((e: ViewStateChangeEvent) => {
+        mapStore.setViewState(e.viewState);
+    }, []);
 
     return (
         <div className={styles['map']}>
             <DeckGL
                 viewState={mapStore.viewState}
-                onViewStateChange={(e) =>
-                    mapStore.setViewState(e.viewState as ViewState)
-                }
+                onViewStateChange={handleViewStateChange}
                 controller={true}
                 layers={layers}
             >
-                <Map mapStyle={MAP_STYLE} />
+                <Map
+                    reuseMaps
+                    mapStyle={MAP_STYLE}
+                    onMoveEnd={handleMapChange}
+                    onLoad={handleMapChange}
+                />
             </DeckGL>
         </div>
     );
