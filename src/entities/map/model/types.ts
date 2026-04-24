@@ -14,3 +14,10 @@ export type ClusterDataType = {
     txCount: number;
     avgCheck: number;
 };
+
+export type Bounds = {
+    swLat: number;
+    swLng: number;
+    neLat: number;
+    neLng: number;
+};
