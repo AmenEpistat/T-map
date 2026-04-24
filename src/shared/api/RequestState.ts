@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 
 export class RequestState<T> {
     data: T | null = null;
@@ -22,15 +22,17 @@ export class RequestState<T> {
 
             if (id !== this.requestId) return;
 
-            this.data = response.data;
+            runInAction(() => {
+                this.data = response.data;
+                this.isLoading = false;
+            });
         } catch (e: any) {
             if (id !== this.requestId) return;
 
-            this.error = e?.message || 'Ошибка загрузки данных';
-        } finally {
-            if (id === this.requestId) {
+            runInAction(() => {
+                this.error = e?.message || 'Ошибка загрузки данных';
                 this.isLoading = false;
-            }
+            });
         }
     }
 }
