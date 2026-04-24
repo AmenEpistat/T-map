@@ -1,12 +1,16 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { env } from '@/shared/config/env';
 import { getAccessToken, setAccessToken } from './token-holder';
+import qs from 'qs';
 
 export const apiClient = axios.create({
     baseURL: env.API_BASE_URL,
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
+    },
+    paramsSerializer: (params) => {
+        return qs.stringify(params, { arrayFormat: 'repeat' });
     },
 });
 
