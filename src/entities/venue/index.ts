@@ -7,3 +7,5 @@ export type {
     VenueCreatePayload,
     VenueUpdatePayload,
 } from './model/types';
+
+export { businessVenuesApi } from './api/businessVenuesApi';
