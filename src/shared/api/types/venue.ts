@@ -48,14 +48,4 @@ export interface VenueCreateRequest {
     music?: string;
 }
 
-export interface VenueUpdateRequest {
-    name?: string;
-    address?: string;
-    description?: string;
-    lat?: number;
-    lng?: number;
-    category?: VenueCategory;
-    photoUrl?: string;
-    dishOfDay?: string;
-    music?: string;
-}
+export type VenueUpdateRequest = Partial<VenueCreateRequest>;
