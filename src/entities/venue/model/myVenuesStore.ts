@@ -1,7 +1,11 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { RequestState } from '@/shared/api/RequestState';
-import { businessVenuesApi } from '@/entities/venue';
-import type { OwnerVenue } from './types';
+import { businessVenuesApi } from '../api/businessVenuesApi';
+import type {
+    OwnerVenue,
+    VenueCreatePayload,
+    VenueUpdatePayload,
+} from './types';
 
 const wrap = <T>(promise: Promise<T>): Promise<{ data: T }> =>
     promise.then((data) => ({ data }));
@@ -20,6 +24,34 @@ class MyVenuesStore {
 
     loadById = async (id: string): Promise<void> => {
         await this.current.execute(wrap(businessVenuesApi.getMyVenueById(id)));
+    };
+
+    create = async (payload: VenueCreatePayload): Promise<OwnerVenue> => {
+        const venue = await businessVenuesApi.createVenue(payload);
+        runInAction(() => {
+            if (this.list.data) {
+                this.list.data.push(venue);
+            }
+        });
+        return venue;
+    };
+
+    update = async (
+        id: string,
+        payload: VenueUpdatePayload
+    ): Promise<OwnerVenue> => {
+        const venue = await businessVenuesApi.updateVenue(id, payload);
+        runInAction(() => {
+            if (this.list.data) {
+                this.list.data = this.list.data.map((v) =>
+                    v.id === venue.id ? venue : v
+                );
+            }
+            if (this.current.data?.id === venue.id) {
+                this.current.data = venue;
+            }
+        });
+        return venue;
     };
 
     clear = (): void => {
