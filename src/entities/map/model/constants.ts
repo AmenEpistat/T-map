@@ -10,5 +10,5 @@ export const BOUNDS_KEYS: (keyof Bounds)[] = [
     'swLng',
     'swLat',
     'neLng',
-    'neLng',
+    'neLat',
 ] as const;
