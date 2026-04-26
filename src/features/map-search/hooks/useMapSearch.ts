@@ -28,7 +28,7 @@ export const useMapSearch = (onClose: () => void) => {
                     setSuggestions(filteredData);
                 }
             } catch (error) {
-                console.error('добавми компоненту для ошибок потом');
+                console.error('добавим компоненту для ошибок потом', error);
             } finally {
                 if (active) {
                     setLoading(false);
@@ -42,7 +42,7 @@ export const useMapSearch = (onClose: () => void) => {
         };
     }, [query]);
 
-    const handleSelect = (venue: Venue) => {
+    const handleSelect = (_venue: Venue) => {
         handleClear();
         onClose();
     };
