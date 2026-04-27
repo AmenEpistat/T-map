@@ -1,6 +1,6 @@
 import { reaction } from 'mobx';
 import { authStore } from '@/features/auth';
-import { myVenuesStore } from '@/entities/venue';
+import { venuesStore } from '@/entities/venue';
 
 let isSetUp = false;
 
@@ -12,7 +12,7 @@ export const setupStores = (): void => {
         () => authStore.user,
         (user, prevUser) => {
             if (prevUser && !user) {
-                myVenuesStore.clear();
+                venuesStore.clear();
             }
         }
     );

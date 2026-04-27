@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { RequestState } from '@/shared/api/RequestState';
-import { businessVenuesApi } from '../api/businessVenuesApi';
+import { businessVenuesApi } from '@/entities/venue';
 import type {
     OwnerVenue,
     VenueCreatePayload,
@@ -10,7 +10,7 @@ import type {
 const wrap = <T>(promise: Promise<T>): Promise<{ data: T }> =>
     promise.then((data) => ({ data }));
 
-class MyVenuesStore {
+class VenuesStore {
     list = new RequestState<OwnerVenue[]>();
     current = new RequestState<OwnerVenue>();
 
@@ -60,4 +60,4 @@ class MyVenuesStore {
     };
 }
 
-export const myVenuesStore = new MyVenuesStore();
+export const venuesStore = new VenuesStore();
