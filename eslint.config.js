@@ -4,6 +4,7 @@ import ts from '@typescript-eslint/eslint-plugin';
 import react from 'eslint-plugin-react';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier';
+import globals from 'globals';
 
 export default [
     {
@@ -13,6 +14,10 @@ export default [
             sourceType: 'module',
             parser: tsParser,
             parserOptions: { ecmaFeatures: { jsx: true } },
+            globals: {
+                ...globals.browser,
+                ...globals.es2021,
+            },
         },
         plugins: {
             '@typescript-eslint': ts,

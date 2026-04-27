@@ -17,7 +17,7 @@ export const theme: ThemeConfig = {
         colorTextPlaceholder: '#6C6F71',
 
         fontFamily:
-            "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+            'Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif',
         fontSize: 15,
         lineHeight: 24 / 15,
         borderRadius: 12,

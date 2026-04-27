@@ -2,7 +2,8 @@ import { makeAutoObservable } from 'mobx';
 import { INITIAL_VIEW } from '@/widgets/map-view/model/constants.ts';
 import {
     type Bounds,
-    heatmapApi, isSameBounds,
+    heatmapApi,
+    isSameBounds,
     MAP_CATEGORIES,
     type MapCategory,
     normalizeBounds,

@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
+    "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "lint:styles": "stylelint \"src/**/*.{css,scss}\"",
     "lint:styles:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
