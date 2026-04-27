@@ -9,3 +9,4 @@ export type {
 } from './model/types';
 
 export { businessVenuesApi } from './api/businessVenuesApi';
+export { venuesStore } from './model/venuesStore.ts';
