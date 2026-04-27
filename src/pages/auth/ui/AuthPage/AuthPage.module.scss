@@ -28,13 +28,14 @@
   text-align: center;
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .container {
     max-width: 100%;
     border-radius: 0;
     background: $color-bg-page;
     padding: 24px 16px;
   }
+
   .page {
     padding: 0;
     align-items: flex-start;
