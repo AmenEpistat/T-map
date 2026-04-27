@@ -23,4 +23,22 @@ export default defineConfig({
             },
         },
     },
+    build: {
+        chunkSizeWarningLimit: 1600,
+        rolldownOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('maplibre-gl')) {
+                            return 'map-vendor';
+                        }
+                        if (id.includes('react') || id.includes('mobx')) {
+                            return 'react-vendor';
+                        }
+                        return 'vendor';
+                    }
+                },
+            },
+        },
+    },
 });
