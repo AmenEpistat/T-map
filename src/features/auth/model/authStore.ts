@@ -8,6 +8,9 @@ import type {
 import { authApi } from '../api';
 import type { User } from './types';
 
+let initializePromise: Promise<void> | null = null;
+let hasInitialized = false;
+
 class AuthStore {
     accessToken: string | null = null;
     user: User | null = null;
@@ -64,7 +67,20 @@ class AuthStore {
         this.setAuth(response);
     };
 
-    initialize = async (): Promise<void> => {
+    initialize = (): Promise<void> => {
+        if (hasInitialized) {
+            return Promise.resolve();
+        }
+
+        initializePromise ??= this.runInitialize().finally(() => {
+            hasInitialized = true;
+            initializePromise = null;
+        });
+
+        return initializePromise;
+    };
+
+    private runInitialize = async (): Promise<void> => {
         try {
             await this.refresh();
         } catch {
