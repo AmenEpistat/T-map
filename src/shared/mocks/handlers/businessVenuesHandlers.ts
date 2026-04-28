@@ -109,7 +109,6 @@ const createVenue = http.post<never, VenueCreateRequest, ItemResponse>(
             lng: body.lng,
             category: body.category,
             description: body.description,
-            photoUrl: body.photoUrl,
             dishOfDay: body.dishOfDay,
             music: body.music,
             h3Res9: 'mock-h3-index',

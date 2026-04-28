@@ -23,8 +23,10 @@ tags:
     description: Venue, content, promotion and loyalty management for owners
   - name: Profile
     description: Current user profile and loyalty history
-  - name: Admin
-    description: Administrative moderation for venues and users
+  - name: AdminVenues
+    description: Administrative moderation for venues
+  - name: AdminUsers
+    description: Administrative moderation for users
 
 paths:
   # ── Auth ────────────────────────────────────
@@ -110,13 +112,18 @@ paths:
   /auth/logout:
     post:
       tags: [Auth]
-      summary: Sign out
+      summary: Sign out from current device
       operationId: logoutUser
       description: >
-        Invalidates the current session for the authenticated user logged in
-        with a bearer JWT.
+        Invalidates the current session by revoking the provided refresh token.
       security:
         - bearerAuth: []
+      parameters:
+        - in: cookie
+          name: refreshToken
+          required: false
+          schema:
+            type: string
       responses:
         '204':
           description: Logged out successfully
@@ -291,6 +298,33 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 
+  /venues/search:
+    get:
+      tags: [Venues (Public)]
+      summary: Search venues by name
+      description: Returns ACTIVE public venues whose names match the requested text, case-insensitively.
+      operationId: searchVenues
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Full or partial venue name.
+          schema:
+            type: string
+            minLength: 1
+            example: "Скуратов"
+      responses:
+        '200':
+          description: Matching venues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VenueSearchResultResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
   /venues/{id}:
     get:
       tags: [Venues (Public)]
@@ -459,7 +493,6 @@ paths:
       tags: [Business (Owner)]
       summary: Register a venue
       operationId: createVenue
-      x-required-roles: [BUSINESS_OWNER]
       security:
         - bearerAuth: []
       requestBody:
@@ -562,6 +595,84 @@ paths:
       responses:
         '204':
           description: Venue deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /business/venues/{id}/photo:
+    post:
+      tags: [Business (Owner)]
+      summary: Upload venue photo
+      description: >
+        Uploads a photo for the venue. Allowed formats: jpeg, png, webp.
+        Maximum size: 10 MB. Replaces any existing photo.
+        If the venue is currently ACTIVE, its moderation status is moved to
+        PENDING_UPDATE and it disappears from public listings until re-approved.
+      operationId: uploadVenuePhoto
+      x-required-roles: [BUSINESS_OWNER]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VenuePhotoUploadRequest'
+      responses:
+        '200':
+          description: Photo uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VenueOwnerResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '413':
+          description: File too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                code: INVALID_FILE
+                message: "File too large. Maximum size is 10 MB."
+    delete:
+      tags: [Business (Owner)]
+      summary: Delete venue photo
+      operationId: deleteVenuePhoto
+      x-required-roles: [BUSINESS_OWNER]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Photo removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VenueOwnerResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -874,7 +985,7 @@ paths:
   # ── Admin ───────────────────────────────────
   /admin/venues:
     get:
-      tags: [Admin]
+      tags: [AdminVenues]
       summary: Get venue moderation queue
       operationId: getAdminVenues
       x-required-roles: [ADMIN]
@@ -901,7 +1012,7 @@ paths:
 
   /admin/venues/{id}:
     get:
-      tags: [Admin]
+      tags: [AdminVenues]
       summary: Get venue moderation details
       operationId: getAdminVenueById
       x-required-roles: [ADMIN]
@@ -930,7 +1041,7 @@ paths:
 
   /admin/venues/{id}/verify:
     patch:
-      tags: [Admin]
+      tags: [AdminVenues]
       summary: Verify venue
       operationId: verifyAdminVenue
       x-required-roles: [ADMIN]
@@ -961,7 +1072,7 @@ paths:
 
   /admin/venues/{id}/reject:
     patch:
-      tags: [Admin]
+      tags: [AdminVenues]
       summary: Reject venue
       operationId: rejectAdminVenue
       x-required-roles: [ADMIN]
@@ -1000,7 +1111,7 @@ paths:
 
   /admin/users:
     get:
-      tags: [Admin]
+      tags: [AdminUsers]
       summary: Get users for moderation
       operationId: getAdminUsers
       x-required-roles: [ADMIN]
@@ -1027,7 +1138,7 @@ paths:
 
   /admin/users/{id}/block:
     patch:
-      tags: [Admin]
+      tags: [AdminUsers]
       summary: Block user
       operationId: blockAdminUser
       x-required-roles: [ADMIN]
@@ -1066,7 +1177,7 @@ paths:
 
   /admin/users/{id}/unblock:
     patch:
-      tags: [Admin]
+      tags: [AdminUsers]
       summary: Unblock user
       operationId: unblockAdminUser
       x-required-roles: [ADMIN]
@@ -1178,7 +1289,7 @@ components:
 
     VenueModerationStatus:
       type: string
-      enum: [PENDING, ACTIVE, REJECTED]
+      enum: [PENDING, PENDING_UPDATE, ACTIVE, REJECTED]
 
     # ── Map / Heatmap DTOs ────────────────────
     HeatmapResponse:
@@ -1219,7 +1330,7 @@ components:
 
     ClusterDetailsResponse:
       type: object
-      required: [h3Index, resolution, districtName, txCount, avgCheck]
+      required: [h3Index, resolution, districtName, districtImageUrl, txCount, avgCheck]
       properties:
         h3Index:
           type: string
@@ -1231,6 +1342,10 @@ components:
           type: string
           description: Human-readable district name for the selected zone
           example: "Вахитовский район"
+        districtImageUrl:
+          type: string
+          description: URL or path to district image for popup. Empty string if image is unavailable.
+          example: ""
         category:
           type: string
           enum: [food, entertainment, shopping]
@@ -1279,10 +1394,6 @@ components:
         description:
           type: string
           example: "Лучший кофе в центре Казани. Зерно свежей обжарки."
-        photoUrl:
-          type: string
-          format: uri
-          example: "https://s3.local/images/skuratov_kzn.jpg"
         dishOfDay:
           type: string
           example: "Нитро кофе + Круассан"
@@ -1308,9 +1419,6 @@ components:
         category:
           type: string
           enum: [food, entertainment, shopping]
-        photoUrl:
-          type: string
-          format: uri
         dishOfDay:
           type: string
         music:
@@ -1368,6 +1476,35 @@ components:
           items:
             $ref: '#/components/schemas/VenuePromoResponse'
 
+    VenueSearchResultResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "5085d345-3129-4e4b-972d-8bcf9a2ea9c9"
+        name:
+          type: string
+          example: "Скуратов Кофе"
+        address:
+          type: string
+          example: "ул. Баумана, 9, Казань"
+        lat:
+          type: number
+          format: double
+          example: 55.7915
+        lng:
+          type: number
+          format: double
+          example: 49.1118
+        category:
+          type: string
+          enum: [food, entertainment, shopping]
+          example: "food"
+        photoUrl:
+          type: string
+          format: uri
+
     VenueOwnerResponse:
       allOf:
         - $ref: '#/components/schemas/VenuePublicResponse'
@@ -1386,6 +1523,17 @@ components:
               type: string
               description: Reason for rejection (filled only if REJECTED)
               example: "Адрес не совпадает с координатами"
+
+    VenuePhotoUploadRequest:
+      type: object
+      required: [ file ]
+      properties:
+        file:
+          type: string
+          format: binary
+          description: >
+            Image file. Allowed formats: jpeg, png, webp.
+            Maximum size: 10 MB.
 
     # ── Promo DTOs ────────────────────────────
     VenuePromoResponse:
