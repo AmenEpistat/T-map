@@ -1,0 +1,90 @@
+.business-sidebar {
+  width: 324px;
+  background: $color-bg-card;
+  padding: 45px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  flex-shrink: 0;
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__user {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text;
+    word-break: break-all;
+  }
+
+  &__count {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__nav-item {
+    position: relative;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: $spacing-xs 0 $spacing-xs $spacing-xl;
+    margin-left: -32px;
+    height: 32px;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    font-weight: 400;
+    color: $color-text;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(&--active):not(&--disabled) {
+      background: $color-primary-light;
+    }
+
+    &--active {
+      background: $color-primary-light;
+      border-radius: 0 14px 14px 0;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 12px;
+        background: $color-primary;
+        border-radius: 0 7px 7px 0;
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      color: $color-text-secondary;
+    }
+  }
+}
+
+@media (max-width: $tablet) {
+  .business-sidebar {
+    display: none;
+  }
+}
