@@ -1,6 +1,10 @@
 export type VenueCategory = 'food' | 'entertainment' | 'shopping';
 
-export type VenueModerationStatus = 'PENDING' | 'ACTIVE' | 'REJECTED';
+export type VenueModerationStatus =
+    | 'PENDING'
+    | 'PENDING_UPDATE'
+    | 'ACTIVE'
+    | 'REJECTED';
 
 export interface VenuePromoResponse {
     id: string;
@@ -43,7 +47,6 @@ export interface VenueCreateRequest {
     lng: number;
     category: VenueCategory;
     description?: string;
-    photoUrl?: string;
     dishOfDay?: string;
     music?: string;
 }
