@@ -1,5 +1,11 @@
 import { apiClient } from '@/shared/api';
-import type { Bounds, ClusterDataType, MapCategory } from '@/entities/map';
+import {
+    type Bounds,
+    type ClusterDataType,
+    type ClusterDetail,
+    type MapCategory,
+    RESOLUTION,
+} from '@/entities/map';
 
 export const heatmapApi = {
     getClusters: async (bounds: Bounds, categories: MapCategory[]) => {
@@ -8,8 +14,7 @@ export const heatmapApi = {
             {
                 params: {
                     ...bounds,
-                    resolution: 9,
-                    window: 60,
+                    resolution: RESOLUTION,
                     categories: categories,
                 },
             }
@@ -17,6 +22,13 @@ export const heatmapApi = {
     },
 
     getClusterByIndex: async (h3Index: string) => {
-        return await apiClient.get(`/heatmap/clusters/${h3Index}`);
+        return await apiClient.get<ClusterDetail>(
+            `/heatmap/clusters/${h3Index}`,
+            {
+                params: {
+                    resolution: RESOLUTION,
+                },
+            }
+        );
     },
 };

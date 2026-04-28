@@ -6,6 +6,7 @@ import {
 } from '@/widgets/map-view/utils/colorUtils.ts';
 
 import type { ClusterDataType } from '@/entities/map/model/types.ts';
+import { mapStore } from '@/entities/map';
 
 export const useMapLayers = (data: ClusterDataType[]) => {
     const maxTx = useMemo(() => {
@@ -32,6 +33,10 @@ export const useMapLayers = (data: ClusterDataType[]) => {
                 updateTriggers: {
                     getFillColor: [maxTx],
                     getLineColor: [maxTx],
+                },
+                onClick: ({ object }) => {
+                    if (!object) return;
+                    mapStore.setClusterIndex(object.h3Index);
                 },
             }),
         ],
