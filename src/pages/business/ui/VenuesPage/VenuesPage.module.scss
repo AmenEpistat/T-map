@@ -1,0 +1,41 @@
+.venues-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-bg-page;
+  padding: $spacing-md;
+
+  &__container {
+    width: 100%;
+    max-width: $card-width;
+    background: $color-bg-card;
+    border-radius: $card-radius;
+    padding: $card-padding;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    color: $color-text;
+    text-align: center;
+  }
+
+  &__placeholder {
+    margin: 0;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text;
+    text-align: center;
+  }
+
+  &__action {
+    margin-top: $spacing-sm;
+  }
+}
