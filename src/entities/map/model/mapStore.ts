@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { INITIAL_VIEW } from '@/widgets/map-view/model/constants.ts';
 import {
     type Bounds,
+    type ClusterDetail,
     heatmapApi,
     isSameBounds,
     MAP_CATEGORIES,
@@ -19,6 +20,9 @@ class MapStore {
 
     selectedCategories: MapCategory[] = [...MAP_CATEGORIES];
     isAnomaliesVisible: boolean = false;
+
+    selectedClusterIndex: string | null = null;
+    clusterDetail = new RequestState<ClusterDetail>();
 
     constructor() {
         makeAutoObservable(this);
@@ -39,6 +43,14 @@ class MapStore {
 
         await this.clusters.execute(
             heatmapApi.getClusters(this.bounds, this.selectedCategories)
+        );
+    }
+
+    async loadClusterDetails() {
+        if (!this.selectedClusterIndex) return;
+
+        await this.clusterDetail.execute(
+            heatmapApi.getClusterByIndex(this.selectedClusterIndex)
         );
     }
 
@@ -68,6 +80,14 @@ class MapStore {
 
     toggleAnomalies() {
         this.isAnomaliesVisible = !this.isAnomaliesVisible;
+    }
+
+    setClusterIndex(h3Index: string | null) {
+        this.selectedClusterIndex = h3Index;
+    }
+
+    get isClusterSelected() {
+        return this.selectedClusterIndex !== null;
     }
 }
 

@@ -15,6 +15,13 @@ export type ClusterDataType = {
     avgCheck: number;
 };
 
+export type ClusterDetail = ClusterDataType & {
+    districtName: string;
+    districtImageUrl: string;
+    category: MapCategory;
+    sumAmount: number;
+};
+
 export type Bounds = {
     swLat: number;
     swLng: number;

@@ -12,3 +12,5 @@ export const BOUNDS_KEYS: (keyof Bounds)[] = [
     'neLng',
     'neLat',
 ] as const;
+
+export const RESOLUTION = 9;
