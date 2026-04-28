@@ -1,2 +1,2 @@
-/api/* http://87.242.117.7:8080/api/:splat  200!
+/api/* https://t-map.duckdns.org/api/:splat  200!
 /* /index.html 200
