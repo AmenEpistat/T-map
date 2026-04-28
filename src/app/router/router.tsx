@@ -3,6 +3,7 @@ import React from 'react';
 import { AuthPage } from '@/pages/auth';
 import { MapPage } from '@/pages/map';
 import { ProfilePage } from '@/pages/profile';
+import { VenuesPage } from '@/pages/business';
 import { ProtectedRoute } from '@/shared/ui';
 
 export const router = createBrowserRouter([
@@ -23,6 +24,14 @@ export const router = createBrowserRouter([
         element: (
             <ProtectedRoute>
                 <ProfilePage />
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/business',
+        element: (
+            <ProtectedRoute>
+                <VenuesPage />
             </ProtectedRoute>
         ),
     },

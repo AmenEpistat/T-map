@@ -1,4 +1,4 @@
-.profile-page {
+.venues-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@
     text-align: center;
   }
 
-  &__info {
+  &__placeholder {
     margin: 0;
     font-size: $font-size-base;
     line-height: $line-height-base;
@@ -35,16 +35,7 @@
     text-align: center;
   }
 
-  &__info {
-    margin: 0;
-    font-size: $font-size-base;
-    line-height: $line-height-base;
-    color: $color-text;
-    text-align: center;
-  }
-
-  &__action,
-  &__logout {
+  &__action {
     margin-top: $spacing-sm;
   }
 }
