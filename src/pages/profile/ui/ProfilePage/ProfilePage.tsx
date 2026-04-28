@@ -25,18 +25,26 @@ export const ProfilePage = observer(() => {
                 <Button
                     type='primary'
                     size='large'
+                    onClick={() => navigate('/business')}
+                    className={styles['profile-page__action']}
+                >
+                    Мои заведения
+                </Button>
+                <Button
+                    type='default'
+                    size='large'
+                    onClick={() => navigate('/')}
+                    className={styles['profile-page__action']}
+                >
+                    Назад к карте
+                </Button>
+                <Button
+                    type='default'
+                    size='large'
                     onClick={handleLogout}
                     className={styles['profile-page__logout']}
                 >
                     Выйти из профиля
-                </Button>
-                <Button
-                    type='primary'
-                    size='large'
-                    onClick={() => navigate('/')}
-                    className={styles['profile-page__logout']}
-                >
-                    Назад к карте
                 </Button>
             </div>
         </main>
