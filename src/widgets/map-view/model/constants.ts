@@ -2,7 +2,7 @@ export const INITIAL_VIEW = {
     longitude: 49.1064,
     latitude: 55.7921,
     zoom: 14,
-    pitch: 45,
+    pitch: 0,
     bearing: 0,
 } as const;
 
