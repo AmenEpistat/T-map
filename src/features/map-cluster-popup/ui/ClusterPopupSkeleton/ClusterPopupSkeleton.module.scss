@@ -1,0 +1,79 @@
+.skeleton {
+  width: 100%;
+  background-color: $color-bg;
+}
+
+.skeleton__image-wrapper {
+  width: 100%;
+  height: 200px;
+
+  @media (min-width: $tablet) {
+    height: 240px;
+  }
+}
+
+.skeleton__image {
+  width: 100% !important;
+  height: 100% !important;
+
+  :global(.ant-skeleton-button) {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+  }
+}
+
+.skeleton__content {
+  padding: 22px;
+}
+
+.skeleton__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.skeleton__title {
+  width: 160px !important;
+
+  :global(.ant-skeleton-input) {
+    width: 100% !important;
+    height: 28px !important;
+    border-radius: 8px !important;
+  }
+}
+
+.skeleton__actions {
+  display: flex;
+  gap: 8px;
+
+  :global(.ant-skeleton-avatar) {
+    border-radius: 8px !important;
+  }
+}
+
+.skeleton__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.skeleton__stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  :global(.ant-skeleton-input) {
+    height: 16px !important;
+    border-radius: 4px !important;
+  }
+
+  div:first-child {
+    width: 100px !important;
+  }
+
+  div:last-child {
+    width: 60px !important;
+  }
+}
