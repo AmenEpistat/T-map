@@ -3,7 +3,7 @@ import React from 'react';
 import { AuthPage } from '@/pages/auth';
 import { MapPage } from '@/pages/map';
 import { ProfilePage } from '@/pages/profile';
-import { VenuesPage } from '@/pages/business';
+import { BusinessLayout, VenuesPage } from '@/pages/business';
 import { ProtectedRoute } from '@/shared/ui';
 
 export const router = createBrowserRouter([
@@ -31,8 +31,9 @@ export const router = createBrowserRouter([
         path: '/business',
         element: (
             <ProtectedRoute>
-                <VenuesPage />
+                <BusinessLayout />
             </ProtectedRoute>
         ),
+        children: [{ index: true, element: <VenuesPage /> }],
     },
 ]);
