@@ -1,0 +1,25 @@
+.popup-image {
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  position: absolute;
+  top: -170px;
+  z-index: 700;
+
+  img {
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (min-width: $tablet) {
+    position: static;
+    padding-top: 80px;
+    background: $color-bg-control;
+    border-radius: 0;
+
+    img {
+      border-radius: 0;
+    }
+  }
+}
