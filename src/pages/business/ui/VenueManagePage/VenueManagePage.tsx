@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Spin } from 'antd';
+import { Button, Spin, Tag } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { venuesStore } from '@/entities/venue';
-// TODO: hoist StatusBadge to entities/venue/ui (final cleanup PR)
-import { StatusBadge } from '@/features/my-venues-list/ui/StatusBadge/StatusBadge';
+import {
+    venuesStore,
+    VENUE_STATUS_LABELS,
+    VENUE_STATUS_COLORS,
+} from '@/entities/venue';
 import styles from './VenueManagePage.module.scss';
 
 export const VenueManagePage = observer(() => {
@@ -64,7 +66,12 @@ export const VenueManagePage = observer(() => {
 
             <header className={styles['venue-manage__header']}>
                 <h1 className={styles['venue-manage__title']}>{data.name}</h1>
-                <StatusBadge status={data.moderationStatus} />
+                <Tag
+                    style={{ width: 'fit-content' }}
+                    color={VENUE_STATUS_COLORS[data.moderationStatus]}
+                >
+                    {VENUE_STATUS_LABELS[data.moderationStatus]}
+                </Tag>
             </header>
 
             <p className={styles['venue-manage__address']}>{data.address}</p>

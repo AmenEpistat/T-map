@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import type { OwnerVenue } from '@/entities/venue';
-import { StatusBadge } from '../StatusBadge/StatusBadge';
+import { Tag } from 'antd';
+import { VENUE_STATUS_LABELS, VENUE_STATUS_COLORS } from '@/entities/venue';
 import styles from './VenueCard.module.scss';
 
 interface VenueCardProps {
@@ -17,7 +18,12 @@ export const VenueCard = ({ venue }: VenueCardProps) => {
         >
             <div className={styles['venue-card__info']}>
                 <h3 className={styles['venue-card__name']}>{venue.name}</h3>
-                <StatusBadge status={venue.moderationStatus} />
+                <Tag
+                    style={{ width: 'fit-content' }}
+                    color={VENUE_STATUS_COLORS[venue.moderationStatus]}
+                >
+                    {VENUE_STATUS_LABELS[venue.moderationStatus]}
+                </Tag>
             </div>
 
             <div className={styles['venue-card__photo']}>
