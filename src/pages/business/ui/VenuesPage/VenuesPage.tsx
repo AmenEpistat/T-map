@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import styles from './VenuesPage.module.scss';
-import { EmptyState } from '@/features/my-venues-list/ui/EmptyState/EmptyState';
+import { MyVenuesList } from '@/features/my-venues-list/ui/MyVenuesList/MyVenuesList';
 
 export const VenuesPage = observer(() => {
     return (
@@ -13,7 +13,7 @@ export const VenuesPage = observer(() => {
             </header>
 
             <section className={styles['venues-page__content']}>
-                <EmptyState />
+                <MyVenuesList />
             </section>
         </div>
     );
