@@ -12,12 +12,20 @@ import {
 import type { ClusterDataType, ViewState } from '@/entities/map/model/types.ts';
 import { RequestState } from '@/shared/api';
 import type { PublicVenue } from '@/entities/venue';
+import { FlyToInterpolator } from '@deck.gl/core';
+
+type AnimateViewState = ViewState & {
+    transitionDuration?: number;
+    transitionInterpolator?: any;
+};
+
+const ANIMATION_DURATION = 650;
 
 class MapStore {
     clusters = new RequestState<{ clusters: ClusterDataType[] }>();
     bounds: Bounds | null = null;
 
-    viewState: ViewState = INITIAL_VIEW;
+    viewState: AnimateViewState = INITIAL_VIEW;
 
     selectedCategories: MapCategory[] = [...MAP_CATEGORIES];
     isAnomaliesVisible: boolean = false;
@@ -37,8 +45,8 @@ class MapStore {
         this.bounds = normalized;
     }
 
-    setViewState(viewState: ViewState) {
-        this.viewState = viewState;
+    setViewState(state: AnimateViewState) {
+        this.viewState = state as ViewState;
     }
 
     async loadClusters() {
@@ -93,12 +101,25 @@ class MapStore {
         this.isAnomaliesVisible = !this.isAnomaliesVisible;
     }
 
+    setPitch(pitch: number) {
+        this.viewState = {
+            ...this.viewState,
+            pitch,
+            transitionDuration: ANIMATION_DURATION,
+            transitionInterpolator: new FlyToInterpolator(),
+        };
+    }
+
     setClusterIndex(h3Index: string | null) {
         this.selectedClusterIndex = h3Index;
     }
 
     get isClusterSelected() {
         return this.selectedClusterIndex !== null;
+    }
+
+    get mode3D() {
+        return mapStore.viewState.pitch === 0;
     }
 }
 

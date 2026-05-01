@@ -1,0 +1,75 @@
+.venue-manage {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xs;
+    color: $color-text-secondary;
+    text-decoration: none;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    align-self: flex-start;
+
+    &:hover {
+      color: $color-text;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: 32px;
+    line-height: 36px;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__address {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text-secondary;
+  }
+
+  &__placeholder {
+    background: $color-bg-card;
+    border-radius: $card-radius;
+    padding: $spacing-xl;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text-secondary;
+    text-align: center;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-xl 0;
+  }
+
+  &__error {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text-secondary;
+  }
+}
