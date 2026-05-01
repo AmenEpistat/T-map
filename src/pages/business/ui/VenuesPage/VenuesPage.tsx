@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import styles from './VenuesPage.module.scss';
-import { MyVenuesList } from '@/features/my-venues-list/ui/MyVenuesList/MyVenuesList';
+import { MyVenuesList } from '@/features/my-venues-list';
 
 export const VenuesPage = observer(() => {
     return (
