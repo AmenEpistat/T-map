@@ -31,4 +31,13 @@ export const heatmapApi = {
             }
         );
     },
+
+    getVenues: async (bounds: Bounds, categories: MapCategory[]) => {
+        return await apiClient.get('/venues', {
+            params: {
+                ...bounds,
+                categories: categories,
+            },
+        });
+    },
 };
