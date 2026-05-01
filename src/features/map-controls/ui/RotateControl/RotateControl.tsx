@@ -2,11 +2,11 @@ import styles from './RotateControl.module.scss';
 import { observer } from 'mobx-react-lite';
 import { classNames } from '@/shared/utils/classNames.ts';
 import { mapStore } from '@/entities/map';
+import { PITCH_2D, PITCH_3D } from '@/features/map-controls/model/constants.ts';
 
 const RotateControl = observer(() => {
     const toggle3D = () => {
-        const newPitch = mapStore.viewState.pitch === 0 ? 90 : 0;
-        mapStore.setPitch(newPitch);
+        mapStore.setPitch(mapStore.mode3D ? PITCH_3D : PITCH_2D);
     };
 
     return (
