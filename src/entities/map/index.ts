@@ -6,7 +6,12 @@ export type {
     Bounds,
     ClusterDetail,
 } from './model/types.ts';
-export { MAP_CATEGORIES, BOUNDS_KEYS, RESOLUTION } from './model/constants.ts';
+export {
+    MAP_CATEGORIES,
+    BOUNDS_KEYS,
+    RESOLUTION,
+    MAPPING_CATEGORIES,
+} from './model/constants.ts';
 
 export { mapStore } from './model/mapStore.ts';
 

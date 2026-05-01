@@ -1,0 +1,22 @@
+const SharedOutlined = () => {
+    return (
+        <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='24'
+            height='24'
+            fill='none'
+            viewBox='0 0 24 24'
+        >
+            <path
+                fill='#f5d000'
+                d='M11 4.5a.5.5 0 0 0-.5-.5H8a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4v-2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5V16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2.5a.5.5 0 0 0 .5-.5z'
+            />
+            <path
+                fill='#f5d000'
+                d='M14.5 6h2.086l-5.293 5.293a1 1 0 0 0 1.414 1.414L18 7.414V9.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V5a1 1 0 0 0-1-1h-4.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5'
+            />
+        </svg>
+    );
+};
+
+export default SharedOutlined;

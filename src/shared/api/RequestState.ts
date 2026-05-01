@@ -35,4 +35,10 @@ export class RequestState<T> {
             });
         }
     }
+
+    reset() {
+        this.isLoading = false;
+        this.error = null;
+        this.data = null;
+    }
 }
