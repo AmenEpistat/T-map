@@ -1,6 +1,6 @@
 import { MapSearch } from '@/features/map-search';
 import { MapView } from '@/widgets/map-view';
-import { ZoomControls } from '@/features/map-zoom';
+import { RotateControl, ZoomControls } from '@/features/map-controls';
 import { LayerFilter } from '@/features/map-layers';
 import { ClusterPopup } from '@/features/map-cluster-popup';
 
@@ -10,6 +10,7 @@ export const MapPage = () => {
             <MapSearch />
             <MapView />
             <ZoomControls />
+            <RotateControl />
             <LayerFilter />
             <ClusterPopup />
         </section>
