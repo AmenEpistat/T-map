@@ -45,15 +45,15 @@ export const VenueManagePage = observer(() => {
             );
         }
 
-        if (!data) {
-            return null;
-        }
-
         return (
             <div className={styles['venue-manage__loading']}>
                 <Spin size='large' />
             </div>
         );
+    }
+
+    if (!data) {
+        return null;
     }
 
     return (
@@ -70,9 +70,7 @@ export const VenueManagePage = observer(() => {
             <p className={styles['venue-manage__address']}>{data.address}</p>
 
             <section className={styles['venue-manage__placeholder']}>
-                <p>
-                    Управление заведением будет доступно в следующем обновлении.
-                </p>
+                <p>Управление заведением</p>
             </section>
         </div>
     );
