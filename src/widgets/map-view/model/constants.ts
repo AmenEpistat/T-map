@@ -12,4 +12,4 @@ export const ZOOM_ICON = 14;
 export const ZOOM_TEXT = 16;
 
 export const characterSet =
-    'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя1234567890!@#$%^&*()_+-=[]{}|;\':",./<>? ';
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя1234567890!@#$%^&*()_+-=[]{}|;\':",./<>? ';
