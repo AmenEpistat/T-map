@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { venuesStore } from '@/entities/venue';
@@ -8,6 +9,10 @@ import { EmptyState } from '../EmptyState/EmptyState';
 import styles from './MyVenuesList.module.scss';
 
 export const MyVenuesList = observer(() => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const isCreating = location.pathname === '/business/new';
+
     useEffect(() => {
         void venuesStore.loadAll();
     }, []);
@@ -24,7 +29,8 @@ export const MyVenuesList = observer(() => {
                     type='primary'
                     size='large'
                     icon={<PlusOutlined />}
-                    title='Скоро будет доступно'
+                    onClick={() => navigate('/business/new')}
+                    disabled={isCreating}
                     className={styles['my-venues-list__add-button']}
                 >
                     Добавить заведение
@@ -44,7 +50,7 @@ export const MyVenuesList = observer(() => {
                             Не удалось загрузить заведения
                         </p>
                         <Button
-                            type='primary'
+                            type='default'
                             onClick={() => void venuesStore.loadAll()}
                         >
                             Попробовать снова
