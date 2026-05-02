@@ -11,10 +11,32 @@ import iconsPng from '@/shared/assets/icons.png';
 import iconsJson from '@/shared/assets/icons.json';
 import { IconLayer, TextLayer } from '@deck.gl/layers';
 import type { PublicVenue } from '@/entities/venue';
+import {
+    characterSet,
+    ZOOM_ICON,
+    ZOOM_TEXT,
+} from '@/widgets/map-view/model/constants.ts';
 
 export const useMapLayers = () => {
     const clusters = mapStore.clusters.data?.clusters;
     const venues = mapStore.venues.data || [];
+
+    const currentZoom = mapStore.viewState.zoom;
+
+    const visibleVenuesIcon = useMemo(() => {
+        if (currentZoom < ZOOM_ICON) return [];
+        return venues;
+    }, [venues, currentZoom]);
+
+    const visibleVenuesText = useMemo(() => {
+        if (currentZoom < ZOOM_TEXT) return [];
+        return venues;
+    }, [venues, currentZoom]);
+
+    const visibleClusters = useMemo(() => {
+        if (currentZoom > ZOOM_ICON) return [];
+        return clusters;
+    }, [clusters, currentZoom]);
 
     const maxTx = useMemo(() => {
         if (!clusters || clusters.length === 0) return 0;
@@ -42,7 +64,7 @@ export const useMapLayers = () => {
         () => [
             new H3HexagonLayer<ClusterDataType>({
                 id: 'h3-hexagon-layer',
-                data: clusters,
+                data: visibleClusters,
                 getHexagon: (d) => d.h3Index,
                 elevationScale: 0,
                 stroked: true,
@@ -65,7 +87,7 @@ export const useMapLayers = () => {
             }),
             new IconLayer<PublicVenue>({
                 id: 'poi-icons',
-                data: venues,
+                data: visibleVenuesIcon,
                 iconAtlas: iconsPng,
                 iconMapping: iconMapping,
                 getIcon: (d) => d.category,
@@ -75,7 +97,7 @@ export const useMapLayers = () => {
             }),
             new TextLayer<PublicVenue>({
                 id: 'poi-labels',
-                data: venues,
+                data: visibleVenuesText,
                 getPosition: (d) => [d.lng, d.lat],
                 getText: (d) => d.name,
                 getSize: 14,
@@ -83,9 +105,10 @@ export const useMapLayers = () => {
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 'bold',
                 getPixelOffset: [10, -50],
+                characterSet: characterSet,
             }),
         ],
-        [clusters, venues, maxTx]
+        [visibleClusters, visibleVenuesText, visibleVenuesIcon, maxTx]
     );
 
     return layers;

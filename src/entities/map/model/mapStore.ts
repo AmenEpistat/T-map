@@ -52,9 +52,7 @@ class MapStore {
     async loadClusters() {
         if (!this.bounds || this.clusters.isLoading) return;
 
-        await this.clusters.execute(
-            heatmapApi.getClusters(this.bounds, this.selectedCategories)
-        );
+        await this.clusters.execute(heatmapApi.getClusters(this.bounds));
     }
 
     async loadClusterDetails() {
