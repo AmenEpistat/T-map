@@ -26,10 +26,22 @@
     color: $color-text-secondary;
   }
 
-  &__content {
-    background: $color-bg-card;
-    border-radius: $card-radius;
-    padding: $spacing-xl;
+  &__columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xl;
   }
 
+  &__list,
+  &__form {
+    min-width: 0;
+  }
+}
+
+@media (max-width: $tablet) {
+  .venues-page {
+    &__columns {
+      grid-template-columns: 1fr;
+    }
+  }
 }

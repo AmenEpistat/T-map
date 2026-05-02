@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
+import { Outlet } from 'react-router-dom';
+import { MyVenuesList } from '@/features/my-venues-list';
 import styles from './VenuesPage.module.scss';
-import { AddVenueForm } from '@/features/venue-create';
 
 export const VenuesPage = observer(() => {
     return (
@@ -12,9 +13,14 @@ export const VenuesPage = observer(() => {
                 </p>
             </header>
 
-            <section className={styles['venues-page__content']}>
-                <AddVenueForm />
-            </section>
+            <div className={styles['venues-page__columns']}>
+                <div className={styles['venues-page__list']}>
+                    <MyVenuesList />
+                </div>
+                <div className={styles['venues-page__form']}>
+                    <Outlet />
+                </div>
+            </div>
         </div>
     );
 });
