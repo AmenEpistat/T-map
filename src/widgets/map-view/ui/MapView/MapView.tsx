@@ -12,7 +12,7 @@ import type { ViewStateChangeEvent } from 'react-map-gl/mapbox-legacy';
 
 const MapView = observer(() => {
     useHeatmapData();
-    const layers = useMapLayers(mapStore.clusters.data?.clusters || []);
+    const layers = useMapLayers();
 
     const handleMapChange = useCallback((e: ViewStateChangeEvent) => {
         const bounds = e.target.getBounds();

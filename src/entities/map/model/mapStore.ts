@@ -11,6 +11,7 @@ import {
 } from '@/entities/map';
 import type { ClusterDataType, ViewState } from '@/entities/map/model/types.ts';
 import { RequestState } from '@/shared/api';
+import type { PublicVenue } from '@/entities/venue';
 import { FlyToInterpolator } from '@deck.gl/core';
 
 type AnimateViewState = ViewState & {
@@ -31,6 +32,8 @@ class MapStore {
 
     selectedClusterIndex: string | null = null;
     clusterDetail = new RequestState<ClusterDetail>();
+
+    venues = new RequestState<PublicVenue[]>();
 
     constructor() {
         makeAutoObservable(this);
@@ -59,6 +62,14 @@ class MapStore {
 
         await this.clusterDetail.execute(
             heatmapApi.getClusterByIndex(this.selectedClusterIndex)
+        );
+    }
+
+    async loadVenues() {
+        if (!this.bounds) return;
+
+        await this.venues.execute(
+            heatmapApi.getVenues(this.bounds, this.selectedCategories)
         );
     }
 

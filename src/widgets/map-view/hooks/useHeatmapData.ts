@@ -9,7 +9,10 @@ export const useHeatmapData = () => {
                 bounds: mapStore.bounds,
                 categories: mapStore.selectedCategories.slice(),
             }),
-            () => mapStore.loadClusters(),
+            () => {
+                mapStore.loadClusters();
+                mapStore.loadVenues();
+            },
             {
                 fireImmediately: true,
                 delay: 300,
