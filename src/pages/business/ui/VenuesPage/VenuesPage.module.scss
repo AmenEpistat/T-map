@@ -43,5 +43,10 @@
     &__columns {
       grid-template-columns: 1fr;
     }
+
+    &__list--hidden-on-mobile,
+    &__form--hidden-on-mobile {
+      display: none;
+    }
   }
 }
