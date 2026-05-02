@@ -8,14 +8,13 @@ import {
 } from '@/entities/map';
 
 export const heatmapApi = {
-    getClusters: async (bounds: Bounds, categories: MapCategory[]) => {
+    getClusters: async (bounds: Bounds) => {
         return await apiClient.get<{ clusters: ClusterDataType[] }>(
             '/heatmap/clusters',
             {
                 params: {
                     ...bounds,
                     resolution: RESOLUTION,
-                    categories: categories,
                 },
             }
         );
@@ -36,7 +35,7 @@ export const heatmapApi = {
         return await apiClient.get('/venues', {
             params: {
                 ...bounds,
-                categories: categories,
+                category: categories,
             },
         });
     },
