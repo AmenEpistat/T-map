@@ -3,6 +3,8 @@ import { Form, Input, Select, Button } from 'antd';
 import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
 import { useVenueCreate } from '../../model/useVenueCreate';
 import type { VenueCreateFormValues } from '../../model/useVenueCreate';
+import { AddressPicker } from '../AddressPicker/AddressPicker';
+import type { AddressSuggestion } from '../../api/nominatimApi';
 import styles from './AddVenueForm.module.scss';
 
 const CATEGORY_OPTIONS = [
@@ -12,10 +14,29 @@ const CATEGORY_OPTIONS = [
 ];
 
 export const AddVenueForm = () => {
+    const [form] = Form.useForm<VenueCreateFormValues>();
     const { submit, isSubmitting } = useVenueCreate();
 
     const handleFinish = (values: VenueCreateFormValues): void => {
         void submit(values);
+    };
+
+    const handleAddressSelect = (suggestion: AddressSuggestion): void => {
+        form.setFieldsValue({
+            address: suggestion.address,
+            lat: suggestion.lat,
+            lng: suggestion.lng,
+        });
+
+        void form.validateFields(['address']);
+    };
+
+    const handleValuesChange = (
+        changedValues: Partial<VenueCreateFormValues>
+    ): void => {
+        if ('address' in changedValues) {
+            form.setFieldsValue({ lat: undefined, lng: undefined });
+        }
     };
 
     return (
@@ -34,8 +55,10 @@ export const AddVenueForm = () => {
             </header>
 
             <Form
+                form={form}
                 layout='vertical'
                 onFinish={handleFinish}
+                onValuesChange={handleValuesChange}
                 disabled={isSubmitting}
                 requiredMark={false}
                 className={styles['venue-create-form__form']}
@@ -57,11 +80,31 @@ export const AddVenueForm = () => {
                     name='address'
                     rules={[
                         { required: true, message: 'Введите адрес' },
-                        { min: 5, message: 'Минимум 5 символов' },
-                        { max: 200, message: 'Максимум 200 символов' },
+                        {
+                            validator: async () => {
+                                const lat = form.getFieldValue('lat');
+                                const lng = form.getFieldValue('lng');
+                                if (lat === undefined || lng === undefined) {
+                                    throw new Error(
+                                        'Выберите адрес из списка подсказок'
+                                    );
+                                }
+                            },
+                        },
                     ]}
                 >
-                    <Input placeholder='Введите адрес' size='large' />
+                    <AddressPicker
+                        placeholder='Введите адрес'
+                        onSelect={handleAddressSelect}
+                    />
+                </Form.Item>
+
+                <Form.Item name='lat' hidden>
+                    <Input type='hidden' />
+                </Form.Item>
+
+                <Form.Item name='lng' hidden>
+                    <Input type='hidden' />
                 </Form.Item>
 
                 <Form.Item

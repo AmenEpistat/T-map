@@ -9,21 +9,33 @@ export interface VenueCreateFormValues {
     address: string;
     category: VenueCategory;
     description?: string;
+    lat?: number;
+    lng?: number;
 }
-
-// TODO: replace with coordinates from AddressPicker (next PR)
-const KAZAN_CENTER = { lat: 55.7887, lng: 49.1221 };
 
 export const useVenueCreate = () => {
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const submit = async (values: VenueCreateFormValues): Promise<void> => {
+        if (values.lat === undefined || values.lng === undefined) {
+            notification.error({
+                message: 'Ошибка',
+                description: 'Выберите адрес из списка подсказок',
+                placement: 'topRight',
+            });
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             await venuesStore.create({
-                ...values,
-                ...KAZAN_CENTER,
+                name: values.name,
+                address: values.address,
+                category: values.category,
+                description: values.description,
+                lat: values.lat,
+                lng: values.lng,
             });
             notification.success({
                 message: 'Заведение отправлено на модерацию',

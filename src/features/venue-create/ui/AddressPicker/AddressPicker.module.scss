@@ -1,0 +1,39 @@
+.address-picker {
+  /* сам Select */
+  &:global(.ant-select) {
+    width: 100%;
+  }
+
+  :global(.ant-select-selector) {
+    height: $control-height !important;
+    padding: 0 $control-padding-x !important;
+    display: flex;
+    align-items: center;
+    border-radius: $card-radius !important;
+  }
+
+  :global(.ant-select-selection-search) {
+    inset: 0 !important;
+    display: flex;
+    align-items: center;
+  }
+
+  :global(.ant-select-input) {
+    height: auto !important;
+    padding: 0 !important;
+    font-family: $font-family-base;
+    font-size: 18px;
+    line-height: $line-height-base !important;
+  }
+
+  :global(.ant-select-selection-item),
+  :global(.ant-select-selection-placeholder) {
+    line-height: $control-height !important;
+    font-family: $font-family-base;
+    font-size: 18px;
+  }
+
+  &__error {
+    color: $color-error;
+  }
+}
