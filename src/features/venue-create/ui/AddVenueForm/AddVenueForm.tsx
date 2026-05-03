@@ -32,16 +32,11 @@ export const AddVenueForm = () => {
     const handleValuesChange = (
         changedValues: Partial<VenueCreateFormValues>
     ): void => {
-        // При ручном изменении address (не через выбор подсказки) —
-        // сбрасываем координаты, иначе они будут не соответствовать тексту
         if ('address' in changedValues) {
             const currentLat = form.getFieldValue('lat');
             const currentLng = form.getFieldValue('lng');
             const newAddress = changedValues.address;
 
-            // Если address уже совпадает с тем, что было после выбора подсказки —
-            // координаты не трогаем (это срабатывает на программный setFieldsValue
-            // из handleAddressSelect)
             if (
                 currentLat !== undefined &&
                 currentLng !== undefined &&
@@ -100,6 +95,14 @@ export const AddVenueForm = () => {
                         placeholder='Введите адрес'
                         onSelect={handleAddressSelect}
                     />
+                </Form.Item>
+
+                <Form.Item name='lat' hidden>
+                    <Input type='hidden' />
+                </Form.Item>
+
+                <Form.Item name='lng' hidden>
+                    <Input type='hidden' />
                 </Form.Item>
 
                 <Form.Item

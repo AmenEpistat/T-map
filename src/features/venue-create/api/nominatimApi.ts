@@ -90,9 +90,18 @@ export const searchAddresses = async (
     }
 
     const raw: NominatimRawResult[] = await response.json();
-    return raw
+    const suggestions = raw
         .map(mapRawToSuggestion)
         .filter(
             (suggestion): suggestion is AddressSuggestion => suggestion !== null
         );
+
+    const seen = new Set<string>();
+    return suggestions.filter((s) => {
+        if (seen.has(s.address)) {
+            return false;
+        }
+        seen.add(s.address);
+        return true;
+    });
 };

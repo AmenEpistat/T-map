@@ -13,21 +13,29 @@ export interface VenueCreateFormValues {
     lng?: number;
 }
 
-// TODO: remove fallback after AddressPicker is fully wired (Step 5)
-const KAZAN_CENTER = { lat: 55.7887, lng: 49.1221 };
-
 export const useVenueCreate = () => {
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const submit = async (values: VenueCreateFormValues): Promise<void> => {
+        if (values.lat === undefined || values.lng === undefined) {
+            notification.error({
+                message: 'Ошибка',
+                description: 'Выберите адрес из списка подсказок',
+                placement: 'topRight',
+            });
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             await venuesStore.create({
-                ...KAZAN_CENTER,
-                ...values,
-                lat: values.lat ?? KAZAN_CENTER.lat,
-                lng: values.lng ?? KAZAN_CENTER.lng,
+                name: values.name,
+                address: values.address,
+                category: values.category,
+                description: values.description,
+                lat: values.lat,
+                lng: values.lng,
             });
             notification.success({
                 message: 'Заведение отправлено на модерацию',

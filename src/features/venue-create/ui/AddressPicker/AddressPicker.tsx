@@ -16,6 +16,7 @@ interface AddressPickerProps {
 interface AutoCompleteOption {
     value: string;
     suggestion: AddressSuggestion;
+    key: string;
 }
 
 export const AddressPicker = ({
@@ -32,6 +33,7 @@ export const AddressPicker = ({
     const options: AutoCompleteOption[] = suggestions.map((suggestion) => ({
         value: suggestion.address,
         suggestion,
+        key: suggestion.id,
     }));
 
     const handleChange = (text: string) => {
