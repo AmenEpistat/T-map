@@ -9,9 +9,11 @@ export interface VenueCreateFormValues {
     address: string;
     category: VenueCategory;
     description?: string;
+    lat?: number;
+    lng?: number;
 }
 
-// TODO: replace with coordinates from AddressPicker (next PR)
+// TODO: remove fallback after AddressPicker is fully wired (Step 5)
 const KAZAN_CENTER = { lat: 55.7887, lng: 49.1221 };
 
 export const useVenueCreate = () => {
@@ -22,8 +24,10 @@ export const useVenueCreate = () => {
         setIsSubmitting(true);
         try {
             await venuesStore.create({
-                ...values,
                 ...KAZAN_CENTER,
+                ...values,
+                lat: values.lat ?? KAZAN_CENTER.lat,
+                lng: values.lng ?? KAZAN_CENTER.lng,
             });
             notification.success({
                 message: 'Заведение отправлено на модерацию',

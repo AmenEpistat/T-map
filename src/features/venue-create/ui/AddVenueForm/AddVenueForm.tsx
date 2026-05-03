@@ -3,6 +3,8 @@ import { Form, Input, Select, Button } from 'antd';
 import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
 import { useVenueCreate } from '../../model/useVenueCreate';
 import type { VenueCreateFormValues } from '../../model/useVenueCreate';
+import { AddressPicker } from '../AddressPicker/AddressPicker';
+import type { AddressSuggestion } from '../../api/nominatimApi';
 import styles from './AddVenueForm.module.scss';
 
 const CATEGORY_OPTIONS = [
@@ -12,10 +14,45 @@ const CATEGORY_OPTIONS = [
 ];
 
 export const AddVenueForm = () => {
+    const [form] = Form.useForm<VenueCreateFormValues>();
     const { submit, isSubmitting } = useVenueCreate();
 
     const handleFinish = (values: VenueCreateFormValues): void => {
         void submit(values);
+    };
+
+    const handleAddressSelect = (suggestion: AddressSuggestion): void => {
+        form.setFieldsValue({
+            address: suggestion.address,
+            lat: suggestion.lat,
+            lng: suggestion.lng,
+        });
+    };
+
+    const handleValuesChange = (
+        changedValues: Partial<VenueCreateFormValues>
+    ): void => {
+        // При ручном изменении address (не через выбор подсказки) —
+        // сбрасываем координаты, иначе они будут не соответствовать тексту
+        if ('address' in changedValues) {
+            const currentLat = form.getFieldValue('lat');
+            const currentLng = form.getFieldValue('lng');
+            const newAddress = changedValues.address;
+
+            // Если address уже совпадает с тем, что было после выбора подсказки —
+            // координаты не трогаем (это срабатывает на программный setFieldsValue
+            // из handleAddressSelect)
+            if (
+                currentLat !== undefined &&
+                currentLng !== undefined &&
+                newAddress &&
+                form.getFieldValue('address') === newAddress
+            ) {
+                return;
+            }
+
+            form.setFieldsValue({ lat: undefined, lng: undefined });
+        }
     };
 
     return (
@@ -34,8 +71,10 @@ export const AddVenueForm = () => {
             </header>
 
             <Form
+                form={form}
                 layout='vertical'
                 onFinish={handleFinish}
+                onValuesChange={handleValuesChange}
                 disabled={isSubmitting}
                 requiredMark={false}
                 className={styles['venue-create-form__form']}
@@ -55,13 +94,12 @@ export const AddVenueForm = () => {
                 <Form.Item
                     label='Адрес заведения'
                     name='address'
-                    rules={[
-                        { required: true, message: 'Введите адрес' },
-                        { min: 5, message: 'Минимум 5 символов' },
-                        { max: 200, message: 'Максимум 200 символов' },
-                    ]}
+                    rules={[{ required: true, message: 'Введите адрес' }]}
                 >
-                    <Input placeholder='Введите адрес' size='large' />
+                    <AddressPicker
+                        placeholder='Введите адрес'
+                        onSelect={handleAddressSelect}
+                    />
                 </Form.Item>
 
                 <Form.Item
