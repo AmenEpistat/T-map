@@ -18,3 +18,5 @@ export { mapStore } from './model/mapStore.ts';
 export { heatmapApi } from './api/heatmapApi.ts';
 
 export { normalizeBounds, isSameBounds } from './utils/normalizeBounds.ts';
+
+export { type TeamMember, teamMembers } from './model/bestTeam.ts';

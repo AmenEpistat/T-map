@@ -3,6 +3,7 @@ import { MapView } from '@/widgets/map-view';
 import { RotateControl, ZoomControls } from '@/features/map-controls';
 import { LayerFilter } from '@/features/map-layers';
 import { ClusterPopup } from '@/features/map-cluster-popup';
+import { TeamPopup } from '@/features/map-team-popup';
 
 export const MapPage = () => {
     return (
@@ -13,6 +14,7 @@ export const MapPage = () => {
             <RotateControl />
             <LayerFilter />
             <ClusterPopup />
+            <TeamPopup />
         </section>
     );
 };
