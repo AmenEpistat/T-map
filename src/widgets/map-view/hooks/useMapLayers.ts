@@ -99,7 +99,7 @@ export const useMapLayers = () => {
                 stroked: true,
                 getLineWidth: 3,
                 coverage: 0.955,
-                getLineColor: [24, 124, 56],
+                getLineColor: [147, 122, 219],
                 getFillColor: [0, 0, 0, 0],
                 extruded: false,
                 pickable: true,
