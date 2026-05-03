@@ -1,4 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
+import { message } from 'antd';
+import { isErrorMessage } from '@/shared/api/types/error.ts';
 
 export class RequestState<T> {
     data: T | null = null;
@@ -26,13 +28,20 @@ export class RequestState<T> {
                 this.data = response.data;
                 this.isLoading = false;
             });
-        } catch (e: any) {
+        } catch (e: unknown) {
             if (id !== this.requestId) return;
+            let errorMessage = 'Ошибка загрузки данных';
+
+            if (isErrorMessage(e)) {
+                errorMessage = e.message;
+            }
 
             runInAction(() => {
-                this.error = e?.message || 'Ошибка загрузки данных';
+                this.error = errorMessage;
                 this.isLoading = false;
             });
+
+            void message.error(errorMessage);
         }
     }
 
