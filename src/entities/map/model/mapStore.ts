@@ -8,6 +8,7 @@ import {
     MAP_CATEGORIES,
     type MapCategory,
     normalizeBounds,
+    type TeamMember,
 } from '@/entities/map';
 import type { ClusterDataType, ViewState } from '@/entities/map/model/types.ts';
 import { RequestState } from '@/shared/api';
@@ -35,6 +36,9 @@ class MapStore {
 
     venues = new RequestState<PublicVenue[]>();
 
+    selectedTeamMember: TeamMember | null = null;
+    isTeamVisible: boolean = true;
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -47,6 +51,10 @@ class MapStore {
 
     setViewState(state: AnimateViewState) {
         this.viewState = state as ViewState;
+    }
+
+    setTeamMember(member: TeamMember | null) {
+        this.selectedTeamMember = member;
     }
 
     async loadClusters() {
@@ -98,6 +106,10 @@ class MapStore {
     toggleAnomalies() {
         this.isAnomaliesVisible = !this.isAnomaliesVisible;
     }
+
+    toggleTeam = () => {
+        this.isTeamVisible = !this.isTeamVisible;
+    };
 
     setPitch(pitch: number) {
         this.viewState = {

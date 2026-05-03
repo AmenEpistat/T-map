@@ -16,6 +16,8 @@ export const FilterButtons = observer(
             isSelected,
             toggleAnomalies,
             isAnomaliesVisible,
+            isTeamVisible,
+            toggleTeam,
         } = useLayerFilter();
 
         return (
@@ -54,6 +56,22 @@ export const FilterButtons = observer(
                 >
                     {LAYER_UI.anomalies.icon}
                     {vertical && LAYER_UI.anomalies.label}
+                </Button>
+
+                {vertical && (
+                    <div className={styles['filter-buttons__divider']} />
+                )}
+                <Button
+                    className={classNames(
+                        styles['filter-buttons__btn'],
+                        styles['filter-buttons__btn--team'],
+                        isTeamVisible && styles['filter-buttons__btn--active']
+                    )}
+                    onClick={toggleTeam}
+                    type={'text'}
+                >
+                    {LAYER_UI.team.icon}
+                    {vertical && LAYER_UI.team.label}
                 </Button>
             </div>
         );

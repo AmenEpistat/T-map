@@ -19,5 +19,7 @@ export const useLayerFilter = () => {
         isSelected,
         toggleAnomalies,
         isAnomaliesVisible,
+        toggleTeam: mapStore.toggleTeam,
+        isTeamVisible: mapStore.isTeamVisible,
     };
 };

@@ -56,3 +56,15 @@
     background-color: $color-error-light;
   }
 }
+
+.filter-buttons__btn--team {
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.filter-buttons__btn--active svg{
+    color: #5420BCFF;
+    background-color: #E4DBF6FF;
+  }
+}
