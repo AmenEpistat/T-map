@@ -42,6 +42,7 @@ export const AddressPicker = ({
     };
 
     const handleSelect = (_: string, option: AutoCompleteOption) => {
+        onChange?.(option.suggestion.address);
         onSelect?.(option.suggestion);
     };
 

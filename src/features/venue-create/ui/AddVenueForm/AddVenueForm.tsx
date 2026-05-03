@@ -27,25 +27,14 @@ export const AddVenueForm = () => {
             lat: suggestion.lat,
             lng: suggestion.lng,
         });
+
+        void form.validateFields(['address']);
     };
 
     const handleValuesChange = (
         changedValues: Partial<VenueCreateFormValues>
     ): void => {
         if ('address' in changedValues) {
-            const currentLat = form.getFieldValue('lat');
-            const currentLng = form.getFieldValue('lng');
-            const newAddress = changedValues.address;
-
-            if (
-                currentLat !== undefined &&
-                currentLng !== undefined &&
-                newAddress &&
-                form.getFieldValue('address') === newAddress
-            ) {
-                return;
-            }
-
             form.setFieldsValue({ lat: undefined, lng: undefined });
         }
     };
@@ -89,7 +78,20 @@ export const AddVenueForm = () => {
                 <Form.Item
                     label='Адрес заведения'
                     name='address'
-                    rules={[{ required: true, message: 'Введите адрес' }]}
+                    rules={[
+                        { required: true, message: 'Введите адрес' },
+                        {
+                            validator: async () => {
+                                const lat = form.getFieldValue('lat');
+                                const lng = form.getFieldValue('lng');
+                                if (lat === undefined || lng === undefined) {
+                                    throw new Error(
+                                        'Выберите адрес из списка подсказок'
+                                    );
+                                }
+                            },
+                        },
+                    ]}
                 >
                     <AddressPicker
                         placeholder='Введите адрес'
