@@ -1,4 +1,4 @@
-import { FireFilled } from '@ant-design/icons';
+import { FireFilled, TeamOutlined } from '@ant-design/icons';
 import {
     EntertainmentFilled,
     FoodFilled,
@@ -13,4 +13,5 @@ export const CATEGORY_UI = {
 
 export const LAYER_UI = {
     anomalies: { label: 'Аномалии', icon: <FireFilled /> },
+    team: { label: 'Команда', icon: <TeamOutlined /> },
 };

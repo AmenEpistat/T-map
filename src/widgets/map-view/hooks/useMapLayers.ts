@@ -6,7 +6,7 @@ import {
     getNameColor,
 } from '@/widgets/map-view/utils/colorUtils.ts';
 import type { ClusterDataType } from '@/entities/map/model/types.ts';
-import { mapStore } from '@/entities/map';
+import { mapStore, type TeamMember, teamMembers } from '@/entities/map';
 import iconsPng from '@/shared/assets/icons.png';
 import iconsJson from '@/shared/assets/icons.json';
 import { IconLayer, TextLayer } from '@deck.gl/layers';
@@ -16,6 +16,7 @@ import {
     ZOOM_ICON,
     ZOOM_TEXT,
 } from '@/widgets/map-view/model/constants.ts';
+import { defaultClusters } from '@/widgets/map-view/model/mock.ts';
 
 export const useMapLayers = () => {
     const clusters = mapStore.clusters.data?.clusters;
@@ -37,6 +38,11 @@ export const useMapLayers = () => {
         if (currentZoom > ZOOM_ICON) return [];
         return clusters;
     }, [clusters, currentZoom]);
+
+    const visibleDefaultClusters = useMemo(() => {
+        if (currentZoom > ZOOM_ICON) return [];
+        return defaultClusters;
+    }, [currentZoom]);
 
     const maxTx = useMemo(() => {
         if (!clusters || clusters.length === 0) return 0;
@@ -85,6 +91,20 @@ export const useMapLayers = () => {
                     mapStore.setClusterIndex(object.h3Index);
                 },
             }),
+            new H3HexagonLayer({
+                id: 'h3-hexagon-layer-default',
+                data: visibleDefaultClusters,
+                getHexagon: (d) => d.h3Index,
+                elevationScale: 0,
+                stroked: true,
+                getLineWidth: 3,
+                coverage: 0.955,
+                getLineColor: [147, 122, 219],
+                getFillColor: [0, 0, 0, 0],
+                extruded: false,
+                pickable: true,
+                autoHighlight: true,
+            }),
             new IconLayer<PublicVenue>({
                 id: 'poi-icons',
                 data: visibleVenuesIcon,
@@ -107,8 +127,38 @@ export const useMapLayers = () => {
                 getPixelOffset: [10, -50],
                 characterSet: characterSet,
             }),
+
+            ...(mapStore.isTeamVisible
+                ? [
+                      new IconLayer<TeamMember>({
+                          id: 'team-avatars-layer',
+                          data: teamMembers,
+                          getIcon: (d) => ({
+                              url: d.avatarUrl,
+                              width: 128,
+                              height: 128,
+                              anchorX: 64,
+                              anchorY: 128,
+                              mask: false,
+                          }),
+                          getPosition: (d) => [d.lng, d.lat],
+                          getSize: 45,
+                          pickable: true,
+                          onClick: ({ object }) => {
+                              if (!object) return;
+                              mapStore.setTeamMember(object);
+                          },
+                      }),
+                  ]
+                : []),
         ],
-        [visibleClusters, visibleVenuesText, visibleVenuesIcon, maxTx]
+        [
+            visibleClusters,
+            visibleVenuesText,
+            visibleVenuesIcon,
+            visibleDefaultClusters,
+            maxTx,
+        ]
     );
 
     return layers;
