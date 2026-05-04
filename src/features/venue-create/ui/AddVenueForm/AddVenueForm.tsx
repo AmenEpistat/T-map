@@ -131,6 +131,21 @@ export const AddVenueForm = () => {
                     />
                 </Form.Item>
 
+                <Form.Item
+                    label='Акция дня'
+                    name='dishOfDay'
+                    rules={[{ max: 200, message: 'Максимум 200 символов' }]}
+                >
+                    <Input placeholder='Введите акцию дня' size='large' />
+                </Form.Item>
+
+                <Form.Item
+                    label='Музыка'
+                    name='music'
+                    rules={[{ max: 200, message: 'Максимум 200 символов' }]}
+                >
+                    <Input placeholder='Введите музыку' size='large' />
+                </Form.Item>
                 <Form.Item className={styles['venue-create-form__submit']}>
                     <Button
                         type='primary'
