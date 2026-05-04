@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { Button, Spin, Tag } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import {
@@ -9,10 +9,13 @@ import {
     VENUE_STATUS_COLORS,
 } from '@/entities/venue';
 import { VenueInfoCard } from '@/widgets/venue-info-card';
+import { classNames } from '@/shared/utils/classNames';
 import styles from './VenueManagePage.module.scss';
 
 export const VenueManagePage = observer(() => {
     const { id } = useParams<{ id: string }>();
+    const location = useLocation();
+    const isEditing = location.pathname.endsWith('/edit');
 
     useEffect(() => {
         if (!id) return;
@@ -84,10 +87,24 @@ export const VenueManagePage = observer(() => {
             </header>
 
             <div className={styles['venue-manage__columns']}>
-                <div className={styles['venue-manage__info']}>
+                <div
+                    className={classNames(
+                        styles['venue-manage__info'],
+                        isEditing
+                            ? styles['venue-manage__info--hidden-on-mobile']
+                            : ''
+                    )}
+                >
                     <VenueInfoCard venue={data} />
                 </div>
-                <div className={styles['venue-manage__form']}>
+                <div
+                    className={classNames(
+                        styles['venue-manage__form'],
+                        !isEditing
+                            ? styles['venue-manage__form--hidden-on-mobile']
+                            : ''
+                    )}
+                >
                     <Outlet />
                 </div>
             </div>
