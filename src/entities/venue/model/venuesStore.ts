@@ -70,6 +70,20 @@ class VenuesStore {
         });
     };
 
+    syncVenue = (venue: OwnerVenue): void => {
+        runInAction(() => {
+            if (this.list.data) {
+                this.list.data = this.list.data.map((v) =>
+                    v.id === venue.id ? venue : v
+                );
+            }
+
+            if (this.current.data?.id === venue.id) {
+                this.current.data = venue;
+            }
+        });
+    };
+
     clear = (): void => {
         this.list = new RequestState<OwnerVenue[]>();
         this.current = new RequestState<OwnerVenue>();
