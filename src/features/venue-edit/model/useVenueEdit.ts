@@ -17,6 +17,21 @@ export interface VenueEditFormValues {
     music?: string;
 }
 
+const normalizeText = (value?: string): string => value?.trim() ?? '';
+
+const hasVenueEditChanges = (
+    venue: OwnerVenue,
+    values: VenueEditFormValues
+): boolean =>
+    values.name.trim() !== venue.name.trim() ||
+    values.address.trim() !== venue.address.trim() ||
+    values.category !== venue.category ||
+    normalizeText(values.description) !== normalizeText(venue.description) ||
+    values.lat !== venue.lat ||
+    values.lng !== venue.lng ||
+    normalizeText(values.dishOfDay) !== normalizeText(venue.dishOfDay) ||
+    normalizeText(values.music) !== normalizeText(venue.music);
+
 export const useVenueEdit = (venue: OwnerVenue) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -25,6 +40,14 @@ export const useVenueEdit = (venue: OwnerVenue) => {
             notification.error({
                 message: 'Ошибка',
                 description: 'Выберите адрес из списка подсказок',
+                placement: 'topRight',
+            });
+            return;
+        }
+
+        if (!hasVenueEditChanges(venue, values)) {
+            notification.info({
+                message: 'Нет изменений для сохранения',
                 placement: 'topRight',
             });
             return;
