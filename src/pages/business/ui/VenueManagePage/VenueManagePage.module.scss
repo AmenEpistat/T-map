@@ -1,7 +1,13 @@
 .venue-manage {
   display: flex;
   flex-direction: column;
-  gap: $spacing-lg;
+  gap: $spacing-xl;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
 
   &__back {
     display: inline-flex;
@@ -19,7 +25,7 @@
     }
   }
 
-  &__header {
+  &__title-row {
     display: flex;
     align-items: center;
     gap: $spacing-md;
@@ -35,6 +41,10 @@
     color: $color-text;
   }
 
+  &__tag {
+    width: fit-content;
+  }
+
   &__address {
     margin: 0;
     font-family: $font-family-base;
@@ -43,19 +53,16 @@
     color: $color-text-secondary;
   }
 
-  &__placeholder {
-    background: $color-bg-card;
-    border-radius: $card-radius;
-    padding: $spacing-xl;
-    font-family: $font-family-base;
-    font-size: $font-size-base;
-    line-height: $line-height-base;
-    color: $color-text-secondary;
-    text-align: center;
+  &__columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: $spacing-xl;
+    align-items: start;
+  }
 
-    p {
-      margin: 0;
-    }
+  &__info,
+  &__form {
+    min-width: 0;
   }
 
   &__loading {
@@ -71,5 +78,25 @@
     font-size: $font-size-base;
     line-height: $line-height-base;
     color: $color-text-secondary;
+  }
+}
+
+@media (max-width: 767px) {
+  .venue-manage {
+    gap: $spacing-lg;
+
+    &__title-row {
+      gap: $spacing-sm;
+    }
+
+    &__title {
+      font-size: 24px;
+      line-height: 30px;
+    }
+
+    &__columns {
+      grid-template-columns: 1fr;
+      gap: $spacing-lg;
+    }
   }
 }

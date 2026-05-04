@@ -2,11 +2,16 @@
   background: $color-bg-card;
   border-radius: $card-radius;
   padding: $spacing-xl;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-lg;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    'photo buttons'
+    'photo links';
+  gap: $spacing-xl;
+  align-items: start;
 
   &__photo {
+    grid-area: photo;
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -16,10 +21,10 @@
   }
 
   &__photo-image {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
 
   &__photo-placeholder {
@@ -58,15 +63,19 @@
   }
 
   &__buttons {
-    display: flex;
+    grid-area: buttons;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: $spacing-md;
   }
 
   &__button {
-    flex: 1;
+    width: 100%;
+    min-width: 0;
   }
 
   &__links {
+    grid-area: links;
     display: flex;
     flex-direction: column;
     gap: $spacing-sm;
@@ -80,13 +89,61 @@
     font-family: $font-family-base;
     font-size: $font-size-base;
     line-height: $line-height-base;
-    color: #274EA3;
+    color: #274ea3;
     text-align: left;
     cursor: pointer;
     transition: color 0.15s ease;
 
     &:hover {
-      color: darken(#274EA3, 10%);
+      color: #1d3979;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .venue-info-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'photo'
+      'buttons'
+      'links';
+    gap: $spacing-md;
+    padding: $spacing-md;
+    border-radius: $card-radius;
+
+    &__photo {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+    }
+
+    &__photo-placeholder-icon {
+      font-size: 40px;
+    }
+
+    &__photo-action {
+      right: $spacing-sm;
+      bottom: $spacing-sm;
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+    }
+
+    &__buttons {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: $spacing-sm;
+    }
+
+    &__links {
+      gap: $spacing-xs;
+    }
+  }
+}
+
+@media (max-width: 374px) {
+  .venue-info-card {
+    &__buttons {
+      grid-template-columns: 1fr;
     }
   }
 }
