@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, message } from 'antd';
+import { Button, Popconfirm, message, notification } from 'antd';
 import { EnvironmentOutlined, CameraOutlined } from '@ant-design/icons';
-import type { OwnerVenue } from '@/entities/venue';
+import { venuesStore, type OwnerVenue } from '@/entities/venue';
 import { classNames } from '@/shared/utils/classNames';
 import styles from './VenueInfoCard.module.scss';
 
@@ -14,6 +15,7 @@ const COMING_SOON = 'Скоро будет доступно';
 export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const isEditing = location.pathname.endsWith('/edit');
 
@@ -23,6 +25,34 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
 
     const handleEdit = () => {
         navigate(`/business/${venue.id}/edit`);
+    };
+
+    const handleDelete = async () => {
+        setIsDeleting(true);
+
+        try {
+            await venuesStore.delete(venue.id);
+
+            notification.success({
+                message: 'Заведение удалено',
+                placement: 'topRight',
+            });
+
+            navigate('/business');
+        } catch (error) {
+            const description =
+                error instanceof Error
+                    ? error.message
+                    : 'Не удалось удалить заведение';
+
+            notification.error({
+                message: 'Ошибка',
+                description,
+                placement: 'topRight',
+            });
+
+            setIsDeleting(false);
+        }
     };
 
     return (
@@ -47,6 +77,7 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                         />
                     </div>
                 )}
+
                 <button
                     type='button'
                     className={styles['venue-info-card__photo-action']}
@@ -66,6 +97,7 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                 >
                     Статистика
                 </Button>
+
                 <Button
                     type='primary'
                     size='large'
@@ -90,6 +122,7 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                 >
                     Редактирование информации о заведении
                 </button>
+
                 <button
                     type='button'
                     className={styles['venue-info-card__link']}
@@ -97,6 +130,24 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                 >
                     Настройка программы лояльности
                 </button>
+
+                <Popconfirm
+                    title='Удалить заведение?'
+                    description='Это действие нельзя отменить. Заведение пропадёт с карты и из вашего списка.'
+                    onConfirm={handleDelete}
+                    okText='Удалить'
+                    cancelText='Отмена'
+                    okButtonProps={{ danger: true, loading: isDeleting }}
+                    placement='right'
+                >
+                    <button
+                        type='button'
+                        className={styles['venue-info-card__link']}
+                        disabled={isDeleting}
+                    >
+                        Удаление заведения
+                    </button>
+                </Popconfirm>
             </div>
         </section>
     );
