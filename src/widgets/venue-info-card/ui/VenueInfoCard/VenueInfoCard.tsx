@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Popconfirm, message, notification } from 'antd';
 import { EnvironmentOutlined, CameraOutlined } from '@ant-design/icons';
 import { venuesStore, type OwnerVenue } from '@/entities/venue';
+import { PhotoManagerModal } from '@/features/venue-photo-manager';
 import { classNames } from '@/shared/utils/classNames';
 import styles from './VenueInfoCard.module.scss';
 
@@ -16,6 +17,7 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
     const isEditing = location.pathname.endsWith('/edit');
 
@@ -82,7 +84,7 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                     type='button'
                     className={styles['venue-info-card__photo-action']}
                     aria-label='Изменить фото'
-                    onClick={handleComingSoon}
+                    onClick={() => setIsPhotoModalOpen(true)}
                 >
                     <CameraOutlined />
                 </button>
@@ -149,6 +151,11 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                     </button>
                 </Popconfirm>
             </div>
+            <PhotoManagerModal
+                venue={venue}
+                open={isPhotoModalOpen}
+                onClose={() => setIsPhotoModalOpen(false)}
+            />
         </section>
     );
 };
