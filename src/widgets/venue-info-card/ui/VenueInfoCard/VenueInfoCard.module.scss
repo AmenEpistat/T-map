@@ -89,13 +89,22 @@
     font-family: $font-family-base;
     font-size: $font-size-base;
     line-height: $line-height-base;
-    color: #274ea3;
+    color: #274EA3;
     text-align: left;
     cursor: pointer;
     transition: color 0.15s ease;
 
     &:hover {
-      color: #1d3979;
+      color: #203d81;
+    }
+
+    &--disabled {
+      color: $color-text-secondary;
+      cursor: default;
+
+      &:hover {
+        color: $color-text-secondary;
+      }
     }
   }
 }
