@@ -22,7 +22,7 @@ export const VenueManagePage = observer(() => {
         void venuesStore.loadById(id);
     }, [id]);
 
-    const { data, isLoading, error } = venuesStore.current;
+    const { data, error } = venuesStore.current;
     const isCurrentVenueLoaded = data?.id === id;
 
     if (!id) {
@@ -35,7 +35,7 @@ export const VenueManagePage = observer(() => {
         );
     }
 
-    if (isLoading || !isCurrentVenueLoaded) {
+    if (!isCurrentVenueLoaded) {
         if (error) {
             return (
                 <div className={styles['venue-manage']}>
