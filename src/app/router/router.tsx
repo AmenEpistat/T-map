@@ -43,7 +43,14 @@ export const router = createBrowserRouter([
                     { path: 'new', element: <AddVenueForm /> },
                 ],
             },
-            { path: ':id', element: <VenueManagePage /> },
+            {
+                path: ':id',
+                element: <VenueManagePage />,
+                children: [
+                    { index: true, element: null },
+                    { path: 'edit', element: null },
+                ],
+            },
         ],
     },
 ]);
