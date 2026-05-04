@@ -5,6 +5,7 @@ import { MapPage } from '@/pages/map';
 import { ProfilePage } from '@/pages/profile';
 import { BusinessLayout, VenuesPage, VenueManagePage } from '@/pages/business';
 import { AddVenueForm } from '@/features/venue-create';
+import { EditVenueForm } from '@/features/venue-edit';
 import { ProtectedRoute } from '@/shared/ui';
 
 export const router = createBrowserRouter([
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
                 element: <VenueManagePage />,
                 children: [
                     { index: true, element: null },
-                    { path: 'edit', element: null },
+                    { path: 'edit', element: <EditVenueForm /> },
                 ],
             },
         ],
