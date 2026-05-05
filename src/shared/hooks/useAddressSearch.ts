@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { searchAddresses, type AddressSuggestion } from '../api/nominatimApi';
+import {
+    searchAddresses,
+    type AddressSuggestion,
+} from '@/shared/api/nominatimApi';
 
 const DEBOUNCE_MS = 400;
 const MIN_QUERY_LENGTH = 4;

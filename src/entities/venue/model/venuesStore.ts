@@ -54,6 +54,22 @@ class VenuesStore {
         return venue;
     };
 
+    delete = async (id: string): Promise<void> => {
+        await businessVenuesApi.deleteVenue(id);
+
+        runInAction(() => {
+            if (this.list.data) {
+                this.list.data = this.list.data.filter(
+                    (venue) => venue.id !== id
+                );
+            }
+
+            if (this.current.data?.id === id) {
+                this.current = new RequestState<OwnerVenue>();
+            }
+        });
+    };
+
     clear = (): void => {
         this.list = new RequestState<OwnerVenue[]>();
         this.current = new RequestState<OwnerVenue>();

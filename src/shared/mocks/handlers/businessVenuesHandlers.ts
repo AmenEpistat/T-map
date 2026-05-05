@@ -141,11 +141,21 @@ const updateVenue = http.put<IdParam, VenueUpdateRequest, ItemResponse>(
 
         const body = await request.json();
         const existing = mockDb.venues[index];
+
+        const nextModerationStatus =
+            existing.moderationStatus === 'ACTIVE'
+                ? 'PENDING_UPDATE'
+                : existing.moderationStatus === 'REJECTED'
+                  ? 'PENDING'
+                  : existing.moderationStatus;
+
         const updated: VenueOwnerResponse = {
             ...existing,
             ...body,
+            moderationStatus: nextModerationStatus,
             updatedAt: new Date().toISOString(),
         };
+
         mockDb.venues[index] = updated;
 
         return HttpResponse.json<VenueOwnerResponse>(updated, { status: 200 });

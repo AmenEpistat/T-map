@@ -11,6 +11,8 @@ export interface VenueCreateFormValues {
     description?: string;
     lat?: number;
     lng?: number;
+    dishOfDay?: string;
+    music?: string;
 }
 
 export const useVenueCreate = () => {
@@ -36,6 +38,8 @@ export const useVenueCreate = () => {
                 description: values.description,
                 lat: values.lat,
                 lng: values.lng,
+                dishOfDay: values.dishOfDay,
+                music: values.music,
             });
             notification.success({
                 message: 'Заведение отправлено на модерацию',

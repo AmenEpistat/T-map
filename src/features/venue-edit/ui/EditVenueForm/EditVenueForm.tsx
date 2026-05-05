@@ -1,18 +1,55 @@
-import { Link } from 'react-router-dom';
-import { Form, Input, Select, Button } from 'antd';
-import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
-import { useVenueCreate } from '../../model/useVenueCreate';
-import type { VenueCreateFormValues } from '../../model/useVenueCreate';
+import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Form, Input, Select, Button, Spin } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { venuesStore, type OwnerVenue } from '@/entities/venue';
 import { AddressPicker } from '@/shared/ui';
 import type { AddressSuggestion } from '@/shared/api/nominatimApi';
+import {
+    useVenueEdit,
+    type VenueEditFormValues,
+} from '../../model/useVenueEdit';
 import { VENUE_CATEGORY_OPTIONS } from '@/entities/venue';
-import styles from './AddVenueForm.module.scss';
+import styles from './EditVenueForm.module.scss';
 
-export const AddVenueForm = () => {
-    const [form] = Form.useForm<VenueCreateFormValues>();
-    const { submit, isSubmitting } = useVenueCreate();
+export const EditVenueForm = observer(() => {
+    const { id } = useParams<{ id: string }>();
 
-    const handleFinish = (values: VenueCreateFormValues): void => {
+    useEffect(() => {
+        if (!id) return;
+
+        if (venuesStore.current.data?.id === id) {
+            return;
+        }
+
+        void venuesStore.loadById(id);
+    }, [id]);
+
+    const { data: venue } = venuesStore.current;
+    const isCurrentVenueLoaded = venue?.id === id;
+
+    if (!isCurrentVenueLoaded || !venue) {
+        return (
+            <div className={styles['venue-edit-form__loading']}>
+                <Spin size='large' />
+            </div>
+        );
+    }
+
+    return <EditVenueFormInner venue={venue} />;
+});
+
+interface EditVenueFormInnerProps {
+    venue: OwnerVenue;
+}
+
+const EditVenueFormInner = ({ venue }: EditVenueFormInnerProps) => {
+    const navigate = useNavigate();
+    const [form] = Form.useForm<VenueEditFormValues>();
+    const { submit, isSubmitting } = useVenueEdit(venue);
+
+    const handleFinish = (values: VenueEditFormValues): void => {
         void submit(values);
     };
 
@@ -27,25 +64,31 @@ export const AddVenueForm = () => {
     };
 
     const handleValuesChange = (
-        changedValues: Partial<VenueCreateFormValues>
+        changedValues: Partial<VenueEditFormValues>
     ): void => {
         if ('address' in changedValues) {
             form.setFieldsValue({ lat: undefined, lng: undefined });
         }
     };
 
+    const handleBack = (): void => {
+        navigate(`/business/${venue.id}`);
+    };
+
     return (
-        <section className={styles['venue-create-form']}>
-            <header className={styles['venue-create-form__header']}>
-                <Link
-                    to='/business'
-                    className={styles['venue-create-form__back']}
-                    aria-label='Закрыть форму и вернуться к списку'
+        <section className={styles['venue-edit-form']}>
+            <header className={styles['venue-edit-form__header']}>
+                <button
+                    type='button'
+                    onClick={handleBack}
+                    className={styles['venue-edit-form__back']}
+                    aria-label='Закрыть форму'
                 >
                     <ArrowLeftOutlined />
-                </Link>
-                <h2 className={styles['venue-create-form__title']}>
-                    Добавить заведение
+                </button>
+
+                <h2 className={styles['venue-edit-form__title']}>
+                    Изменить заведение
                 </h2>
             </header>
 
@@ -56,7 +99,17 @@ export const AddVenueForm = () => {
                 onValuesChange={handleValuesChange}
                 disabled={isSubmitting}
                 requiredMark={false}
-                className={styles['venue-create-form__form']}
+                initialValues={{
+                    name: venue.name,
+                    address: venue.address,
+                    category: venue.category,
+                    description: venue.description,
+                    lat: venue.lat,
+                    lng: venue.lng,
+                    dishOfDay: venue.dishOfDay,
+                    music: venue.music,
+                }}
+                className={styles['venue-edit-form__form']}
             >
                 <Form.Item
                     label='Название заведения'
@@ -79,6 +132,7 @@ export const AddVenueForm = () => {
                             validator: async () => {
                                 const lat = form.getFieldValue('lat');
                                 const lng = form.getFieldValue('lng');
+
                                 if (lat === undefined || lng === undefined) {
                                     throw new Error(
                                         'Выберите адрес из списка подсказок'
@@ -141,16 +195,16 @@ export const AddVenueForm = () => {
                 >
                     <Input placeholder='Введите музыку' size='large' />
                 </Form.Item>
-                <Form.Item className={styles['venue-create-form__submit']}>
+
+                <Form.Item className={styles['venue-edit-form__submit']}>
                     <Button
                         type='primary'
                         htmlType='submit'
                         size='large'
-                        icon={<PlusOutlined />}
                         loading={isSubmitting}
                         block
                     >
-                        Добавить заведение
+                        Изменить заведение
                     </Button>
                 </Form.Item>
             </Form>

@@ -51,6 +51,7 @@ const createSeedVenues = (): VenueOwnerResponse[] => {
             lng: 49.1186,
             description: 'Уютный бар с авторскими коктейлями.',
             category: 'entertainment',
+            dishOfDay: 'Авторский коктейль "Ивмиит отдыхает"',
             h3Res9: '89115b22b07ffff',
             moderationStatus: 'PENDING',
             createdAt: now,
