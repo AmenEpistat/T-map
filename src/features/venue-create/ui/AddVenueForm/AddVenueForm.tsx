@@ -3,15 +3,10 @@ import { Form, Input, Select, Button } from 'antd';
 import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
 import { useVenueCreate } from '../../model/useVenueCreate';
 import type { VenueCreateFormValues } from '../../model/useVenueCreate';
-import { AddressPicker } from '../AddressPicker/AddressPicker';
-import type { AddressSuggestion } from '../../api/nominatimApi';
+import { AddressPicker } from '@/shared/ui';
+import type { AddressSuggestion } from '@/shared/api/nominatimApi';
+import { VENUE_CATEGORY_OPTIONS } from '@/entities/venue';
 import styles from './AddVenueForm.module.scss';
-
-const CATEGORY_OPTIONS = [
-    { value: 'food', label: 'Еда и напитки' },
-    { value: 'entertainment', label: 'Развлечения' },
-    { value: 'shopping', label: 'Шоппинг' },
-];
 
 export const AddVenueForm = () => {
     const [form] = Form.useForm<VenueCreateFormValues>();
@@ -115,7 +110,7 @@ export const AddVenueForm = () => {
                     <Select
                         placeholder='Категория'
                         size='large'
-                        options={CATEGORY_OPTIONS}
+                        options={VENUE_CATEGORY_OPTIONS}
                     />
                 </Form.Item>
 

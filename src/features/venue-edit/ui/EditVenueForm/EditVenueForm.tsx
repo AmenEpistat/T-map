@@ -4,19 +4,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Input, Select, Button, Spin } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { venuesStore, type OwnerVenue } from '@/entities/venue';
-import { AddressPicker } from '@/features/venue-create/ui/AddressPicker/AddressPicker';
-import type { AddressSuggestion } from '@/features/venue-create/api/nominatimApi';
+import { AddressPicker } from '@/shared/ui';
+import type { AddressSuggestion } from '@/shared/api/nominatimApi';
 import {
     useVenueEdit,
     type VenueEditFormValues,
 } from '../../model/useVenueEdit';
+import { VENUE_CATEGORY_OPTIONS } from '@/entities/venue';
 import styles from './EditVenueForm.module.scss';
-
-const CATEGORY_OPTIONS = [
-    { value: 'food', label: 'Еда и напитки' },
-    { value: 'entertainment', label: 'Развлечения' },
-    { value: 'shopping', label: 'Шоппинг' },
-];
 
 export const EditVenueForm = observer(() => {
     const { id } = useParams<{ id: string }>();
@@ -169,7 +164,7 @@ const EditVenueFormInner = ({ venue }: EditVenueFormInnerProps) => {
                     <Select
                         placeholder='Категория'
                         size='large'
-                        options={CATEGORY_OPTIONS}
+                        options={VENUE_CATEGORY_OPTIONS}
                     />
                 </Form.Item>
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AutoComplete } from 'antd';
-import { useAddressSearch } from '../../model/useAddressSearch';
-import type { AddressSuggestion } from '../../api/nominatimApi';
+import { useAddressSearch } from '@/shared/hooks/useAddressSearch';
+import type { AddressSuggestion } from '@/shared/api/nominatimApi';
 import styles from './AddressPicker.module.scss';
 
 interface AddressPickerProps {
