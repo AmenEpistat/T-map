@@ -9,17 +9,19 @@ export const useHeatmapData = () => {
             () => ({
                 bounds: mapStore.bounds,
                 categories: mapStore.selectedCategories.slice(),
-                zoom: mapStore.viewState.zoom,
+                zoom: Math.round(mapStore.viewState.zoom * 10) / 10,
             }),
             ({ zoom }) => {
                 if (zoom >= ZOOM_ICON) {
                     mapStore.loadVenues();
                 }
-                mapStore.loadClusters();
+                if (zoom < ZOOM_ICON) {
+                    mapStore.loadClusters();
+                }
             },
             {
                 fireImmediately: true,
-                delay: 300,
+                delay: 500,
             }
         );
 
