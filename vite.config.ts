@@ -38,11 +38,26 @@ export default defineConfig({
             output: {
                 manualChunks(id) {
                     if (id.includes('node_modules')) {
-                        if (id.includes('maplibre-gl')) {
-                            return 'map-vendor';
+                        if (
+                            id.includes('maplibre-gl') ||
+                            id.includes('mapbox-gl')
+                        ) {
+                            return 'map-engine-vendor';
+                        }
+                        if (
+                            id.includes('@deck/gl') ||
+                            id.includes('@luma.gl')
+                        ) {
+                            return 'deck-gl-vendor';
                         }
                         if (id.includes('react') || id.includes('mobx')) {
                             return 'react-vendor';
+                        }
+                        if (
+                            id.includes('antd') ||
+                            id.includes('@ant-design')
+                        ) {
+                            return 'ui-vendor';
                         }
                         return 'vendor';
                     }
