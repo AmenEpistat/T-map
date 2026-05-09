@@ -57,6 +57,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  overflow: hidden;
 }
 
 .skeleton__stat-item {
