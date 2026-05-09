@@ -1,7 +1,3 @@
-import aleshaImg from '@/shared/assets/alesha.jpg';
-import mishaGif from '@/shared/assets/misha.gif';
-import luizaImg from '@/shared/assets/luiza-syeta.jpg';
-
 export interface TeamMember {
     id: string;
     name: string;
@@ -26,7 +22,7 @@ export const teamMembers: TeamMember[] = [
         lng: 49.095,
         avatarUrl: 'https://avatars.githubusercontent.com/AmenEpistat',
         description: '',
-        img: luizaImg,
+        img: '/team/luiza-syeta.jpg',
     },
     {
         id: 'misha',
@@ -41,7 +37,7 @@ export const teamMembers: TeamMember[] = [
             'почти 21 годик, крашу кнопки и люблю бибизянок, сейчас зачиллился в Казанке) \n' +
             '\n' +
             'пиши, если вдруг появились какие-то вопросы!',
-        img: mishaGif,
+        img: '/team/misha.gif',
     },
     {
         id: 'alesha',
@@ -52,7 +48,7 @@ export const teamMembers: TeamMember[] = [
         lat: 55.801,
         lng: 49.1,
         avatarUrl: 'https://avatars.githubusercontent.com/Alexs003',
-        img: aleshaImg,
+        img: '/team/alesha.jpg',
         description:
             '❝ Рецепт хорошего отдыха №1: лечь на травку, раскинуть крылья и лежать, лежать, лежать. ❞\n' +
             '\n',
