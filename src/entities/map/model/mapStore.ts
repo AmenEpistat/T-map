@@ -37,7 +37,7 @@ class MapStore {
     venues = new RequestState<PublicVenue[]>();
 
     selectedTeamMember: TeamMember | null = null;
-    isTeamVisible: boolean = true;
+    isTeamVisible: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
