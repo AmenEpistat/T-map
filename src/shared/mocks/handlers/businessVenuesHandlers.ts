@@ -21,6 +21,10 @@ type ItemResponse = VenueOwnerResponse | ErrorResponse;
 type DeleteResponse = undefined | ErrorResponse;
 
 const generateId = () => crypto.randomUUID();
+const getNextPhotoModerationStatus = (
+    status: VenueOwnerResponse['moderationStatus']
+): VenueOwnerResponse['moderationStatus'] =>
+    status === 'ACTIVE' ? 'PENDING_UPDATE' : status;
 
 const err = (code: string, message: string, status: number) =>
     HttpResponse.json<ErrorResponse>({ code, message }, { status });
@@ -162,6 +166,97 @@ const updateVenue = http.put<IdParam, VenueUpdateRequest, ItemResponse>(
     }
 );
 
+const uploadVenuePhoto = http.post<IdParam, never, ItemResponse>(
+    `${BASE}/business/venues/:id/photo`,
+    async ({ request, params }) => {
+        const authError = requireAuth(request);
+        if (authError) return err(authError.code, authError.message, 401);
+
+        const formData = await request.formData();
+        const file = formData.get('file');
+
+        if (!(file instanceof File)) {
+            return err('VALIDATION_FAILED', 'Файл не найден в запросе', 400);
+        }
+
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!allowedTypes.includes(file.type)) {
+            return err(
+                'VALIDATION_FAILED',
+                'Неподдерживаемый формат. Разрешены: JPEG, PNG, WEBP',
+                400
+            );
+        }
+
+        const maxSize = 10 * 1024 * 1024;
+        if (file.size > maxSize) {
+            return err(
+                'VALIDATION_FAILED',
+                'Файл слишком большой. Максимум 10 МБ',
+                400
+            );
+        }
+
+        const index = mockDb.venues.findIndex((v) => v.id === params.id);
+        if (index === -1) {
+            return err(
+                'NOT_FOUND',
+                `Requested venue with ID ${params.id} was not found.`,
+                404
+            );
+        }
+
+        await delay(500);
+
+        const existing = mockDb.venues[index];
+        const updated: VenueOwnerResponse = {
+            ...existing,
+            photoUrl: `https://placehold.co/600x400?text=Uploaded&r=${Date.now()}`,
+            moderationStatus: getNextPhotoModerationStatus(
+                existing.moderationStatus
+            ),
+            updatedAt: new Date().toISOString(),
+        };
+
+        mockDb.venues[index] = updated;
+
+        return HttpResponse.json<VenueOwnerResponse>(updated, { status: 200 });
+    }
+);
+
+const deleteVenuePhoto = http.delete<IdParam, never, ItemResponse>(
+    `${BASE}/business/venues/:id/photo`,
+    async ({ request, params }) => {
+        const authError = requireAuth(request);
+        if (authError) return err(authError.code, authError.message, 401);
+
+        const index = mockDb.venues.findIndex((v) => v.id === params.id);
+        if (index === -1) {
+            return err(
+                'NOT_FOUND',
+                `Requested venue with ID ${params.id} was not found.`,
+                404
+            );
+        }
+
+        await delay(LATENCY_MS);
+
+        const existing = mockDb.venues[index];
+        const updated: VenueOwnerResponse = {
+            ...existing,
+            photoUrl: undefined,
+            moderationStatus: getNextPhotoModerationStatus(
+                existing.moderationStatus
+            ),
+            updatedAt: new Date().toISOString(),
+        };
+
+        mockDb.venues[index] = updated;
+
+        return HttpResponse.json<VenueOwnerResponse>(updated, { status: 200 });
+    }
+);
+
 const deleteVenue = http.delete<IdParam, never, DeleteResponse>(
     `${BASE}/business/venues/:id`,
     async ({ request, params }) => {
@@ -189,5 +284,7 @@ export const businessVenuesHandlers: HttpHandler[] = [
     getMyVenueById,
     createVenue,
     updateVenue,
+    uploadVenuePhoto,
+    deleteVenuePhoto,
     deleteVenue,
 ];
