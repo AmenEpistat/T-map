@@ -8,10 +8,16 @@ import styles from './MapView.module.scss';
 import { mapStore } from '@/entities/map';
 import { useHeatmapData } from '@/widgets/map-view/hooks/useHeatmapData.ts';
 import { useMapControl } from '@/widgets/map-view/hooks/useMapControl.ts';
+import { useState } from 'react';
+import { Splash } from '@/shared/ui';
 
 const MapView = observer(() => {
+    const [isMapLoaded, setIsMapLoaded] = useState(false);
     useHeatmapData();
+
     const layers = useMapLayers();
+
+    const activeLayers = isMapLoaded ? layers : [];
 
     const {
         mapRef,
@@ -22,18 +28,24 @@ const MapView = observer(() => {
 
     return (
         <div className={styles['map']}>
+            {!isMapLoaded && <Splash />}
             <DeckGL
                 viewState={mapStore.viewState}
                 onViewStateChange={handleViewStateChange}
                 onInteractionStateChange={handleInteractionStateChange}
                 controller={true}
-                layers={layers}
+                layers={activeLayers}
             >
                 <Map
                     ref={mapRef}
                     reuseMaps
                     mapStyle={MAP_STYLE}
-                    onLoad={handleMapLoad}
+                    onLoad={() => {
+                        setTimeout(() => {
+                            setIsMapLoaded(true);
+                            handleMapLoad();
+                        }, 300);
+                    }}
                 />
             </DeckGL>
         </div>
