@@ -15,15 +15,6 @@ export const useMapPopup = <T>(options: {
         if (id) onSelect(id);
     }, []);
 
-    const open = (id: string) => {
-        onSelect(id);
-
-        const url = new URL(window.location.href);
-        url.searchParams.set(paramName, id);
-
-        window.history.pushState({}, '', url.toString());
-    };
-
     const close = () => {
         onSelect(null);
         const url = new URL(window.location.href);
@@ -42,5 +33,5 @@ export const useMapPopup = <T>(options: {
         });
     };
 
-    return { open, close, handleShare };
+    return { close, handleShare };
 };

@@ -18,7 +18,7 @@ export const useClusterDetails = () => {
         return () => dispose();
     }, []);
 
-    const { close, handleShare, open } = useMapPopup({
+    const { close, handleShare } = useMapPopup({
         paramName: 'cluster',
         onSelect: (h3Index: string | null) => mapStore.setClusterIndex(h3Index),
         reset: () =>  mapStore.clusterDetail.reset(),
@@ -31,7 +31,6 @@ export const useClusterDetails = () => {
     const isPopupOpen = mapStore.isClusterSelected;
 
     return {
-        openClusterPopup: open,
         closeClusterPopup: close,
         isPopupOpen,
         data,
