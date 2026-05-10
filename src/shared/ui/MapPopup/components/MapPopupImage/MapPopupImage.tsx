@@ -11,7 +11,7 @@ const MapPopupImage = ({ src, alt }: Props) => {
         <div className={styles['popup-image']}>
             <img
                 width='100%'
-                height='auto'
+                height='100%'
                 src={src || DEFAULT_IMAGE_URL}
                 alt={alt}
                 onError={(e) => {
