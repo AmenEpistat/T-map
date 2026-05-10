@@ -1,8 +1,11 @@
 import { mapStore } from '@/entities/map';
 import { useEffect } from 'react';
 import { reaction } from 'mobx';
+import { useMapPopup } from '@/shared/hooks/useMapPopup.ts';
 
 export const useClusterDetails = () => {
+    const { data, isLoading } = mapStore.clusterDetail;
+
     useEffect(() => {
         const dispose = reaction(
             () => mapStore.selectedClusterIndex,
@@ -15,54 +18,21 @@ export const useClusterDetails = () => {
         return () => dispose();
     }, []);
 
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const h3Index = params.get('cluster');
-        if (h3Index) {
-            mapStore.setClusterIndex(h3Index);
-        }
-    }, []);
-
-    const openClusterPopup = (h3Index: string) => {
-        mapStore.setClusterIndex(h3Index);
-
-        const url = new URL(window.location.href);
-        url.searchParams.set('cluster', h3Index);
-
-        window.history.pushState({}, '', url.toString());
-    };
-
-    const closeClusterPopup = () => {
-        mapStore.setClusterIndex(null);
-        mapStore.clusterDetail.reset();
-
-        const url = new URL(window.location.href);
-        url.searchParams.delete('cluster');
-        window.history.pushState({}, '', url);
-    };
+    const { close, handleShare, open } = useMapPopup({
+        paramName: 'cluster',
+        onSelect: (h3Index: string | null) => mapStore.setClusterIndex(h3Index),
+        reset: () =>  mapStore.clusterDetail.reset(),
+        data,
+        shareTitle: (d) => `Район ${d.districtName}`,
+        shareText: (d) =>
+            `Посмотри аналитику транзакций для района ${d.districtName} на T-map`,
+    });
 
     const isPopupOpen = mapStore.isClusterSelected;
 
-    const { data, isLoading } = mapStore.clusterDetail;
-
-    const handleShare = async () => {
-        const shareUrl = new URL(window.location.href);
-        if (data?.h3Index) {
-            shareUrl.searchParams.set('cluster', data.h3Index);
-        }
-
-        const shareData = {
-            title: `Район ${data?.districtName}`,
-            text: `Посмотри аналитику транзакций для района ${data?.districtName} на T-map`,
-            url: shareUrl.toString(),
-        };
-
-        await navigator.share(shareData);
-    };
-
     return {
-        openClusterPopup,
-        closeClusterPopup,
+        openClusterPopup: open,
+        closeClusterPopup: close,
         isPopupOpen,
         data,
         isLoading,
