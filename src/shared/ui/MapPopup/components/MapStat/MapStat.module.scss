@@ -1,6 +1,6 @@
 .venue-stat {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 24px 1fr;
   grid-template-rows: auto 1fr;
   gap: 8px 16px;
 }
@@ -11,6 +11,7 @@
   align-self: start;
   padding-top: 4px;
   color: #ccc;
+  justify-self: end;
 }
 
 .venue-stat__title {
