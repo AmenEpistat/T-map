@@ -5,7 +5,7 @@ import { ClusterPopup } from '@/features/map-cluster-popup';
 import { TeamPopup } from '@/features/map-team-popup';
 import { lazy, Suspense } from 'react';
 import { Splash } from '@/shared/ui';
-import VenuePopup from '@/features/map-venue-popup/ui/VenuePopup/VenuePopup.tsx';
+import { VenuePopup } from '@/features/map-venue-popup';
 
 const MapView = lazy(() =>
     import('@/widgets/map-view').then((module) => ({ default: module.MapView }))
