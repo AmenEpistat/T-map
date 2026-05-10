@@ -9,4 +9,8 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  &:first-child {
+    margin-top: 16px;
+  }
 }
