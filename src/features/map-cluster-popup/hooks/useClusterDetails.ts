@@ -2,6 +2,7 @@ import { mapStore } from '@/entities/map';
 import { useEffect } from 'react';
 import { reaction } from 'mobx';
 import { useMapPopup } from '@/shared/hooks/useMapPopup.ts';
+import { publicVenueStore } from '@/entities/public-venue';
 
 export const useClusterDetails = () => {
     const { data, isLoading } = mapStore.clusterDetail;
@@ -11,6 +12,7 @@ export const useClusterDetails = () => {
             () => mapStore.selectedClusterIndex,
             async (h3Index) => {
                 if (!h3Index) return;
+                publicVenueStore.setSelectedVenueIndex(null);
                 await mapStore.loadClusterDetails();
             }
         );

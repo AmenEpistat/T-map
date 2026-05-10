@@ -2,6 +2,7 @@ import { useMapPopup } from '@/shared/hooks/useMapPopup.ts';
 import { publicVenueStore } from '@/entities/public-venue';
 import { useEffect } from 'react';
 import { reaction } from 'mobx';
+import { mapStore } from '@/entities/map';
 
 export const useVenueDetails = () => {
     const { data, isLoading } = publicVenueStore.venueDetail;
@@ -11,6 +12,7 @@ export const useVenueDetails = () => {
             () => publicVenueStore.selectedVenueIndex,
             async (id: string | null) => {
                 if (!id) return;
+                mapStore.setClusterIndex(null);
                 await publicVenueStore.loadVenueDetails();
             }
         );
