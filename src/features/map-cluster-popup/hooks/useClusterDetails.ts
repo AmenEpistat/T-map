@@ -21,7 +21,8 @@ export const useClusterDetails = () => {
     const { close, handleShare } = useMapPopup({
         paramName: 'cluster',
         onSelect: (h3Index: string | null) => mapStore.setClusterIndex(h3Index),
-        reset: () =>  mapStore.clusterDetail.reset(),
+        reset: () => mapStore.clusterDetail.reset(),
+        idKey: 'h3Index',
         data,
         shareTitle: (d) => `Район ${d.districtName}`,
         shareText: (d) =>

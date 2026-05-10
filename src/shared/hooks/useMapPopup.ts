@@ -5,10 +5,12 @@ export const useMapPopup = <T>(options: {
     onSelect: (id: string | null) => void;
     data: T | null;
     reset: () => void;
+    idKey: keyof T;
     shareTitle: (data: T) => string;
     shareText: (data: T) => string;
 }) => {
-    const { paramName, onSelect, data, shareTitle, shareText, reset } = options;
+    const { paramName, onSelect, data, idKey, shareTitle, shareText, reset } =
+        options;
 
     useEffect(() => {
         const id = new URLSearchParams(window.location.search).get(paramName);
@@ -25,12 +27,19 @@ export const useMapPopup = <T>(options: {
     };
 
     const handleShare = async () => {
-        if (!data) return;
-        await navigator.share({
-            title: shareTitle(data),
-            text: shareText(data),
-            url: window.location.href,
-        });
+        const shareUrl = new URL(window.location.href);
+        const id = data?.[idKey];
+
+        if (id) {
+            shareUrl.searchParams.set(paramName, String(id));
+        }
+
+        const shareData = {
+            title: data ? shareTitle(data) : 'Ссылка',
+            text: data ? shareText(data) : 'Посмотри на T-map',
+            url: shareUrl.toString(),
+        };
+        await navigator.share(shareData);
     };
 
     return { close, handleShare };
