@@ -17,6 +17,7 @@ import {
     ZOOM_TEXT,
 } from '@/widgets/map-view/model/constants.ts';
 import { defaultClusters } from '@/widgets/map-view/model/mock.ts';
+import { publicVenueStore } from '@/entities/public-venue';
 
 export const useMapLayers = () => {
     const clusters = mapStore.clusters.data?.clusters;
@@ -114,6 +115,15 @@ export const useMapLayers = () => {
                 getSize: 40,
                 getPosition: (d) => [d.lng, d.lat],
                 pickable: true,
+                onClick: ({ object }) => {
+                    if (!object) return;
+                    publicVenueStore.setSelectedVenueIndex(object.id);
+                },
+                updateTriggers: {
+                    getIcon: [visibleVenuesIcon],
+                },
+                autoHighlight: true,
+                highlightColor: [255, 255, 255, 100],
             }),
             new TextLayer<PublicVenue>({
                 id: 'poi-labels',
@@ -126,6 +136,16 @@ export const useMapLayers = () => {
                 fontWeight: 'bold',
                 getPixelOffset: [10, -50],
                 characterSet: characterSet,
+                onClick: ({ object }) => {
+                    if (!object) return;
+                    publicVenueStore.setSelectedVenueIndex(object.id);
+                },
+                updateTriggers: {
+                    getText: [visibleVenuesText],
+                },
+                pickable: true,
+                autoHighlight: true,
+                highlightColor: [255, 255, 255, 100],
             }),
 
             ...(mapStore.isTeamVisible
