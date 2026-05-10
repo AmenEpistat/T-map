@@ -1,0 +1,24 @@
+.venue-stat {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 8px 16px;
+}
+
+.venue-stat__icon {
+  font-size: 18px;
+  grid-row: 1/-1;
+  align-self: start;
+  padding-top: 4px;
+  color: #ccc;
+}
+
+.venue-stat__title {
+  font-size: 14px;
+  margin: 0;
+}
+
+.venue-stat__text {
+  grid-column: 2/-1;
+  margin: 0;
+}
