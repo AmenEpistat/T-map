@@ -2,7 +2,7 @@ import styles from './MapPopupImage.module.scss';
 import { DEFAULT_IMAGE_URL } from '@/shared/model/constants.ts';
 
 interface Props {
-    src: string;
+    src?: string | null;
     alt: string;
 }
 

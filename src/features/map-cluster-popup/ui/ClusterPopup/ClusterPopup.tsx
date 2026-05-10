@@ -15,7 +15,7 @@ export const ClusterPopup = observer(() => {
     return (
         <MapPopup
             isOpen={isPopupOpen}
-            isLoading={isLoading}
+            isLoading={isLoading || !data}
             isMobile={isMobile}
             onClose={closeClusterPopup}
             handleShare={handleShare}

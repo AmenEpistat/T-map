@@ -5,6 +5,7 @@ import CloseFilled from '@/shared/ui/Icons/CloseFilled/CloseFilled.tsx';
 import MapPopupImage from '@/shared/ui/MapPopup/components/MapPopupImage/MapPopupImage.tsx';
 import { classNames } from '@/shared/utils/classNames.ts';
 import styles from './MapPopup.module.scss';
+import React from 'react';
 
 interface Props {
     isOpen: boolean;
@@ -41,9 +42,7 @@ const MapPopup = ({
                 skeleton
             ) : (
                 <>
-                    {imageUrl && (
-                        <MapPopupImage src={imageUrl} alt={title} />
-                    )}
+                    <MapPopupImage src={imageUrl} alt={title} />
 
                     {isMobile && (
                         <Button
