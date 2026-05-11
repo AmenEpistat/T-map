@@ -32,6 +32,10 @@ class AuthStore {
         return this.accessToken !== null && this.user !== null;
     }
 
+    get isAdmin(): boolean {
+        return this.user?.role === 'ADMIN';
+    }
+
     setAuth = (response: AuthResponse): void => {
         this.accessToken = response.accessToken;
         this.user = { userId: response.userId, role: response.role };
