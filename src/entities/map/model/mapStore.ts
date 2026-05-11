@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { INITIAL_VIEW } from '@/widgets/map-view/model/constants.ts';
 import {
+    ANIMATION_DURATION,
     type Bounds,
     type ClusterDetail,
     heatmapApi,
@@ -19,8 +20,6 @@ type AnimateViewState = ViewState & {
     transitionDuration?: number;
     transitionInterpolator?: any;
 };
-
-const ANIMATION_DURATION = 650;
 
 class MapStore {
     clusters = new RequestState<{ clusters: ClusterDataType[] }>();

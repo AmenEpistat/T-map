@@ -1,11 +1,11 @@
 import { EnvironmentOutlined } from '@ant-design/icons';
 import styles from './SearchSuggestion.module.scss';
 import { Button } from 'antd';
-import type { Venue } from '@/entities/venue/model/types.ts';
+import type { VenueSearch } from '@/entities/public-venue';
 
 type Props = {
-    suggestion: Venue;
-    onSelect: (v: Venue) => void;
+    suggestion: VenueSearch;
+    onSelect: (v: VenueSearch) => void;
 };
 
 export const SearchSuggestion = ({ suggestion, onSelect }: Props) => {

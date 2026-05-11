@@ -11,6 +11,7 @@ export {
     BOUNDS_KEYS,
     RESOLUTION,
     MAPPING_CATEGORIES,
+    ANIMATION_DURATION,
 } from './model/constants.ts';
 
 export { mapStore } from './model/mapStore.ts';

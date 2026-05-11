@@ -1,24 +1,19 @@
-import { Button, Divider, Input, Spin } from 'antd';
+import { Button, Divider, Input } from 'antd';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import styles from './SearchPanel.module.scss';
 import { useMapSearch } from '@/features/map-search/hooks/useMapSearch.ts';
-import type { Venue } from '@/entities/venue/model/types.ts';
 import { SearchSuggestion } from '@/features/map-search/ui/MapSearch/components/SearchSuggestion/SearchSuggestion.tsx';
+import type { VenueSearch } from '@/entities/public-venue';
+import { observer } from 'mobx-react-lite';
 
 type Props = {
     isOpen: boolean;
     onClose: () => void;
 };
 
-export const SearchPanel = ({ isOpen, onClose }: Props) => {
-    const {
-        query,
-        suggestions,
-        loading,
-        handleChange,
-        handleSelect,
-        handleClear,
-    } = useMapSearch(onClose);
+export const SearchPanel = observer(({ isOpen, onClose }: Props) => {
+    const { query, suggestions, handleChange, handleSelect, handleClear } =
+        useMapSearch(onClose);
 
     if (!isOpen) return null;
 
@@ -40,9 +35,7 @@ export const SearchPanel = ({ isOpen, onClose }: Props) => {
                         value={query}
                         suffix={
                             <div>
-                                {loading ? (
-                                    <Spin size='small' />
-                                ) : query ? (
+                                {query ? (
                                     <CloseOutlined onClick={handleClear} />
                                 ) : null}
                             </div>
@@ -65,7 +58,7 @@ export const SearchPanel = ({ isOpen, onClose }: Props) => {
 
                 {suggestions.length > 0 && (
                     <ul className={styles['search-panel__list']}>
-                        {suggestions.map((venue: Venue) => (
+                        {suggestions.map((venue: VenueSearch) => (
                             <SearchSuggestion
                                 key={venue.id}
                                 suggestion={venue}
@@ -77,4 +70,4 @@ export const SearchPanel = ({ isOpen, onClose }: Props) => {
             </div>
         </div>
     );
-};
+});
