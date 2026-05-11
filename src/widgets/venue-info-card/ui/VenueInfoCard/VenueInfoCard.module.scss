@@ -3,10 +3,11 @@
   border-radius: $card-radius;
   padding: $spacing-xl;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   grid-template-areas:
-    'photo buttons'
-    'photo links';
+    'photo'
+    'buttons'
+    'links';
   gap: $spacing-xl;
   align-items: start;
 

@@ -1,7 +1,7 @@
 .business-sidebar {
-  width: 324px;
+  width: clamp(240px, 22vw, 324px);
+  padding: 45px clamp(20px, 2vw, 32px);
   background: $color-bg-card;
-  padding: 45px 32px;
   display: flex;
   flex-direction: column;
   gap: $spacing-lg;

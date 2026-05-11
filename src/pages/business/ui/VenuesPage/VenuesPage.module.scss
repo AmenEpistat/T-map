@@ -28,7 +28,7 @@
 
   &__columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(420px, 560px) minmax(0, 1fr);
     gap: $spacing-xl;
   }
 
@@ -39,6 +39,19 @@
 }
 
 @media (max-width: $tablet) {
+  .venues-page {
+    &__columns {
+      grid-template-columns: 1fr;
+    }
+
+    &__list--hidden-on-mobile,
+    &__form--hidden-on-mobile {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $desktop) {
   .venues-page {
     &__columns {
       grid-template-columns: 1fr;
