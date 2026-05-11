@@ -20,3 +20,5 @@ export const BOUNDS_KEYS: (keyof Bounds)[] = [
 ] as const;
 
 export const RESOLUTION = 9;
+
+export const ANIMATION_DURATION = 650;

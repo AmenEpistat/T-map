@@ -1,10 +1,15 @@
 import { makeAutoObservable } from 'mobx';
 import { RequestState } from '@/shared/api';
-import { type PublicVenue, publicVenueApi } from '@/entities/public-venue';
+import {
+    type PublicVenue,
+    publicVenueApi,
+    type VenueSearch,
+} from '@/entities/public-venue';
 
 class PublicVenueStore {
     selectedVenueIndex: string | null = null;
     venueDetail = new RequestState<PublicVenue>();
+    venueSearch = new RequestState<VenueSearch[]>();
 
     constructor() {
         makeAutoObservable(this);
@@ -20,6 +25,10 @@ class PublicVenueStore {
         await this.venueDetail.execute(
             publicVenueApi.getVenueById(this.selectedVenueIndex)
         );
+    }
+
+    async loadVenueBySearch(search: string) {
+        await this.venueSearch.execute(publicVenueApi.getVenueBySearch(search));
     }
 
     get isVenueSelected() {
