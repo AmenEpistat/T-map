@@ -7,6 +7,7 @@ import { BusinessLayout, VenuesPage, VenueManagePage } from '@/pages/business';
 import { AddVenueForm } from '@/features/venue-create';
 import { EditVenueForm } from '@/features/venue-edit';
 import { ProtectedRoute } from '@/shared/ui';
+import { NotFoundPage } from '@/pages/not-found';
 
 export const router = createBrowserRouter([
     {
@@ -53,5 +54,9 @@ export const router = createBrowserRouter([
                 ],
             },
         ],
+    },
+    {
+        path: '*',
+        element: <NotFoundPage />,
     },
 ]);
