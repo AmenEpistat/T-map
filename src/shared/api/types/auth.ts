@@ -13,6 +13,8 @@ export interface LoginRequest {
 
 export interface AuthResponse {
     userId: string;
+    email: string;
+    nickname: string;
     role: UserRole;
     accessToken: string;
 }

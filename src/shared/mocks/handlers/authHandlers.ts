@@ -24,6 +24,8 @@ const err = (code: string, message: string, status: number) =>
 const buildAuthResponse = (user: MockUser): AuthResponse => ({
     userId: user.userId,
     role: user.role,
+    email: user.email,
+    nickname: user.nickname,
     accessToken: generateAccessToken(user.userId),
 });
 
