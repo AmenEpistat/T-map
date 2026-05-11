@@ -8,7 +8,9 @@ import {
 import type { ClusterDataType } from '@/entities/map/model/types.ts';
 import { mapStore, type TeamMember, teamMembers } from '@/entities/map';
 import iconsPng from '@/shared/assets/icons.png';
-import iconsJson from '@/shared/assets/icons.json';
+import iconsAnomalyPng from '@/shared/assets/iconsAnomaly.png';
+import iconsCategoryJson from '@/shared/assets/iconsCategory.json';
+import iconsAnomalyJson from '@/shared/assets/iconsAnomaly.json';
 import { IconLayer, TextLayer } from '@deck.gl/layers';
 import type { PublicVenue } from '@/entities/venue';
 import {
@@ -18,6 +20,8 @@ import {
 } from '@/widgets/map-view/model/constants.ts';
 import { defaultClusters } from '@/widgets/map-view/model/mock.ts';
 import { publicVenueStore } from '@/entities/public-venue';
+import { getIconMapping } from '@/widgets/map-view/utils/iconUtils.ts';
+import { cellToLatLng } from 'h3-js';
 
 export const useMapLayers = () => {
     const clusters = mapStore.clusters.data?.clusters;
@@ -45,27 +49,17 @@ export const useMapLayers = () => {
         return defaultClusters;
     }, [currentZoom]);
 
+    const visibleAnomalyClusters = useMemo(() => {
+        return clusters?.filter((c) => c.isAnomaly);
+    }, [clusters]);
+
     const maxTx = useMemo(() => {
         if (!clusters || clusters.length === 0) return 0;
         return clusters.reduce((max, d) => Math.max(max, d.txCount), 0);
     }, [clusters]);
 
-    const iconMapping = iconsJson.frames.reduce(
-        (acc, value) => {
-            const cleanKey = value.filename.replace('.svg', '');
-            acc[cleanKey] = {
-                x: value.frame.x,
-                y: value.frame.y,
-                width: value.frame.w,
-                height: value.frame.h,
-                anchorY: value.frame.h,
-                anchorX: value.frame,
-            };
-
-            return acc;
-        },
-        {} as Record<string, any>
-    );
+    const iconCategoryMapping = getIconMapping(iconsCategoryJson);
+    const iconAnomaly = getIconMapping(iconsAnomalyJson);
 
     const layers = useMemo(
         () => [
@@ -110,7 +104,7 @@ export const useMapLayers = () => {
                 id: 'poi-icons',
                 data: visibleVenuesIcon,
                 iconAtlas: iconsPng,
-                iconMapping: iconMapping,
+                iconMapping: iconCategoryMapping,
                 getIcon: (d) => d.category,
                 getSize: 40,
                 getPosition: (d) => [d.lng, d.lat],
@@ -148,6 +142,23 @@ export const useMapLayers = () => {
                 highlightColor: [255, 255, 255, 100],
             }),
 
+            ...(mapStore.isAnomaliesVisible
+                ? [
+                      new IconLayer<ClusterDataType>({
+                          id: 'poi-icons-anomaly',
+                          data: visibleAnomalyClusters,
+                          iconAtlas: iconsAnomalyPng,
+                          getIcon: () => 'anomaly',
+                          iconMapping: iconAnomaly,
+                          getSize: 40,
+                          getPosition: (d) => {
+                              const [lat, lng] = cellToLatLng(d.h3Index);
+                              return [lng, lat];
+                          },
+                      }),
+                  ]
+                : []),
+
             ...(mapStore.isTeamVisible
                 ? [
                       new IconLayer<TeamMember>({
@@ -177,7 +188,10 @@ export const useMapLayers = () => {
             visibleVenuesText,
             visibleVenuesIcon,
             visibleDefaultClusters,
+            visibleAnomalyClusters,
             maxTx,
+            mapStore.isAnomaliesVisible,
+            mapStore.isTeamVisible,
         ]
     );
 
