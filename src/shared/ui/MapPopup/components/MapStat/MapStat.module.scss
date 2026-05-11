@@ -8,10 +8,9 @@
 .venue-stat__icon {
   font-size: 18px;
   grid-row: 1/-1;
-  align-self: start;
+  place-self: start end;
   padding-top: 4px;
   color: #ccc;
-  justify-self: end;
 }
 
 .venue-stat__title {

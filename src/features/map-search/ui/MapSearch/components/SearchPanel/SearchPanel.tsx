@@ -14,7 +14,7 @@ export const SearchPanel = ({ isOpen, onClose }: Props) => {
     const {
         query,
         suggestions,
-        loading,
+        isLoading,
         handleChange,
         handleSelect,
         handleClear,
