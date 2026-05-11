@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import type { Venue } from '@/entities/venue/model/types.ts';
 import { publicVenueStore, type VenueSearch } from '@/entities/public-venue';
 import { ANIMATION_DURATION, mapStore } from '@/entities/map';
 import { FlyToInterpolator } from '@deck.gl/core';
@@ -26,7 +25,7 @@ export const useMapSearch = (onClose: () => void) => {
         };
     }, [query]);
 
-    const handleSelect = (venue: Venue) => {
+    const handleSelect = (venue: VenueSearch) => {
         mapStore.setClusterIndex(null);
         mapStore.clusterDetail.reset();
 
@@ -55,6 +54,5 @@ export const useMapSearch = (onClose: () => void) => {
         handleChange: setQuery,
         handleSelect,
         handleClear,
-        isLoading: publicVenueStore.venueSearch.isLoading,
     };
 };
