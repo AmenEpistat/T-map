@@ -5,3 +5,4 @@ export { default as SharedOutlined } from './Icons/SharedOutlined/SharedOutlined
 export { default as SharedFilled } from './Icons/SharedFilled/SharedFilled';
 export { default as TgOutlined } from './Icons/TgOutlined/TgOutlined.tsx';
 export { default as MapPopup } from './MapPopup/MapPopup';
+export { default as MapStat } from './MapPopup/components/MapStat/MapStat.tsx';

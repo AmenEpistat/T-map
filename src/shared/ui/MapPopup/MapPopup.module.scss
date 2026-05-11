@@ -17,7 +17,7 @@
   position: sticky;
   top: 0;
   background-color: $color-bg;
-  padding-block: 24px;
+  padding-top: 24px;
 
   button {
     margin-left: auto;
@@ -47,6 +47,8 @@
   z-index: 800 !important;
   background-color: $color-bg;
   padding: 0 22px 22px;
+  border-radius: 22px;
+  height: calc(100vh - 10px);
 }
 
 .map-popup__title {
@@ -103,4 +105,13 @@
   :global(.ant-drawer-mask) {
     background-color: transparent !important;
   }
+}
+
+.map-popup__body {
+  max-height: 300px;
+  overflow: auto;
+}
+
+:global(.ant-drawer-body) {
+  overflow: hidden !important;
 }
