@@ -22,6 +22,17 @@ declare global {
 }
 
 const SEED_OWNER_ID = '00000000-0000-0000-0000-000000000001';
+const SEED_ADMIN_ID = '00000000-0000-0000-0000-0000000000ad';
+
+const createSeedUsers = (): MockUser[] => [
+    {
+        userId: SEED_ADMIN_ID,
+        email: 'admin@tmap.local',
+        password: 'admin123',
+        nickname: 'Admin',
+        role: 'ADMIN',
+    },
+];
 
 const createSeedVenues = (): VenueOwnerResponse[] => {
     const now = new Date().toISOString();
@@ -71,11 +82,55 @@ const createSeedVenues = (): VenueOwnerResponse[] => {
             createdAt: now,
             updatedAt: now,
         },
+        {
+            id: '44444444-4444-4444-4444-444444444444',
+            ownerId: SEED_OWNER_ID,
+            name: 'Пекарня "Тёплый хлеб"',
+            address: 'ул. Кремлёвская, 21, Казань',
+            lat: 55.7975,
+            lng: 49.1083,
+            description: 'Свежая выпечка с раннего утра.',
+            category: 'food',
+            dishOfDay: 'Чёрный хлеб с тмином',
+            h3Res9: '89115b22b13ffff',
+            moderationStatus: 'PENDING',
+            createdAt: now,
+            updatedAt: now,
+        },
+        {
+            id: '55555555-5555-5555-5555-555555555555',
+            ownerId: SEED_OWNER_ID,
+            name: 'Караоке "Голос"',
+            address: 'ул. Петербургская, 34, Казань',
+            lat: 55.7841,
+            lng: 49.1247,
+            description: 'Караоке-бар с большим экраном и сценой.',
+            category: 'entertainment',
+            music: 'Pop, Rock, Эстрада',
+            h3Res9: '89115b22b1bffff',
+            moderationStatus: 'PENDING',
+            createdAt: now,
+            updatedAt: now,
+        },
+        {
+            id: '66666666-6666-6666-6666-666666666666',
+            ownerId: SEED_OWNER_ID,
+            name: 'Книжная лавка "Страница"',
+            address: 'ул. Островского, 8, Казань',
+            lat: 55.793,
+            lng: 49.1155,
+            description: 'Букинистический магазин с редкими изданиями.',
+            category: 'shopping',
+            h3Res9: '89115b22b23ffff',
+            moderationStatus: 'PENDING',
+            createdAt: now,
+            updatedAt: now,
+        },
     ];
 };
 
 const createEmptyDb = (): MockDb => ({
-    users: [],
+    users: createSeedUsers(),
     activeRefreshTokens: new Map(),
     currentRefreshToken: null,
     venues: createSeedVenues(),
