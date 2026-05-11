@@ -5,7 +5,7 @@ export const theme: ThemeConfig = {
         colorPrimary: '#FFDD2D',
         colorText: '#141414',
         colorTextSecondary: '#9299A2',
-        colorError: '#FF3B30',
+        colorError: '#EB5757',
         colorErrorBg: '#FEE0E0',
         colorErrorBorder: '#FCE4E4',
         colorErrorBorderHover: '#FCE4E4',
@@ -15,6 +15,14 @@ export const theme: ThemeConfig = {
         colorBgContainer: '#FFFFFF',
         colorBorder: '#ECF1F7',
         colorTextPlaceholder: '#6C6F71',
+
+        colorSuccess: '#27AE60',
+        colorSuccessBg: '#E6F4EA',
+        colorSuccessBorder: '#27AE60',
+
+        colorWarning: '#626262',
+        colorWarningBg: '#FFDD2D',
+        colorWarningBorder: '#FFE0A3',
 
         fontFamily:
             'Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif',

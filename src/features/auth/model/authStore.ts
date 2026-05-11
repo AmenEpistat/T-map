@@ -34,7 +34,12 @@ class AuthStore {
 
     setAuth = (response: AuthResponse): void => {
         this.accessToken = response.accessToken;
-        this.user = { userId: response.userId, role: response.role };
+        this.user = {
+            userId: response.userId,
+            email: response.email,
+            nickname: response.nickname,
+            role: response.role,
+        };
         setAccessToken(response.accessToken);
     };
 

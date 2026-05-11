@@ -41,10 +41,9 @@ export const BusinessSidebar = observer(() => {
                 Профиль бизнеса
             </h2>
 
-            {/* TODO: заменю в некст PR на email (#TBD) */}
             {authStore.user && (
                 <p className={styles['business-sidebar__user']}>
-                    {authStore.user.userId}
+                    {authStore.user.email}
                 </p>
             )}
 

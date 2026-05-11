@@ -3,10 +3,11 @@
   border-radius: $card-radius;
   padding: $spacing-xl;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   grid-template-areas:
-    'photo buttons'
-    'photo links';
+    'photo'
+    'buttons'
+    'links';
   gap: $spacing-xl;
   align-items: start;
 
@@ -89,13 +90,13 @@
     font-family: $font-family-base;
     font-size: $font-size-base;
     line-height: $line-height-base;
-    color: #274EA3;
+    color: $color-link;
     text-align: left;
     cursor: pointer;
     transition: color 0.15s ease;
 
     &:hover {
-      color: #203d81;
+      color: $color-link-hover;
     }
 
     &--disabled {
