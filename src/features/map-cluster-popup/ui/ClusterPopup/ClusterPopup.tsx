@@ -5,10 +5,17 @@ import { useClusterDetails } from '@/features/map-cluster-popup/hooks/useCluster
 import { ClusterPopupSkeleton } from '@/features/map-cluster-popup/ui/ClusterPopupSkeleton/ClusterPopupSkeleton.tsx';
 import ClusterStat from '@/features/map-cluster-popup/ui/ClusterStat/ClusterStat.tsx';
 import { MapPopup } from '@/shared/ui';
+import ClusterAnomalyBlock from '@/features/map-cluster-popup/ui/ClusterAnomalyBlock/ClusterAnomalyBlock.tsx';
 
 export const ClusterPopup = observer(() => {
-    const { isPopupOpen, closeClusterPopup, isLoading, data, handleShare } =
-        useClusterDetails();
+    const {
+        isPopupOpen,
+        closeClusterPopup,
+        isLoading,
+        data,
+        handleShare,
+        isAnomaliesVisible,
+    } = useClusterDetails();
     const isMobile = useIsMobile();
     const isNotContent = isLoading || !data;
 
@@ -24,19 +31,31 @@ export const ClusterPopup = observer(() => {
             skeleton={<ClusterPopupSkeleton />}
         >
             {!isNotContent && (
-                <div className={styles['cluster-popup__stats']}>
-                    <ClusterStat name={'Транзакций'} count={data.txCount} />
-                    <ClusterStat
-                        isMoney
-                        name={'Средний чек'}
-                        count={data.avgCheck}
-                    />
-                    <ClusterStat
-                        isMoney
-                        name={'Сумма'}
-                        count={data.sumAmount}
-                    />
-                </div>
+                <>
+                    <div className={styles['cluster-popup__stats']}>
+                        <ClusterStat name={'Транзакций'} count={data.txCount} />
+                        <ClusterStat
+                            isMoney
+                            name={'Средний чек'}
+                            count={data.avgCheck}
+                        />
+                        <ClusterStat
+                            isMoney
+                            name={'Сумма'}
+                            count={data.sumAmount}
+                        />
+                    </div>
+                    {isAnomaliesVisible && (
+                        <>
+                            <div className={styles['cluster-popup__divider']} />
+                            <ClusterAnomalyBlock
+                                isAnomaly={data.isAnomaly}
+                                ratio={data.anomalyRatio}
+                                baseline={data.baselineAvg}
+                            />
+                        </>
+                    )}
+                </>
             )}
         </MapPopup>
     );

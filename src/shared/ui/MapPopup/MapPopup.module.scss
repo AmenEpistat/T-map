@@ -8,6 +8,11 @@
     width: 455px !important;
   }
 
+
+  :global(.ant-drawer-body) {
+    overflow: hidden !important;
+  }
+
 }
 
 .map-popup__header {
@@ -110,8 +115,8 @@
 .map-popup__body {
   max-height: 300px;
   overflow: auto;
-}
 
-:global(.ant-drawer-body) {
-  overflow: hidden !important;
+  @media (min-width: $tablet) {
+    max-height: calc(100vh - 400px);
+  }
 }

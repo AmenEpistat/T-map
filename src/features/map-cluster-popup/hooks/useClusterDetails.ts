@@ -39,5 +39,6 @@ export const useClusterDetails = () => {
         data,
         isLoading,
         handleShare,
+        isAnomaliesVisible: mapStore.isAnomaliesVisible,
     };
 };

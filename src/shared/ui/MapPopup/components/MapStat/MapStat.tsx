@@ -3,16 +3,16 @@ import React from 'react';
 
 interface Props {
     icon: React.ReactNode;
-    title: string;
-    data: string;
+    title?: string;
+    data: string | React.ReactNode;
 }
 
 const MapStat = ({ icon, title, data }: Props) => {
     return (
-        <div className={styles['venue-stat']}>
-            <span className={styles['venue-stat__icon']}>{icon}</span>
-            <h3 className={styles['venue-stat__title']}>{title}</h3>
-            <p className={styles['venue-stat__text']}>{data}</p>
+        <div className={styles['map-stat']}>
+            <span className={styles['map-stat__icon']}>{icon}</span>
+            {title && <h3 className={styles['map-stat__title']}>{title}</h3>}
+            <p className={styles['map-stat__text']}>{data}</p>
         </div>
     );
 };

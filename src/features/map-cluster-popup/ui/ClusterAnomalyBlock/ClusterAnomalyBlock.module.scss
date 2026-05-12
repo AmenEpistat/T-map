@@ -1,0 +1,35 @@
+.anomaly-block__title {
+  padding: 8px 0;
+  margin: 0 0 8px;
+}
+
+.anomaly-block__anomaly {
+  font-weight: 500;
+
+  span {
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+.anomaly-block__no-anomalies {
+  padding: 8px 12px;
+  border: 1px solid $color-placeholder;
+  border-radius: 4px;
+  color: $color-placeholder;
+  font-size: 14px;
+}
+
+.anomaly-block__stat--ratio {
+  color: $color-error;
+}
+
+.anomaly-block__stat--base {
+  color: $color-link;
+  margin-inline: 4px;
+}
+
+.anomaly-block__icon {
+  color: $color-error;
+  margin-right: 8px;
+}

@@ -13,6 +13,8 @@ export type ClusterDataType = {
     h3Index: string;
     txCount: number;
     avgCheck: number;
+    isAnomaly: boolean;
+    anomalyRatio: number;
 };
 
 export type ClusterDetail = ClusterDataType & {
@@ -20,6 +22,7 @@ export type ClusterDetail = ClusterDataType & {
     districtImageUrl: string;
     category: MapCategory;
     sumAmount: number;
+    baselineAvg: number;
 };
 
 export type Bounds = {
