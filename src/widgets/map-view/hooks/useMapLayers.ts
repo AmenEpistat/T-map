@@ -155,6 +155,13 @@ export const useMapLayers = () => {
                               const [lat, lng] = cellToLatLng(d.h3Index);
                               return [lng, lat];
                           },
+                          pickable: true,
+                          autoHighlight: true,
+                          highlightColor: [255, 255, 255, 100],
+                          onClick: ({ object }) => {
+                              if (!object) return;
+                              mapStore.setClusterIndex(object.h3Index);
+                          },
                       }),
                   ]
                 : []),
