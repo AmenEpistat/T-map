@@ -117,6 +117,6 @@
   overflow: auto;
 
   @media (min-width: $tablet) {
-    max-height: calc(100vh - 10px);
+    max-height: calc(100vh - 400px);
   }
 }
