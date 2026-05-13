@@ -1,6 +1,6 @@
 import styles from './ProfileAuthHeader.module.scss';
 import CloseButton from '@/shared/ui/CloseButton/CloseButton.tsx';
-import { Button, Dropdown } from 'antd';
+import { Button, Dropdown, type MenuProps } from 'antd';
 import { observer } from 'mobx-react-lite';
 import { authStore } from '@/features/auth';
 import { DownOutlined, EllipsisOutlined } from '@ant-design/icons';
@@ -36,7 +36,7 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
                 </Button>
             ),
         },
-    ].filter((e) => e);
+    ].filter(Boolean) as MenuProps['items'];
 
     return (
         <div className={styles['profile-auth']}>
