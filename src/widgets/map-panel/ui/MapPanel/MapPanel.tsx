@@ -1,20 +1,20 @@
 import { Button, Input } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from './MapSearch.module.scss';
-import { SearchPanel } from '@/features/map-search/ui/MapSearch/components';
+import styles from './MapPanel.module.scss';
+import { SearchPanel } from '@/features/map-search';
+import ProfilePanel from '@/features/profile-panel/ui/ProfilePanel/ProfilePanel.tsx';
 
-const MapSearch = () => {
+const MapPanel = () => {
     const [isSearchOpen, setSearchOpen] = useState(false);
-    const navigate = useNavigate();
+    const [isPanelOpen, setPanelOpen] = useState(false);
 
     return (
         <>
             <div className={styles['map-search']}>
                 <Button
                     className={styles['map-search__button']}
-                    onClick={() => navigate('/profile')}
+                    onClick={() => setPanelOpen(true)}
                 >
                     <MenuOutlined />
                 </Button>
@@ -31,8 +31,12 @@ const MapSearch = () => {
                 isOpen={isSearchOpen}
                 onClose={() => setSearchOpen(false)}
             />
+            <ProfilePanel
+                isOpen={isPanelOpen}
+                onClose={() => setPanelOpen(false)}
+            />
         </>
     );
 };
 
-export default MapSearch;
+export default MapPanel;

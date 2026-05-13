@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 import { AuthPage } from '@/pages/auth';
 import { MapPage } from '@/pages/map';
-import { ProfilePage } from '@/pages/profile';
 import { BusinessLayout, VenuesPage, VenueManagePage } from '@/pages/business';
 import { AddVenueForm } from '@/features/venue-create';
 import { EditVenueForm } from '@/features/venue-edit';
@@ -21,14 +20,6 @@ export const router = createBrowserRouter([
     {
         path: '/auth/register',
         element: <AuthPage mode='register' />,
-    },
-    {
-        path: '/profile',
-        element: (
-            <ProtectedRoute>
-                <ProfilePage />
-            </ProtectedRoute>
-        ),
     },
     {
         path: '/business',

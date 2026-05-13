@@ -2,7 +2,7 @@ import { Button, Divider, Input } from 'antd';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import styles from './SearchPanel.module.scss';
 import { useMapSearch } from '@/features/map-search/hooks/useMapSearch.ts';
-import { SearchSuggestion } from '@/features/map-search/ui/MapSearch/components/SearchSuggestion/SearchSuggestion.tsx';
+import { SearchSuggestion } from '@/features/map-search/ui/SearchSuggestion/SearchSuggestion.tsx';
 import type { VenueSearch } from '@/entities/public-venue';
 import { observer } from 'mobx-react-lite';
 
