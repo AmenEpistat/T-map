@@ -3,6 +3,7 @@ import { MenuOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import styles from './MapPanel.module.scss';
 import { SearchPanel } from '@/features/map-search';
+import ProfilePanel from '@/features/profile-panel/ui/ProfilePanel/ProfilePanel.tsx';
 
 const MapPanel = () => {
     const [isSearchOpen, setSearchOpen] = useState(false);
@@ -29,6 +30,10 @@ const MapPanel = () => {
             <SearchPanel
                 isOpen={isSearchOpen}
                 onClose={() => setSearchOpen(false)}
+            />
+            <ProfilePanel
+                isOpen={isPanelOpen}
+                onClose={() => setPanelOpen(false)}
             />
         </>
     );

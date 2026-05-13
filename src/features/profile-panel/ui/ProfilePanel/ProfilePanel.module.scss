@@ -1,0 +1,36 @@
+.profile-panel {
+  height: 100%;
+
+  @media (min-width: $tablet) {
+    width: 455px !important;
+  }
+}
+
+.profile-panel__content {
+  background-color: $color-bg;
+  padding: 0 22px 22px;
+  border-radius: 22px 22px 0 0;
+
+  @media (min-width: $tablet) {
+    width: 455px !important;
+    box-sizing: border-box;
+
+    &::before {
+      content: '';
+      width: 455px;
+      height: 80px;
+      background: $color-bg-control;
+      display: block;
+      position: absolute;
+      left: 0;
+    }
+  }
+}
+
+:global(.ant-drawer-content-wrapper):has(.profile-panel) {
+  border-radius: 22px 22px 0 0 !important;
+
+  @media (max-width: $tablet) {
+    height: calc(100vh - 32px) !important;
+  }
+}
