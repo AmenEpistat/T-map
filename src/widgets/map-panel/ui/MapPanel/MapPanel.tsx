@@ -3,7 +3,7 @@ import { MenuOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import styles from './MapPanel.module.scss';
 import { SearchPanel } from '@/features/map-search';
-import ProfilePanel from '@/features/profile-panel/ui/ProfilePanel/ProfilePanel.tsx';
+import { ProfilePanel } from '@/features/profile-panel';
 
 const MapPanel = () => {
     const [isSearchOpen, setSearchOpen] = useState(false);
