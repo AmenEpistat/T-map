@@ -1,7 +1,7 @@
 import styles from './ProfileAuth.module.scss';
-import type { User } from '@/entities/profile';
 import { observer } from 'mobx-react-lite';
 import ProfileAuthHeader from '@/features/profile-panel/ui/ProfileAuthHeader/ProfileAuthHeader.tsx';
+import type { User } from '@/features/auth';
 
 interface Props {
     user?: User;
