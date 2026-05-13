@@ -1,5 +1,7 @@
 .profile-panel {
-  height: 100%;
+  :global(.ant-drawer-body) {
+    height: 100%;
+  }
 
   @media (min-width: $tablet) {
     width: 455px !important;
@@ -8,7 +10,7 @@
 
 .profile-panel__content {
   background-color: $color-bg;
-  padding: 0 22px 22px;
+  padding: 0 22px;
   border-radius: 22px 22px 0 0;
 
   @media (min-width: $tablet) {
@@ -31,6 +33,6 @@
   border-radius: 22px 22px 0 0 !important;
 
   @media (max-width: $tablet) {
-    height: calc(100vh - 32px) !important;
+    height: calc(100dvh - 100px) !important;
   }
 }

@@ -31,7 +31,14 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
         {
             key: '2',
             label: (
-                <Button onClick={() => authStore.logout()} type={'text'} danger>
+                <Button
+                    onClick={() => {
+                        authStore.logout();
+                        onClose();
+                    }}
+                    type={'text'}
+                    danger
+                >
                     Выйти
                 </Button>
             ),
@@ -53,7 +60,7 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
                             >
                                 <p className={styles['profile-auth__name']}>
                                     <span>
-                                        {user.nickname}
+                                        {user?.nickname}
                                         <DownOutlined />
                                     </span>
                                     <span
@@ -62,7 +69,7 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
                                         }
                                     >
                                         {' '}
-                                        {user.email}
+                                        {user?.email}
                                     </span>
                                 </p>
                             </Button>
@@ -75,9 +82,9 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
                                 className={styles['profile-auth__avatar-icon']}
                             />
                             <p className={styles['profile-auth__name']}>
-                                {user.nickname}
+                                {user?.nickname}
                                 <span className={styles['profile-auth__email']}>
-                                    {user.email}
+                                    {user?.email}
                                 </span>
                             </p>
                         </div>
