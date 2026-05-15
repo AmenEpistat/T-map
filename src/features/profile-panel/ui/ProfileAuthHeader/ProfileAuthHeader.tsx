@@ -28,6 +28,14 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
                 </Button>
             ),
         },
+        authStore.isAdmin && {
+            key: '4',
+            label: (
+                <Button onClick={() => navigate('/admin')} type={'text'}>
+                    Админ-панель
+                </Button>
+            ),
+        },
         {
             key: '2',
             label: (
