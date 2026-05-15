@@ -1,11 +1,12 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 import { AuthPage } from '@/pages/auth';
 import { MapPage } from '@/pages/map';
 import { BusinessLayout, VenuesPage, VenueManagePage } from '@/pages/business';
+import { AdminLayout, AdminModerationPage } from '@/pages/admin';
 import { AddVenueForm } from '@/features/venue-create';
 import { EditVenueForm } from '@/features/venue-edit';
-import { ProtectedRoute } from '@/shared/ui';
+import { AdminProtectedRoute, ProtectedRoute } from '@/shared/ui';
 import { NotFoundPage } from '@/pages/not-found';
 
 export const router = createBrowserRouter([
@@ -43,6 +44,26 @@ export const router = createBrowserRouter([
                     { index: true, element: null },
                     { path: 'edit', element: <EditVenueForm /> },
                 ],
+            },
+        ],
+    },
+    {
+        path: '/admin',
+        element: (
+            <ProtectedRoute>
+                <AdminProtectedRoute>
+                    <AdminLayout />
+                </AdminProtectedRoute>
+            </ProtectedRoute>
+        ),
+        children: [
+            {
+                index: true,
+                element: <Navigate to='moderation' replace />,
+            },
+            {
+                path: 'moderation',
+                element: <AdminModerationPage />,
             },
         ],
     },
