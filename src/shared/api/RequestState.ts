@@ -1,11 +1,11 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { message } from 'antd';
-import { isErrorMessage } from '@/shared/api/types/error.ts';
+import { type ErrorMessage, isErrorMessage } from '@/shared/api/types/error.ts';
 
 export class RequestState<T> {
     data: T | null = null;
     isLoading = false;
-    error: string | null = null;
+    error: ErrorMessage | null = null;
 
     private requestId = 0;
 
@@ -31,13 +31,18 @@ export class RequestState<T> {
         } catch (e: unknown) {
             if (id !== this.requestId) return;
             let errorMessage = 'Ошибка загрузки данных';
+            let status = 500;
 
             if (isErrorMessage(e)) {
                 errorMessage = e.message;
+                status = e.status;
             }
 
             runInAction(() => {
-                this.error = errorMessage;
+                this.error = {
+                    message: errorMessage,
+                    status: status,
+                };
                 this.isLoading = false;
             });
 

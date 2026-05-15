@@ -1,10 +1,12 @@
 import styles from './ProfileAuthHeader.module.scss';
 import CloseButton from '@/shared/ui/CloseButton/CloseButton.tsx';
-import { Button, Dropdown, type MenuProps } from 'antd';
+import { Button, Dropdown, type MenuProps, Modal } from 'antd';
 import { observer } from 'mobx-react-lite';
 import { authStore } from '@/features/auth';
 import { DownOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { ChangePasswordForm } from '@/features/profile-edit';
 
 interface Props {
     onClose: () => void;
@@ -15,10 +17,19 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
     const navigate = useNavigate();
     const user = authStore.user!;
 
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+
     const items = [
         {
             key: '1',
-            label: <Button type={'text'}>Сменить пароль</Button>,
+            label: (
+                <Button
+                    type={'text'}
+                    onClick={() => setIsPasswordModalOpen(true)}
+                >
+                    Сменить пароль
+                </Button>
+            ),
         },
         user?.role === 'BUSINESS_OWNER' && {
             key: '3',
@@ -102,6 +113,18 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
 
                 <CloseButton onClose={onClose} isMobile={isMobile} />
             </div>
+            <Modal
+                title='Смена пароля'
+                open={isPasswordModalOpen}
+                onCancel={() => setIsPasswordModalOpen(false)}
+                footer={null}
+                destroyOnHidden
+                centered={isMobile}
+            >
+                <ChangePasswordForm
+                    onCancel={() => setIsPasswordModalOpen(false)}
+                />
+            </Modal>
         </div>
     );
 });
