@@ -1,7 +1,13 @@
 .admin-moderation-page {
   display: flex;
   flex-direction: column;
-  gap: $spacing-md;
+  gap: $spacing-xl;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
 
   &__title {
     margin: 0;
@@ -12,11 +18,30 @@
     color: $color-text;
   }
 
+  &__columns {
+    display: grid;
+    grid-template-columns: clamp(320px, 30vw, 420px) minmax(0, 1fr);
+    gap: $spacing-xl;
+  }
+
+  &__queue,
+  &__details {
+    min-width: 0;
+  }
+
   &__stub {
     margin: 0;
     font-family: $font-family-base;
     font-size: $font-size-base;
     line-height: $line-height-base;
     color: $color-text-secondary;
+  }
+}
+
+@media (max-width: $desktop) {
+  .admin-moderation-page {
+    &__columns {
+      grid-template-columns: 1fr;
+    }
   }
 }
