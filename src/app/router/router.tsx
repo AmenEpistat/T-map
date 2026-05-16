@@ -64,6 +64,10 @@ export const router = createBrowserRouter([
             {
                 path: 'moderation',
                 element: <AdminModerationPage />,
+                children: [
+                    { index: true, element: null },
+                    { path: ':id', element: null },
+                ],
             },
         ],
     },
