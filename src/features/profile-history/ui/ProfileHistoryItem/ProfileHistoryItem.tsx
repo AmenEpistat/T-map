@@ -9,21 +9,21 @@ interface Props {
 
 const ProfileHistoryItem = ({ item }: Props) => {
     return (
-        <Link to={`/?venue=${item.venueId}`} className={styles['history']}>
+        <div className={styles['history']}>
             <p className={styles['history__count']}>
                 {item.discountApplied}
                 <span className={styles['history__procent']}>%</span>
             </p>
-            <p className={styles['history__venue']}>
-                {item.venueName}
+            <div className={styles['history__venue']}>
+                <Link to={`/?venue=${item.venueId}`}>{item.venueName}</Link>
                 <span className={styles['history__category']}>
                     {MAPPING_CATEGORIES[item.category]}
                 </span>
-            </p>
+            </div>
             <p className={styles['history__description']}>
                 {item.ruleDescription}
             </p>
-        </Link>
+        </div>
     );
 };
 
