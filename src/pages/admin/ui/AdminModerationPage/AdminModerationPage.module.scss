@@ -28,14 +28,6 @@
   &__details {
     min-width: 0;
   }
-
-  &__stub {
-    margin: 0;
-    font-family: $font-family-base;
-    font-size: $font-size-base;
-    line-height: $line-height-base;
-    color: $color-text-secondary;
-  }
 }
 
 @media (max-width: $desktop) {

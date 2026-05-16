@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import styles from './AdminModerationPage.module.scss';
+import { ModerationQueueList } from '@/features/moderation-queue';
 
 export const AdminModerationPage = () => {
     return (
@@ -12,9 +13,7 @@ export const AdminModerationPage = () => {
 
             <div className={styles['admin-moderation-page__columns']}>
                 <div className={styles['admin-moderation-page__queue']}>
-                    <p className={styles['admin-moderation-page__stub']}>
-                        Список заявок
-                    </p>
+                    <ModerationQueueList />
                 </div>
 
                 <div className={styles['admin-moderation-page__details']}>
