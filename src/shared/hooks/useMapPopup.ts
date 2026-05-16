@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 export const useMapPopup = <T>(options: {
     paramName: string;
@@ -12,18 +13,18 @@ export const useMapPopup = <T>(options: {
     const { paramName, onSelect, data, idKey, shareTitle, shareText, reset } =
         options;
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
     useEffect(() => {
-        const id = new URLSearchParams(window.location.search).get(paramName);
-        if (id) onSelect(id);
-    }, []);
+        const id = searchParams.get(paramName);
+        onSelect(id);
+    }, [searchParams, paramName]);
 
     const close = () => {
-        onSelect(null);
-        const url = new URL(window.location.href);
         reset();
 
-        url.searchParams.delete(paramName);
-        window.history.pushState({}, '', url);
+        searchParams.delete(paramName);
+        setSearchParams(searchParams);
     };
 
     const handleShare = async () => {

@@ -1,6 +1,7 @@
 import styles from './ProfileHistoryItem.module.scss';
 import type { Loyalty } from '@/shared/api/types/loyalty.ts';
 import { MAPPING_CATEGORIES } from '@/entities/map';
+import { Link } from 'react-router-dom';
 
 interface Props {
     item: Loyalty;
@@ -8,7 +9,7 @@ interface Props {
 
 const ProfileHistoryItem = ({ item }: Props) => {
     return (
-        <div className={styles['history']}>
+        <Link to={`/?venue=${item.venueId}`} className={styles['history']}>
             <p className={styles['history__count']}>
                 {item.discountApplied}
                 <span className={styles['history__procent']}>%</span>
@@ -22,7 +23,7 @@ const ProfileHistoryItem = ({ item }: Props) => {
             <p className={styles['history__description']}>
                 {item.ruleDescription}
             </p>
-        </div>
+        </Link>
     );
 };
 
