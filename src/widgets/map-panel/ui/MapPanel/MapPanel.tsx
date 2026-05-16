@@ -14,6 +14,7 @@ const MapPanel = () => {
     useEffect(() => {
         if (searchParams.has('venue')) {
             setPanelOpen(false);
+            setSearchOpen(false);
         }
     }, [searchParams]);
 
