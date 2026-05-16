@@ -1,0 +1,56 @@
+.moderation-queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  &__search {
+    background-color: $color-bg-card;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-xl 0;
+  }
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-xl 0;
+  }
+
+  &__error-text,
+  &__empty {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text-secondary;
+  }
+
+  &__empty {
+    padding: $spacing-xl 0;
+    text-align: center;
+  }
+
+  &__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__item {
+    margin: 0;
+  }
+}
