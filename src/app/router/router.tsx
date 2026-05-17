@@ -3,7 +3,11 @@ import React from 'react';
 import { AuthPage } from '@/pages/auth';
 import { MapPage } from '@/pages/map';
 import { BusinessLayout, VenuesPage, VenueManagePage } from '@/pages/business';
-import { AdminLayout, AdminModerationPage } from '@/pages/admin';
+import {
+    AdminLayout,
+    AdminModerationPage,
+    AdminVenueDetailsPage,
+} from '@/pages/admin';
 import { AddVenueForm } from '@/features/venue-create';
 import { EditVenueForm } from '@/features/venue-edit';
 import { AdminProtectedRoute, ProtectedRoute } from '@/shared/ui';
@@ -66,7 +70,7 @@ export const router = createBrowserRouter([
                 element: <AdminModerationPage />,
                 children: [
                     { index: true, element: null },
-                    { path: ':id', element: null },
+                    { path: ':id', element: <AdminVenueDetailsPage /> },
                 ],
             },
         ],
