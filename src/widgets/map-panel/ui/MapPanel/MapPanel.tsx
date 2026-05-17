@@ -1,13 +1,22 @@
 import { Button, Input } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './MapPanel.module.scss';
 import { SearchPanel } from '@/features/map-search';
 import { ProfilePanel } from '@/features/profile-panel';
+import { useSearchParams } from 'react-router-dom';
 
 const MapPanel = () => {
     const [isSearchOpen, setSearchOpen] = useState(false);
     const [isPanelOpen, setPanelOpen] = useState(false);
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        if (searchParams.has('venue')) {
+            setPanelOpen(false);
+            setSearchOpen(false);
+        }
+    }, [searchParams]);
 
     return (
         <>

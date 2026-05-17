@@ -27,7 +27,7 @@
 
 .profile-auth__avatar {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
   flex-grow: 1;
 
@@ -37,17 +37,12 @@
 }
 
 .profile-auth__avatar-icon {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: url("@/shared/assets/avatar.png") no-repeat center center;
   background-size: contain;
   flex-shrink: 0;
-
-  @media (min-width: $tablet) {
-    width: 48px;
-    height: 48px;
-  }
 }
 
 .profile-auth__name-btn {
