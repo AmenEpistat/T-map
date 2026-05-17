@@ -32,6 +32,13 @@ const createSeedUsers = (): MockUser[] => [
         nickname: 'Admin',
         role: 'ADMIN',
     },
+    {
+        userId: SEED_OWNER_ID,
+        email: 'owner@tmap.local',
+        password: 'owner123',
+        nickname: 'Owner',
+        role: 'BUSINESS_OWNER',
+    },
 ];
 
 const createSeedVenues = (): VenueOwnerResponse[] => {

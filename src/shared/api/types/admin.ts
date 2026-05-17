@@ -3,6 +3,7 @@ import type { VenueCategory, VenueModerationStatus } from './venue';
 export interface AdminVenueModeration {
     id: string;
     ownerId: string;
+    ownerEmail: string;
     name: string;
     address: string;
     lat: number;

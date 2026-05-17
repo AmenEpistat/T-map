@@ -20,9 +20,20 @@ type IdParam = { id: string };
 type ListResponse = AdminVenueModerationPage | ErrorResponse;
 type ItemResponse = AdminVenueModeration | ErrorResponse;
 
+const getOwnerEmail = (ownerId: string): string => {
+    const owner = mockDb.users.find((user) => user.userId === ownerId);
+
+    if (!owner) {
+        return 'unknown@tmap.local';
+    }
+
+    return owner.email;
+};
+
 const toAdminVenue = (venue: VenueOwnerResponse): AdminVenueModeration => ({
     id: venue.id,
     ownerId: venue.ownerId,
+    ownerEmail: getOwnerEmail(venue.ownerId),
     name: venue.name,
     address: venue.address,
     lat: venue.lat,
