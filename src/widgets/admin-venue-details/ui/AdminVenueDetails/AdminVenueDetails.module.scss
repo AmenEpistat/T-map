@@ -4,49 +4,18 @@
   padding: $spacing-xl;
   display: flex;
   flex-direction: column;
-  gap: $spacing-xl;
+  gap: $spacing-lg;
 
-  &__photo {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background: $color-bg-control;
-    border-radius: $border-radius-base;
-    overflow: hidden;
-  }
-
-  &__image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  &__photo-placeholder {
-    width: 100%;
-    height: 100%;
+  &__header {
     display: flex;
     align-items: center;
-    justify-content: center;
-  }
-
-  &__photo-placeholder-icon {
-    font-size: 48px;
-    color: $color-text-secondary;
+    gap: $spacing-md;
   }
 
   &__content {
     display: flex;
     flex-direction: column;
     gap: $spacing-md;
-  }
-
-  &__title {
-    margin: 0;
-    font-family: $font-family-base;
-    font-size: 24px;
-    line-height: 32px;
-    font-weight: 600;
-    color: $color-text;
   }
 
   &__name {
@@ -75,6 +44,65 @@
   &__fact-label {
     color: $color-text-secondary;
   }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: $border-radius-base;
+    color: $color-text-secondary;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    padding: 0;
+    flex-shrink: 0;
+
+    &:hover {
+      background: $color-bg-control;
+      color: $color-text;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__photo {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: $color-bg-control;
+    border-radius: $border-radius-base;
+    overflow: hidden;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__photo-placeholder-icon {
+    font-size: 48px;
+    color: $color-text-secondary;
+  }
 }
 
 @media (max-width: $tablet) {
@@ -84,7 +112,11 @@
 
     &__title {
       font-size: 22px;
-      line-height: 30px;
+      line-height: 28px;
+    }
+
+    &__photo-placeholder-icon {
+      font-size: 40px;
     }
   }
 }

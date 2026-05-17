@@ -30,10 +30,16 @@
   }
 }
 
-@media (max-width: $desktop) {
+@media (max-width: $tablet) {
   .admin-moderation-page {
     &__columns {
       grid-template-columns: 1fr;
+    }
+
+    &__header--hidden-on-mobile,
+    &__queue--hidden-on-mobile,
+    &__details--hidden-on-mobile {
+      display: none;
     }
   }
 }

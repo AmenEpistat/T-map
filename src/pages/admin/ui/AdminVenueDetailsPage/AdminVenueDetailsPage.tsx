@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Spin } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { moderationStore } from '@/entities/admin-venue';
@@ -9,6 +9,11 @@ import styles from './AdminVenueDetailsPage.module.scss';
 
 export const AdminVenueDetailsPage = observer(() => {
     const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
+
+    const handleBack = (): void => {
+        navigate('/admin/moderation');
+    };
 
     useEffect(() => {
         if (!id) return;
@@ -57,7 +62,7 @@ export const AdminVenueDetailsPage = observer(() => {
 
     return (
         <div className={styles['admin-venue-details-page']}>
-            <AdminVenueDetails venue={data} />
+            <AdminVenueDetails venue={data} onBack={handleBack} />
         </div>
     );
 });
