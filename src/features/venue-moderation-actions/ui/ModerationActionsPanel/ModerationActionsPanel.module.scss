@@ -54,7 +54,7 @@
   }
 }
 
-@media (max-width: 374px) {
+@media (width <= 374px) {
   .moderation-actions-panel {
     &__actions {
       grid-template-columns: 1fr;

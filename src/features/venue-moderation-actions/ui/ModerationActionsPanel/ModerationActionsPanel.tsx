@@ -84,7 +84,7 @@ export const ModerationActionsPanel = ({
 
     return (
         <section className={styles['moderation-actions-panel']}>
-            <label className={styles['moderation-actions-panel__field']}>
+            <div className={styles['moderation-actions-panel__field']}>
                 <span className={styles['moderation-actions-panel__label']}>
                     Причина отказа
                 </span>
@@ -98,7 +98,7 @@ export const ModerationActionsPanel = ({
                     disabled={isSubmitting}
                     className={styles['moderation-actions-panel__textarea']}
                 />
-            </label>
+            </div>
 
             <div className={styles['moderation-actions-panel__actions']}>
                 <Button
