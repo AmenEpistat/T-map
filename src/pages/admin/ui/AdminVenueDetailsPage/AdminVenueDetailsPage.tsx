@@ -6,6 +6,7 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import { moderationStore } from '@/entities/admin-venue';
 import { AdminVenueDetails } from '@/widgets/admin-venue-details';
 import styles from './AdminVenueDetailsPage.module.scss';
+import { ModerationActionsPanel } from '@/features/venue-moderation-actions';
 
 export const AdminVenueDetailsPage = observer(() => {
     const { id } = useParams<{ id: string }>();
@@ -63,6 +64,11 @@ export const AdminVenueDetailsPage = observer(() => {
     return (
         <div className={styles['admin-venue-details-page']}>
             <AdminVenueDetails venue={data} onBack={handleBack} />
+
+            {(data.moderationStatus === 'PENDING' ||
+                data.moderationStatus === 'PENDING_UPDATE') && (
+                <ModerationActionsPanel venueId={data.id} />
+            )}
         </div>
     );
 });

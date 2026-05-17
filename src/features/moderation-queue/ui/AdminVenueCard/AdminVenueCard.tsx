@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import type { AdminVenueModeration } from '@/shared/api/types';
 import { classNames } from '@/shared/utils/classNames';
 import styles from './AdminVenueCard.module.scss';
+import { VENUE_STATUS_COLORS, VENUE_STATUS_LABELS } from '@/entities/venue';
 
 interface AdminVenueCardProps {
     venue: AdminVenueModeration;
@@ -27,8 +28,11 @@ export const AdminVenueCard = ({ venue }: AdminVenueCardProps) => {
                     {venue.name}
                 </h3>
 
-                <Tag color='default' style={{ width: 'fit-content' }}>
-                    На модерации
+                <Tag
+                    color={VENUE_STATUS_COLORS[venue.moderationStatus]}
+                    style={{ width: 'fit-content' }}
+                >
+                    {VENUE_STATUS_LABELS[venue.moderationStatus]}
                 </Tag>
             </div>
 

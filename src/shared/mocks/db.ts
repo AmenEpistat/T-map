@@ -129,7 +129,7 @@ const createSeedVenues = (): VenueOwnerResponse[] => {
             description: 'Букинистический магазин с редкими изданиями.',
             category: 'shopping',
             h3Res9: '89115b22b23ffff',
-            moderationStatus: 'PENDING',
+            moderationStatus: 'PENDING_UPDATE',
             createdAt: now,
             updatedAt: now,
         },
