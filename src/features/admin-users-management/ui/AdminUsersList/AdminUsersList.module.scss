@@ -1,6 +1,7 @@
 .admin-users-list {
   display: flex;
   flex-direction: column;
+  width: $card-width;
   gap: $spacing-lg;
 
   &__search {

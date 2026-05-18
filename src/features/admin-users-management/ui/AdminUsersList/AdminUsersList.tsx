@@ -8,6 +8,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { adminUsersStore } from '@/entities/admin-user';
 import { AdminUserCard } from '../AdminUserCard/AdminUserCard';
 import styles from './AdminUsersList.module.scss';
+import { authStore } from '@/features/auth';
 
 const SEARCH_DEBOUNCE_MS = 400;
 
@@ -118,6 +119,9 @@ export const AdminUsersList = observer(() => {
         });
     };
 
+    const isProtectedUser = (user: AdminUserModeration): boolean =>
+        user.id === authStore.user?.userId || user.role === 'ADMIN';
+
     const hasUsers = users.length > 0;
     const hasQuery = adminUsersStore.searchQuery.trim().length > 0;
     const isInitialLoading = isLoading && data === null;
@@ -175,8 +179,16 @@ export const AdminUsersList = observer(() => {
                                     >
                                         <AdminUserCard
                                             user={user}
-                                            onBlock={handleBlock}
-                                            onUnblock={handleUnblock}
+                                            onBlock={
+                                                isProtectedUser(user)
+                                                    ? undefined
+                                                    : handleBlock
+                                            }
+                                            onUnblock={
+                                                isProtectedUser(user)
+                                                    ? undefined
+                                                    : handleUnblock
+                                            }
                                         />
                                     </li>
                                 ))}

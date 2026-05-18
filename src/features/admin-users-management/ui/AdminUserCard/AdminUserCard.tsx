@@ -46,20 +46,16 @@ export const AdminUserCard = ({
 
     return (
         <article className={styles['admin-user-card']}>
-            <div className={styles['admin-user-card__content']}>
-                <div className={styles['admin-user-card__main']}>
-                    <h3 className={styles['admin-user-card__nickname']}>
-                        {user.nickname}
-                    </h3>
+            <div className={styles['admin-user-card__main']}>
+                <h3 className={styles['admin-user-card__nickname']}>
+                    {user.nickname}
+                </h3>
 
-                    <p className={styles['admin-user-card__email']}>
-                        {user.email}
-                    </p>
+                <p className={styles['admin-user-card__email']}>{user.email}</p>
 
-                    <p className={styles['admin-user-card__date']}>
-                        Зарегистрирован {formatDate(user.createdAt)}
-                    </p>
-                </div>
+                <p className={styles['admin-user-card__date']}>
+                    Зарегистрирован {formatDate(user.createdAt)}
+                </p>
 
                 <Tag
                     color={user.blocked ? 'red' : 'green'}
