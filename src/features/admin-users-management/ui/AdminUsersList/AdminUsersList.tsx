@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Input, Pagination, Spin, message } from 'antd';
+import { Button, Input, Modal, Pagination, Spin, message } from 'antd';
+import { isAxiosError } from 'axios';
+import { getErrorMessage } from '@/shared/utils/getErrorMessage';
+import type { AdminUserModeration } from '@/shared/api/types';
 import { SearchOutlined } from '@ant-design/icons';
 import { adminUsersStore } from '@/entities/admin-user';
 import { AdminUserCard } from '../AdminUserCard/AdminUserCard';
@@ -27,6 +30,8 @@ export const AdminUsersList = observer(() => {
     }, [inputValue]);
 
     const { data, isLoading, error } = adminUsersStore.page;
+    const users = data?.items ?? [];
+    const totalElements = data?.totalElements ?? 0;
 
     const handleRetry = (): void => {
         void adminUsersStore.goToPage(adminUsersStore.currentPage);
@@ -36,16 +41,83 @@ export const AdminUsersList = observer(() => {
         void adminUsersStore.goToPage(page - 1);
     };
 
+    const refreshCurrentPage = async (): Promise<void> => {
+        await adminUsersStore.goToPage(adminUsersStore.currentPage);
+    };
+
+    const handleBlockConflict = async (): Promise<void> => {
+        void message.warning(
+            'Пользователь уже был заблокирован другим администратором'
+        );
+        await refreshCurrentPage();
+    };
+
+    const handleUnblockConflict = async (): Promise<void> => {
+        void message.warning(
+            'Пользователь уже был разблокирован другим администратором'
+        );
+        await refreshCurrentPage();
+    };
+
+    const blockUser = async (user: AdminUserModeration): Promise<void> => {
+        try {
+            await adminUsersStore.block(user.id);
+            void message.success('Пользователь заблокирован');
+        } catch (error) {
+            if (isAxiosError(error) && error.response?.status === 409) {
+                await handleBlockConflict();
+                return;
+            }
+
+            void message.error(
+                getErrorMessage('Не удалось заблокировать пользователя', error)
+            );
+        }
+    };
+
+    const unblockUser = async (user: AdminUserModeration): Promise<void> => {
+        try {
+            await adminUsersStore.unblock(user.id);
+            void message.success('Пользователь разблокирован');
+        } catch (error) {
+            if (isAxiosError(error) && error.response?.status === 409) {
+                await handleUnblockConflict();
+                return;
+            }
+
+            void message.error(
+                getErrorMessage('Не удалось разблокировать пользователя', error)
+            );
+        }
+    };
+
     const handleBlock = (id: string): void => {
-        void message.info(`Блокировка пользователя ${id}`);
+        const user = users.find((item) => item.id === id);
+        if (!user) return;
+
+        Modal.confirm({
+            title: 'Заблокировать пользователя?',
+            content: `${user.email} не сможет войти в систему.`,
+            okText: 'Заблокировать',
+            cancelText: 'Отмена',
+            okButtonProps: { danger: true },
+            onOk: () => blockUser(user),
+        });
     };
 
     const handleUnblock = (id: string): void => {
-        void message.info(`Разблокировка пользователя ${id}`);
+        const user = users.find((item) => item.id === id);
+        if (!user) return;
+
+        Modal.confirm({
+            title: 'Разблокировать пользователя?',
+            content: `${user.email} снова сможет войти в систему.`,
+            okText: 'Разблокировать',
+            cancelText: 'Отмена',
+            onOk: () => unblockUser(user),
+        });
     };
 
-    const users = data?.items ?? [];
-    const totalElements = data?.totalElements ?? 0;
     const hasUsers = users.length > 0;
     const hasQuery = adminUsersStore.searchQuery.trim().length > 0;
     const isInitialLoading = isLoading && data === null;

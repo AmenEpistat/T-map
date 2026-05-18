@@ -4,23 +4,11 @@ import { Button, Input, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { moderationStore } from '@/entities/admin-venue';
 import styles from './ModerationActionsPanel.module.scss';
-import type { ErrorResponse } from '@/shared/api/types';
+import { getErrorMessage } from '@/shared/utils/getErrorMessage';
 
 interface ModerationActionsPanelProps {
     venueId: string;
 }
-
-const getErrorMessage = (fallback: string, error: unknown): string => {
-    if (isAxiosError<ErrorResponse>(error)) {
-        return error.response?.data?.message ?? fallback;
-    }
-
-    if (error instanceof Error) {
-        return error.message;
-    }
-
-    return fallback;
-};
 
 export const ModerationActionsPanel = ({
     venueId,
