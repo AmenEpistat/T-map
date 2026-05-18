@@ -20,7 +20,9 @@ tags:
   - name: Venues (Public)
     description: Public venue pages
   - name: Business (Owner)
-    description: Venue, content, promotion and loyalty management for owners
+    description: Venue management for owners
+  - name: Business Owner Loyalty
+    description: Loyalty rule management for owners
   - name: Profile
     description: Current user profile and loyalty history
   - name: AdminVenues
@@ -181,16 +183,6 @@ paths:
             minimum: 5
             maximum: 9
             example: 8
-        - name: category
-          in: query
-          description: Category filter. Can be repeated.
-          style: form
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-              enum: [food, entertainment, shopping]
         - name: window
           in: query
           description: Aggregation window in minutes
@@ -294,7 +286,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/VenuePublicResponse'
+                  $ref: '#/components/schemas/VenueViewportResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
 
@@ -348,75 +340,82 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /venues/{id}/promos:
+  /venues/{id}/loyalty-rules/{ruleId}/qr:
     get:
       tags: [Venues (Public)]
-      summary: Get active venue promos
-      description: Returns only active promos for venues with ACTIVE moderation status
-      operationId: getVenuePromos
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Active venue promos
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/VenuePromoResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /venues/{id}/loyalty-rules:
-    get:
-      tags: [Venues (Public)]
-      summary: Get active loyalty rules for a venue
+      summary: Generate loyalty QR for selected venue rule
       description: >
-        Returns active loyalty rules available for the given venue.
-        Public endpoint — users need to see available discounts before scanning QR.
-      operationId: getVenueLoyaltyRules
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Active loyalty rules
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/LoyaltyRuleResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  # ── Profile (current user) ──────────────────
-  /profile/loyalty/qr:
-    get:
-      tags: [Profile]
-      summary: Get current user loyalty QR payload
-      operationId: getMyLoyaltyQr
-      description: Returns data for rendering the personal loyalty QR code.
+        Generates a short-lived QR payload for the authenticated user and the selected
+        loyalty rule of the venue.
+      operationId: getVenueLoyaltyQr
       x-required-roles: [USER]
       security:
         - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: ruleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
-          description: User QR code payload
+          description: One-time QR payload for selected loyalty rule
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoyaltyQrResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ── Profile (current user) ──────────────────
+  /profile:
+    get:
+      tags: [Profile]
+      summary: Get current user profile
+      operationId: getMyProfile
+      x-required-roles: [USER, BUSINESS_OWNER, ADMIN]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /profile/password:
+    patch:
+      tags: [Profile]
+      summary: Change current user password
+      operationId: changeMyPassword
+      x-required-roles: [USER, BUSINESS_OWNER, ADMIN]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        '204':
+          description: Password changed successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
 
@@ -438,29 +437,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoyaltyVerificationPage'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-
-  /profile/loyalty/used-promos:
-    get:
-      tags: [Profile]
-      summary: Get current user used promos history
-      operationId: getUsedPromosHistory
-      x-required-roles: [USER]
-      security:
-        - bearerAuth: []
-      parameters:
-        - $ref: '#/components/parameters/PageParam'
-        - $ref: '#/components/parameters/SizeParam'
-      responses:
-        '200':
-          description: Current user used promos history
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UsedPromoPage'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -680,9 +656,10 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  # ── Business Owner Loyalty ──────────────────
   /business/venues/{id}/loyalty-rules:
     get:
-      tags: [Business (Owner)]
+      tags: [Business Owner Loyalty]
       summary: Get venue loyalty rules (owner view)
       operationId: getBusinessVenueLoyaltyRules
       x-required-roles: [BUSINESS_OWNER]
@@ -711,7 +688,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
     post:
-      tags: [Business (Owner)]
+      tags: [Business Owner Loyalty]
       summary: Create loyalty rule
       operationId: createBusinessVenueLoyaltyRule
       x-required-roles: [BUSINESS_OWNER]
@@ -746,133 +723,36 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
-  /business/venues/{id}/promos:
-    post:
-      tags: [Business (Owner)]
-      summary: Create promo
-      operationId: createBusinessVenuePromo
-      x-required-roles: [BUSINESS_OWNER]
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/VenuePromoCreateRequest'
-      responses:
-        '201':
-          description: Promo created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VenuePromoResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /business/promos/{id}:
-    get:
-      tags: [Business (Owner)]
-      summary: Get promo by id
-      operationId: getBusinessPromoById
-      x-required-roles: [BUSINESS_OWNER]
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Promo details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VenuePromoResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    put:
-      tags: [Business (Owner)]
-      summary: Update promo
-      operationId: updateBusinessPromo
-      x-required-roles: [BUSINESS_OWNER]
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/VenuePromoUpdateRequest'
-      responses:
-        '200':
-          description: Promo updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VenuePromoResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    delete:
-      tags: [Business (Owner)]
-      summary: Delete promo
-      operationId: deleteBusinessPromo
-      x-required-roles: [BUSINESS_OWNER]
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '204':
-          description: Promo deleted successfully
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
   /business/loyalty-rules/{id}:
+    get:
+      tags: [Business Owner Loyalty]
+      summary: Get loyalty rule by id
+      operationId: getBusinessLoyaltyRuleById
+      x-required-roles: [BUSINESS_OWNER]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Loyalty rule details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyRuleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
     patch:
-      tags: [Business (Owner)]
+      tags: [Business Owner Loyalty]
       summary: Update or deactivate loyalty rule
       operationId: updateBusinessLoyaltyRule
       x-required-roles: [BUSINESS_OWNER]
@@ -911,7 +791,7 @@ paths:
 
   /business/loyalty-rules/{ruleId}/activate:
     post:
-      tags: [Business (Owner)]
+      tags: [Business Owner Loyalty]
       summary: Activate guest loyalty QR code
       description: >
         Allows the authenticated owner of the venue linked to the selected
@@ -953,7 +833,7 @@ paths:
 
   /business/loyalty-rules/{id}/history:
     get:
-      tags: [Business (Owner)]
+      tags: [Business Owner Loyalty]
       summary: Get loyalty rule usage history
       operationId: getBusinessLoyaltyRuleHistory
       x-required-roles: [BUSINESS_OWNER]
@@ -1109,28 +989,63 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
 
-  /admin/users:
+  /admin/users/search:
     get:
       tags: [AdminUsers]
-      summary: Get users for moderation
-      operationId: getAdminUsers
+      summary: Search users
+      description: >
+        Searches users by any combination of filters. All parameters are optional.
+        At least one filter or a paginated full-list view is returned when no filters are provided.
+      operationId: searchAdminUsers
       x-required-roles: [ADMIN]
       security:
         - bearerAuth: []
       parameters:
+        - name: nickname
+          in: query
+          description: Partial or full nickname (case-insensitive)
+          schema:
+            type: string
+            example: "Tatarin"
+        - name: email
+          in: query
+          description: Partial or full email (case-insensitive)
+          schema:
+            type: string
+            example: "kazan"
+        - name: role
+          in: query
+          schema:
+            $ref: '#/components/schemas/UserRole'
         - name: blocked
           in: query
           schema:
             type: boolean
+        - name: createdFrom
+          in: query
+          description: Lower bound for account creation date (inclusive)
+          schema:
+            type: string
+            format: date-time
+            example: "2024-01-01T00:00:00Z"
+        - name: createdTo
+          in: query
+          description: Upper bound for account creation date (inclusive)
+          schema:
+            type: string
+            format: date-time
+            example: "2025-12-31T23:59:59Z"
         - $ref: '#/components/parameters/PageParam'
         - $ref: '#/components/parameters/SizeParam'
       responses:
         '200':
-          description: User moderation queue
+          description: Matching users
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminUserModerationPage'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -1151,12 +1066,6 @@ paths:
           schema:
             type: string
             format: uuid
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminModerationDecision'
       responses:
         '200':
           description: User blocked
@@ -1277,11 +1186,52 @@ components:
           type: string
           format: uuid
           example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        email:
+          type: string
+          format: email
+          example: "kazan_guest@example.com"
+        nickname:
+          type: string
+          example: "Tatarin116"
         role:
           $ref: '#/components/schemas/UserRole'
         accessToken:
           type: string
           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+    ProfileResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        email:
+          type: string
+          format: email
+          example: "kazan_guest@example.com"
+        nickname:
+          type: string
+          example: "Tatarin116"
+        role:
+          $ref: '#/components/schemas/UserRole'
+        createdAt:
+          type: string
+          format: date-time
+
+    ChangePasswordRequest:
+      type: object
+      required: [currentPassword, newPassword]
+      properties:
+        currentPassword:
+          type: string
+          minLength: 8
+          example: "Echak123!"
+        newPassword:
+          type: string
+          minLength: 8
+          pattern: '^(?=.*\d).{8,}$'
+          example: "NewPass123!"
 
     UserRole:
       type: string
@@ -1312,7 +1262,7 @@ components:
 
     ClusterDTO:
       type: object
-      required: [h3Index, txCount, avgCheck]
+      required: [h3Index, txCount, avgCheck, isAnomaly]
       properties:
         h3Index:
           type: string
@@ -1327,10 +1277,22 @@ components:
           format: double
           description: Average check amount
           example: 850.00
+        isAnomaly:
+          type: boolean
+          description: True if zone is currently showing anomalous activity
+          default: false
+          example: false
+        anomalyRatio:
+          type: number
+          format: double
+          description: |
+              How many times higher current activity is compared to the 7-day baseline.
+              Present only when isAnomaly=true.
+          example: 3.4
 
     ClusterDetailsResponse:
       type: object
-      required: [h3Index, resolution, districtName, districtImageUrl, txCount, avgCheck]
+      required: [h3Index, resolution, districtName, districtImageUrl, txCount, avgCheck, isAnomaly]
       properties:
         h3Index:
           type: string
@@ -1346,10 +1308,6 @@ components:
           type: string
           description: URL or path to district image for popup. Empty string if image is unavailable.
           example: ""
-        category:
-          type: string
-          enum: [food, entertainment, shopping]
-          example: "food"
         hourBucket:
           type: string
           format: date-time
@@ -1367,6 +1325,21 @@ components:
         createdAt:
           type: string
           format: date-time
+        isAnomaly:
+          type: boolean
+          description: True if zone is currently showing anomalous activity
+          default: false
+          example: true
+        anomalyRatio:
+          type: number
+          format: double
+          description: How many times higher current activity is compared to baseline. Null if not anomalous.
+          example: 3.4
+        baselineAvg:
+          type: number
+          format: double
+          description: Average tx_count for the same hour over the last 7 days. Null if not anomalous.
+          example: 100.5
 
     # ── Venue DTOs ────────────────────────────
     VenueCreateRequest:
@@ -1424,6 +1397,33 @@ components:
         music:
           type: string
 
+    VenueViewportResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "5085d345-3129-4e4b-972d-8bcf9a2ea9c9"
+        name:
+          type: string
+          example: "Скуратов Кофе"
+        lat:
+          type: number
+          format: double
+          example: 55.7915
+        lng:
+          type: number
+          format: double
+          example: 49.1118
+        category:
+          type: string
+          enum: [food, entertainment, shopping]
+          example: "food"
+        peopleNow:
+          type: integer
+          description: Approximate number of people currently at the venue based on tx
+          example: 18
+
     VenuePublicResponse:
       type: object
       properties:
@@ -1474,8 +1474,7 @@ components:
         promotions:
           type: array
           items:
-            $ref: '#/components/schemas/VenuePromoResponse'
-
+            $ref: '#/components/schemas/LoyaltyRuleResponse'
     VenueSearchResultResponse:
       type: object
       properties:
@@ -1535,78 +1534,15 @@ components:
             Image file. Allowed formats: jpeg, png, webp.
             Maximum size: 10 MB.
 
-    # ── Promo DTOs ────────────────────────────
-    VenuePromoResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        venueId:
-          type: string
-          format: uuid
-        title:
-          type: string
-          example: "Счастливые часы!"
-        description:
-          type: string
-          example: "Скидка 20% на всю выпечку после 20:00"
-        startsAt:
-          type: string
-          format: date-time
-        endsAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-
-    VenuePromoCreateRequest:
-      type: object
-      required: [title, startsAt, endsAt]
-      properties:
-        title:
-          type: string
-          example: "Счастливые часы"
-        description:
-          type: string
-          example: "Скидка 20% на всю выпечку после 20:00"
-        startsAt:
-          type: string
-          format: date-time
-        endsAt:
-          type: string
-          format: date-time
-
-    VenuePromoUpdateRequest:
-      type: object
-      properties:
-        title:
-          type: string
-        description:
-          type: string
-        startsAt:
-          type: string
-          format: date-time
-        endsAt:
-          type: string
-          format: date-time
-
     # ── Loyalty DTOs ──────────────────────────
     LoyaltyActivationRequest:
       type: object
-      required: [userId, venueId]
+      required: [qrPayload]
       properties:
-        userId:
+        qrPayload:
           type: string
-          format: uuid
-          description: ID пользователя из отсканированного QR-кода
-          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-        venueId:
-          type: string
-          format: uuid
-          description: ID заведения, в котором происходит активация
-          example: "5085d345-3129-4e4b-972d-8bcf9a2ea9c9"
+          description: One-time QR payload generated for the selected venue loyalty rule
+          example: "lqr:1:AbCdEfGhIjKlMnOpQrStUvWxYz0123456789"
 
     LoyaltyVerifyResponse:
       type: object
@@ -1626,9 +1562,8 @@ components:
         status:
           $ref: '#/components/schemas/LoyaltyActivationStatus'
         discountApplied:
-          type: number
-          format: double
-          example: 15.0
+          type: integer
+          example: 15
         verifiedAt:
           type: string
           format: date-time
@@ -1640,14 +1575,19 @@ components:
     LoyaltyQrResponse:
       type: object
       properties:
-        userId:
+        venueId:
           type: string
           format: uuid
-          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        ruleId:
+          type: string
+          format: uuid
         qrPayload:
           type: string
-          description: String to be encoded into QR (e.g. JWT or HMAC signed string)
-          example: "usr_3fa85f6457174562b3fc2c963f66afa6:signature"
+          description: One-time QR payload to be encoded by the client
+          example: "lqr:1:AbCdEfGhIjKlMnOpQrStUvWxYz0123456789"
+        expiresAt:
+          type: string
+          format: date-time
 
     LoyaltyRuleResponse:
       type: object
@@ -1662,15 +1602,15 @@ components:
           type: string
           example: "Скидка 15% на капучино"
         discountPercent:
-          type: number
-          format: double
-          example: 15.0
+          type: integer
+          example: 15
         maxUsages:
           type: integer
           example: 100
-        currentUsages:
+        remainingUsages:
           type: integer
-          example: 45
+          format: int64
+          example: 55
         active:
           type: boolean
           example: true
@@ -1684,13 +1624,14 @@ components:
       properties:
         description:
           type: string
+          minLength: 1
+          maxLength: 255
           example: "Скидка 15% на капучино"
         discountPercent:
-          type: number
-          format: double
+          type: integer
           minimum: 0
           maximum: 100
-          example: 15.0
+          example: 15
         maxUsages:
           type: integer
           minimum: 1
@@ -1701,9 +1642,10 @@ components:
       properties:
         description:
           type: string
+          minLength: 1
+          maxLength: 255
         discountPercent:
-          type: number
-          format: double
+          type: integer
           minimum: 0
           maximum: 100
         maxUsages:
@@ -1724,6 +1666,10 @@ components:
         venueName:
           type: string
           example: "Скуратов Кофе"
+        category:
+          type: string
+          enum: [food, entertainment, shopping]
+          example: "food"
         ruleId:
           type: string
           format: uuid
@@ -1731,9 +1677,8 @@ components:
           type: string
           example: "Скидка 15% на капучино"
         discountApplied:
-          type: number
-          format: double
-          example: 15.0
+          type: integer
+          example: 15
         verifiedAt:
           type: string
           format: date-time
@@ -1753,39 +1698,7 @@ components:
           type: integer
         totalElements:
           type: integer
-
-    UsedPromoResponse:
-      type: object
-      properties:
-        venueName:
-          type: string
-          example: "ТЦ Кольцо"
-        description:
-          type: string
-          example: "-20% на билеты в кино"
-        discountPercent:
-          type: number
-          format: double
-          example: 20.0
-        usedAt:
-          type: string
-          format: date-time
-
-    UsedPromoPage:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/UsedPromoResponse'
-        page:
-          type: integer
-        size:
-          type: integer
-        totalPages:
-          type: integer
-        totalElements:
-          type: integer
+          format: int64
 
     BusinessLoyaltyVerificationResponse:
       type: object
@@ -1804,9 +1717,8 @@ components:
           type: string
           format: uuid
         discountApplied:
-          type: number
-          format: double
-          example: 15.0
+          type: integer
+          example: 15
         verifiedAt:
           type: string
           format: date-time
@@ -1826,14 +1738,19 @@ components:
           type: integer
         totalElements:
           type: integer
+          format: int64
 
     # ── Admin DTOs ────────────────────────────
     AdminModerationDecision:
       type: object
+      required:
+        - reason
       properties:
         reason:
           type: string
+          minLength: 1
           maxLength: 1000
+          pattern: '^(?!\s*$).+'
           example: "Заведение нарушает правила размещения (спам в названии)"
 
     AdminVenueModerationResponse:
@@ -1845,6 +1762,8 @@ components:
         ownerId:
           type: string
           format: uuid
+        ownerEmail:
+          type: string
         name:
           type: string
           example: "Скуратов Кофе"
@@ -1863,6 +1782,15 @@ components:
         category:
           type: string
           enum: [food, entertainment, shopping]
+        photoUrl:
+          type: string
+          format: uri
+        dishOfDay:
+          type: string
+          example: "Нитро кофе + Круассан"
+        music:
+          type: string
+          example: "Indie Pop"
         moderationStatus:
           $ref: '#/components/schemas/VenueModerationStatus'
         rejectReason:
@@ -1889,6 +1817,7 @@ components:
           type: integer
         totalElements:
           type: integer
+          format: int64
 
     AdminUserModerationResponse:
       type: object
@@ -1927,6 +1856,7 @@ components:
           type: integer
         totalElements:
           type: integer
+          format: int64
 
     # ── Error Schema ──────────────────────────
     ErrorResponse:
@@ -1983,7 +1913,7 @@ components:
             message: "Requested venue with ID 5085d345-3129-4e4b-972d-8bcf9a2ea9c9 was not found."
 
     Conflict:
-      description: Data conflict (e.g. duplicate email, already used promo, activation limit reached)
+      description: Data conflict (e.g. duplicate email, loyalty rule already used, activation limit reached)
       content:
         application/json:
           schema:
