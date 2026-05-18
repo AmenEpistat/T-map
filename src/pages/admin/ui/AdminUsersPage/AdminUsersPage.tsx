@@ -1,3 +1,4 @@
+import { AdminUsersList } from '@/features/admin-users-management';
 import styles from './AdminUsersPage.module.scss';
 
 export const AdminUsersPage = () => {
@@ -11,6 +12,8 @@ export const AdminUsersPage = () => {
                     Управляйте пользователями T-map
                 </p>
             </header>
+
+            <AdminUsersList />
         </section>
     );
 };

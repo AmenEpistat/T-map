@@ -1,0 +1,74 @@
+.admin-users-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  &__search {
+    background-color: $color-bg-card;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  &__loading,
+  &__error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-xl 0;
+  }
+
+  &__error {
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__error-text,
+  &__empty {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text-secondary;
+  }
+
+  &__empty {
+    padding: $spacing-xl 0;
+    text-align: center;
+  }
+
+  &__items-wrap {
+    position: relative;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    margin: 0;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $card-radius;
+    background: rgb(255 255 255 / 60%);
+  }
+
+  &__pagination {
+    align-self: center;
+  }
+}
