@@ -1,0 +1,25 @@
+.admin-moderation-empty-state {
+  background: $color-bg-card;
+  border-radius: $card-radius;
+  min-height: 320px;
+  padding: $spacing-xl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-md;
+
+  &__icon {
+    font-size: 40px;
+    color: $color-text-secondary;
+  }
+
+  &__text {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text-secondary;
+    text-align: center;
+  }
+}

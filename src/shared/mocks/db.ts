@@ -32,6 +32,13 @@ const createSeedUsers = (): MockUser[] => [
         nickname: 'Admin',
         role: 'ADMIN',
     },
+    {
+        userId: SEED_OWNER_ID,
+        email: 'owner@tmap.local',
+        password: 'owner123',
+        nickname: 'Owner',
+        role: 'BUSINESS_OWNER',
+    },
 ];
 
 const createSeedVenues = (): VenueOwnerResponse[] => {
@@ -122,7 +129,7 @@ const createSeedVenues = (): VenueOwnerResponse[] => {
             description: 'Букинистический магазин с редкими изданиями.',
             category: 'shopping',
             h3Res9: '89115b22b23ffff',
-            moderationStatus: 'PENDING',
+            moderationStatus: 'PENDING_UPDATE',
             createdAt: now,
             updatedAt: now,
         },

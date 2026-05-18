@@ -59,6 +59,24 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
 
     return (
         <section className={styles['venue-info-card']}>
+            {venue.moderationStatus === 'REJECTED' && venue.rejectReason && (
+                <div className={styles['venue-info-card__reject-reason']}>
+                    <span
+                        className={
+                            styles['venue-info-card__reject-reason-label']
+                        }
+                    >
+                        Причина отказа
+                    </span>
+                    <p
+                        className={
+                            styles['venue-info-card__reject-reason-text']
+                        }
+                    >
+                        {venue.rejectReason}
+                    </p>
+                </div>
+            )}
             <div className={styles['venue-info-card__photo']}>
                 {venue.photoUrl ? (
                     <img

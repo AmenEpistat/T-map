@@ -7,7 +7,8 @@
   grid-template-areas:
     'photo'
     'buttons'
-    'links';
+    'links'
+    'reject-reason';
   gap: $spacing-xl;
   align-items: start;
 
@@ -108,16 +109,45 @@
       }
     }
   }
+
+  &__reject-reason {
+    grid-area: reject-reason;
+    padding: $spacing-md;
+    background: $color-error-bg;
+    border-radius: $border-radius-base;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  &__reject-reason-label {
+    font-family: $font-family-base;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__reject-reason-text {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text;
+    overflow-wrap: anywhere;
+  }
+
 }
 
-@media (max-width: 767px) {
+@media (width <= 767px) {
   .venue-info-card {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas:
       'photo'
       'buttons'
-      'links';
+      'links'
+      'reject-reason';
     gap: $spacing-md;
     padding: $spacing-md;
     border-radius: $card-radius;
@@ -150,7 +180,7 @@
   }
 }
 
-@media (max-width: 374px) {
+@media (width <= 374px) {
   .venue-info-card {
     &__buttons {
       grid-template-columns: 1fr;

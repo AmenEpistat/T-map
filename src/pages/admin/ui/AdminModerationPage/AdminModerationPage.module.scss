@@ -28,12 +28,29 @@
   &__details {
     min-width: 0;
   }
+
+  &__details {
+    width: 100%;
+    max-width: $card-width;
+    justify-self: start;
+  }
 }
 
-@media (max-width: $desktop) {
+@media (max-width: $tablet) {
   .admin-moderation-page {
     &__columns {
       grid-template-columns: 1fr;
+    }
+
+    &__details {
+      max-width: none;
+      justify-self: stretch;
+    }
+
+    &__header--hidden-on-mobile,
+    &__queue--hidden-on-mobile,
+    &__details--hidden-on-mobile {
+      display: none;
     }
   }
 }

@@ -21,9 +21,15 @@ class ModerationStore {
     loadQueue = async (): Promise<void> => {
         await this.queue.execute(
             wrap(
-                adminVenuesApi
-                    .getModerationQueue({ status: 'PENDING' })
-                    .then((page) => page.items)
+                Promise.all([
+                    adminVenuesApi.getModerationQueue({ status: 'PENDING' }),
+                    adminVenuesApi.getModerationQueue({
+                        status: 'PENDING_UPDATE',
+                    }),
+                ]).then(([pendingPage, pendingUpdatePage]) => [
+                    ...pendingPage.items,
+                    ...pendingUpdatePage.items,
+                ])
             )
         );
     };

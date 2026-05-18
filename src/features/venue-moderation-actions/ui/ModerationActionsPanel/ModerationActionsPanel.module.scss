@@ -1,0 +1,63 @@
+.moderation-actions-panel {
+  background: $color-bg-card;
+  border-radius: $card-radius;
+  padding: $spacing-xl;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  &__label {
+    font-family: $font-family-base;
+    font-size: 14px;
+    line-height: 22px;
+    color: $color-text;
+  }
+
+  &__textarea {
+    resize: none;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $spacing-md;
+  }
+
+  &__button {
+    width: 100%;
+    min-width: 0;
+
+    &--reject {
+      color: $color-bg-card;
+      background: $color-text;
+      border-color: $color-text;
+
+      &:hover,
+      &:focus {
+        color: $color-bg-card;
+        background: $color-text-dark-gray;
+        border-color: $color-text-dark-gray;
+      }
+
+      &:disabled {
+        color: $color-bg-card;
+        background: $color-text-secondary;
+        border-color: $color-text-secondary;
+      }
+    }
+  }
+}
+
+@media (width <= 374px) {
+  .moderation-actions-panel {
+    &__actions {
+      grid-template-columns: 1fr;
+    }
+  }
+}
