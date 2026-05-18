@@ -1,0 +1,109 @@
+.promo {
+  display: grid;
+  grid-template-columns: 1fr 15%;
+  height: 150px;
+  box-sizing: border-box;
+}
+
+.promo__content {
+  padding: 12px;
+  border-radius: 20px 0 0 20px;
+  background: linear-gradient(125deg, #ffdd2d 65%, #c095f4 65%);
+  position: relative;
+}
+
+.promo__qrcode {
+  padding: 12px;
+  border-radius: 0 20px 20px 0;
+  position: relative;
+  background: $color-link linear-gradient(to bottom, $color-bg 50%, transparent 51%) repeat-y 0 0;
+  background-size: 3px 20px;
+  mask-image: radial-gradient(circle at right, transparent 15px,black 16px);
+}
+
+.promo__code {
+  background: $color-bg !important;
+  width: 60px !important;
+  height: 70px !important;
+  padding: 8px !important;
+}
+
+.promo__btn {
+  color: $color-bg;
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  font-size: 16px;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.promo__price {
+  position: absolute;
+  color: $color-bg;
+  font-size: 25px;
+  bottom: -15px;
+  right: 15px;
+  font-weight: 700;
+  transform: scale(1.2, 1);
+  display: flex;
+}
+
+.promo {
+  display: grid;
+  grid-template-columns: 1fr 15%;
+  height: 150px;
+  box-sizing: border-box;
+}
+
+.promo__content {
+  padding: 12px;
+  border-radius: 20px 0 0 20px;
+  background: linear-gradient(125deg, #ffdd2d 65%, #c095f4 65%);
+  position: relative;
+}
+
+.promo__qrcode {
+  padding: 12px;
+  border-radius: 0 20px 20px 0;
+  position: relative;
+  background: $color-link linear-gradient(to bottom, $color-bg 50%, transparent 51%) repeat-y 0 0;
+  background-size: 3px 20px;
+  mask-image: radial-gradient(circle at right, transparent 15px,black 16px);
+}
+
+.promo__code {
+  background: $color-bg !important;
+  width: 60px !important;
+  height: 70px !important;
+  padding: 8px !important;
+}
+
+.promo__btn {
+  color: $color-bg;
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  font-size: 16px;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.promo__price {
+  position: absolute;
+  color: $color-bg;
+  font-size: 25px;
+  bottom: -15px;
+  right: 15px;
+  font-weight: 700;
+  transform: scale(1.2, 1);
+  display: flex;
+}
+
+.promo--skeleton__price :global(.ant-skeleton-input) {
+  max-width: 60px !important;
+  min-width: auto !important;
+}
+
+.promo--skeleton__usages :global(.ant-skeleton-button){
+  max-width: 300px !important;
+  min-width: 150px !important;
+}
