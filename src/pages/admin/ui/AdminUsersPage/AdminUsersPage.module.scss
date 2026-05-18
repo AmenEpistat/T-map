@@ -1,0 +1,28 @@
+.admin-users-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__description {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: 16px;
+    line-height: 24px;
+    color: $color-text-secondary;
+  }
+}

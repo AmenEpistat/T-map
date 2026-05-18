@@ -54,6 +54,8 @@ const register = http.post<never, RegisterRequest>(
             password: body.password,
             nickname: body.nickname,
             role: 'USER',
+            blocked: false,
+            createdAt: new Date().toISOString(),
         };
         mockDb.users.push(user);
 
