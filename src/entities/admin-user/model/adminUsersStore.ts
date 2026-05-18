@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { RequestState } from '@/shared/api/RequestState';
-import { adminUsersApi } from '@/entities/admin-user';
+import { adminUsersApi } from '../api/adminUsersApi';
 import type {
     AdminUserModeration,
     AdminUserModerationPage,
@@ -66,8 +66,7 @@ class AdminUsersStore {
         await this.page.execute(
             wrap(
                 adminUsersApi.search({
-                    email: query || undefined,
-                    nickname: query || undefined,
+                    query,
                     page: this.currentPage,
                     size: this.pageSize,
                 })

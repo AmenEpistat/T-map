@@ -78,6 +78,10 @@ const login = http.post<never, LoginRequest>(
             return err('UNAUTHORIZED', 'Invalid email or password.', 401);
         }
 
+        if (user.blocked) {
+            return err('FORBIDDEN', 'User is blocked.', 403);
+        }
+
         const refreshToken = generateRefreshToken();
         storeRefreshToken(refreshToken, user.userId);
         return HttpResponse.json<AuthResponse>(buildAuthResponse(user), {

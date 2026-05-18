@@ -5,13 +5,29 @@ import type {
     AdminUsersSearchParams,
 } from '@/shared/api/types';
 
+type AdminUsersSearchRequest = Omit<
+    AdminUsersSearchParams,
+    'email' | 'nickname'
+> & {
+    query?: string;
+};
+
 export const adminUsersApi = {
-    search: async (
-        params: AdminUsersSearchParams = {}
-    ): Promise<AdminUserModerationPage> => {
+    search: async ({
+        query,
+        ...params
+    }: AdminUsersSearchRequest = {}): Promise<AdminUserModerationPage> => {
+        const normalizedQuery = query?.trim() || undefined;
+
         const response = await apiClient.get<AdminUserModerationPage>(
             '/admin/users/search',
-            { params }
+            {
+                params: {
+                    ...params,
+                    email: normalizedQuery,
+                    nickname: normalizedQuery,
+                },
+            }
         );
 
         return response.data;
