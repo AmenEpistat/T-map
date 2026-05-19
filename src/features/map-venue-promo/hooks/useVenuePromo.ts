@@ -6,5 +6,6 @@ export const useVenuePromo = () => {
     return {
         data: data?.promotions || [],
         isLoading,
+        loadCode: (id: string) => publicVenueStore.loadVenueQrCode(id),
     };
 };

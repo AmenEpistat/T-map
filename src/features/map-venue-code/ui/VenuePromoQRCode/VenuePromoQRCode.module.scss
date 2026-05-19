@@ -1,0 +1,25 @@
+.qr-modal__wrapper{
+  aspect-ratio: 1 / 1 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.qr-modal__qrcode {
+  flex-grow: 1;
+  width: max-content !important;
+}
+
+.qr-modal__title {
+  text-align: center;
+}
+
+.qr-modal__description {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  color: $color-text-secondary;
+  margin: 0;
+}

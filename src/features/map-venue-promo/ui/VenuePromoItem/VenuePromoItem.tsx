@@ -5,9 +5,10 @@ import { Button } from 'antd';
 
 interface Props {
     item: Promo;
+    onOpen?: (ruleId: string) => void;
 }
 
-const VenuePromoItem = ({ item }: Props) => {
+const VenuePromoItem = ({ item, onOpen }: Props) => {
     const remainWord = pluralize(item.remainingUsages, [
         'применение',
         'применения',
@@ -33,6 +34,7 @@ const VenuePromoItem = ({ item }: Props) => {
                     type={'text'}
                     className={styles['promo__btn']}
                     disabled={!item.active}
+                    onClick={() => onOpen?.(item.id)}
                 >
                     Активировать
                 </Button>
