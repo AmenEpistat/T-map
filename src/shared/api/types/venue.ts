@@ -1,3 +1,5 @@
+import type { Promo } from '@/shared/api';
+
 export type VenueCategory = 'food' | 'entertainment' | 'shopping';
 
 export type VenueModerationStatus =
@@ -30,7 +32,7 @@ export interface VenuePublicResponse {
     peopleNow?: number;
     createdAt: string;
     updatedAt: string;
-    promotions?: VenuePromoResponse[];
+    promotions?: Promo[];
 }
 
 export interface VenueOwnerResponse extends VenuePublicResponse {

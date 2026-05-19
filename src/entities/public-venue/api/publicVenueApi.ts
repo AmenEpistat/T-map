@@ -1,5 +1,9 @@
 import { apiClient } from '@/shared/api';
-import type { PublicVenue, VenueSearch } from '@/entities/public-venue';
+import type {
+    PublicVenue,
+    VenueQrCode,
+    VenueSearch,
+} from '@/entities/public-venue';
 
 export const publicVenueApi = {
     getVenueById: async (id: string) => {
@@ -12,5 +16,17 @@ export const publicVenueApi = {
                 q: search,
             },
         });
+    },
+
+    getVenueQrCode: async (venueId: string, ruleId: string) => {
+        return await apiClient.get<VenueQrCode>(
+            `/venues/${venueId}/loyalty-rules/${ruleId}/qr`,
+            {
+                params: {
+                    id: venueId,
+                    ruleId,
+                },
+            }
+        );
     },
 };

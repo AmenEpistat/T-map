@@ -11,3 +11,10 @@ export type VenueSearch = {
     category: VenueCategory;
     address: string;
 };
+
+export type VenueQrCode = {
+    venueId: string;
+    ruleId: string;
+    qrPayload: string;
+    expiresAt: string;
+};

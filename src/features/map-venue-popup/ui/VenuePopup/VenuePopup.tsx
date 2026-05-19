@@ -7,6 +7,7 @@ import styles from './VenuePopup.module.scss';
 import { EnvironmentFilled, TikTokOutlined } from '@ant-design/icons';
 import PlaceFilled from '@/features/map-venue-popup/ui/Icons/PlaceFilled/PlaceFilled.tsx';
 import DishFilled from '@/features/map-venue-popup/ui/Icons/DishFilled/DishFilled.tsx';
+import { MapVenuePromo } from '@/features/map-venue-promo';
 
 const VenuePopup = observer(() => {
     const isMobile = useIsMobile();
@@ -35,7 +36,7 @@ const VenuePopup = observer(() => {
                     </div>
 
                     <div className={styles['venue-popup__stats']}>
-                        {data.music !== null && (
+                        {data.music !== null && data.music !== undefined && (
                             <MapStat
                                 icon={<TikTokOutlined />}
                                 title={'Музыка'}
@@ -43,21 +44,27 @@ const VenuePopup = observer(() => {
                             />
                         )}
 
-                        {data.dishOfDay !== null && (
-                            <MapStat
-                                icon={<DishFilled />}
-                                title={'Предложение'}
-                                data={`${data.dishOfDay}`}
-                            />
-                        )}
+                        {data.dishOfDay !== null &&
+                            data.dishOfDay !== undefined && (
+                                <MapStat
+                                    icon={<DishFilled />}
+                                    title={'Предложение'}
+                                    data={`${data.dishOfDay}`}
+                                />
+                            )}
 
-                        {data.address !== null && (
-                            <MapStat
-                                icon={<EnvironmentFilled />}
-                                title={'Адрес'}
-                                data={data.address}
-                            />
-                        )}
+                        {data.address !== null &&
+                            data.address !== undefined && (
+                                <MapStat
+                                    icon={<EnvironmentFilled />}
+                                    title={'Адрес'}
+                                    data={data.address}
+                                />
+                            )}
+
+                        {data.promotions !== null &&
+                            data.promotions !== undefined &&
+                            data.promotions.length > 0 && <MapVenuePromo />}
                     </div>
                 </>
             )}

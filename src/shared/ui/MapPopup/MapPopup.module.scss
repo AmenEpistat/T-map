@@ -53,7 +53,7 @@
   background-color: $color-bg;
   padding: 0 22px 22px;
   border-radius: 22px;
-  height: calc(100vh - 10px);
+  max-height: calc(100dvh - 10px);
 }
 
 .map-popup__title {
