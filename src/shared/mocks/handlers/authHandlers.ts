@@ -54,6 +54,8 @@ const register = http.post<never, RegisterRequest>(
             password: body.password,
             nickname: body.nickname,
             role: 'USER',
+            blocked: false,
+            createdAt: new Date().toISOString(),
         };
         mockDb.users.push(user);
 
@@ -74,6 +76,10 @@ const login = http.post<never, LoginRequest>(
         const user = mockDb.users.find((u) => u.email === body.email);
         if (!user || user.password !== body.password) {
             return err('UNAUTHORIZED', 'Invalid email or password.', 401);
+        }
+
+        if (user.blocked) {
+            return err('FORBIDDEN', 'User is blocked.', 403);
         }
 
         const refreshToken = generateRefreshToken();

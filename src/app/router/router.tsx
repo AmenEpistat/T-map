@@ -8,6 +8,7 @@ import {
     AdminModerationPage,
     AdminVenueDetailsPage,
     AdminModerationEmptyState,
+    AdminUsersPage,
 } from '@/pages/admin';
 import { AddVenueForm } from '@/features/venue-create';
 import { EditVenueForm } from '@/features/venue-edit';
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
                     { index: true, element: <AdminModerationEmptyState /> },
                     { path: ':id', element: <AdminVenueDetailsPage /> },
                 ],
+            },
+            {
+                path: 'users',
+                element: <AdminUsersPage />,
             },
         ],
     },

@@ -7,11 +7,20 @@ import styles from './AdminSidebar.module.scss';
 interface NavItem {
     label: string;
     path?: string;
+    matchPrefix?: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-    { label: 'Заявки', path: '/admin/moderation' },
-    { label: 'Пользователи' },
+    {
+        label: 'Заявки',
+        path: '/admin/moderation',
+        matchPrefix: '/admin/moderation',
+    },
+    {
+        label: 'Пользователи',
+        path: '/admin/users',
+        matchPrefix: '/admin/users',
+    },
     { label: 'Карта', path: '/' },
 ];
 
@@ -27,8 +36,8 @@ export const AdminSidebar = observer(() => {
     const isActive = (item: NavItem): boolean => {
         if (!item.path) return false;
 
-        if (item.path === '/admin/moderation') {
-            return location.pathname.startsWith('/admin/moderation');
+        if (item.matchPrefix) {
+            return location.pathname.startsWith(item.matchPrefix);
         }
 
         return location.pathname === item.path;
