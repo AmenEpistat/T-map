@@ -1,4 +1,9 @@
-import type { UserRole, VenueOwnerResponse } from '@/shared/api/types';
+import type {
+    UserRole,
+    VenueOwnerResponse,
+    LoyaltyRuleResponse,
+    BusinessLoyaltyVerificationResponse,
+} from '@/shared/api/types';
 
 export interface MockUser {
     userId: string;
@@ -15,6 +20,8 @@ interface MockDb {
     activeRefreshTokens: Map<string, string>;
     currentRefreshToken: string | null;
     venues: VenueOwnerResponse[];
+    loyaltyRules: LoyaltyRuleResponse[];
+    loyaltyVerifications: BusinessLoyaltyVerificationResponse[];
 }
 
 declare global {
@@ -25,6 +32,9 @@ declare global {
 
 const SEED_OWNER_ID = '00000000-0000-0000-0000-000000000001';
 const SEED_ADMIN_ID = '00000000-0000-0000-0000-0000000000ad';
+export const SEED_VENUE_ID = '11111111-1111-1111-1111-111111111111';
+export const SEED_RULE_ID_1 = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+export const SEED_RULE_ID_2 = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
 
 const createSeedUsers = (): MockUser[] => [
     {
@@ -358,11 +368,67 @@ const createSeedVenues = (): VenueOwnerResponse[] => {
     ];
 };
 
+const createSeedLoyaltyRules = (): LoyaltyRuleResponse[] => {
+    const now = new Date().toISOString();
+    return [
+        {
+            id: SEED_RULE_ID_1,
+            venueId: SEED_VENUE_ID,
+            description: 'Скидка 15% на капучино',
+            discountPercent: 15,
+            maxUsages: 100,
+            remainingUsages: 85,
+            active: true,
+            createdAt: now,
+        },
+        {
+            id: SEED_RULE_ID_2,
+            venueId: SEED_VENUE_ID,
+            description: 'Бесплатный круассан при заказе от 300 руб',
+            discountPercent: 10,
+            maxUsages: 50,
+            remainingUsages: 50,
+            active: true,
+            createdAt: now,
+        },
+    ];
+};
+
+const createSeedLoyaltyVerifications =
+    (): BusinessLoyaltyVerificationResponse[] => [
+        {
+            id: 'cccccccc-cccc-cccc-cccc-cccccccccccc',
+            venueId: SEED_VENUE_ID,
+            ruleId: SEED_RULE_ID_1,
+            userLabel: 'Guest #842',
+            discountApplied: 15,
+            verifiedAt: '2026-05-10T14:30:00.000Z',
+        },
+        {
+            id: 'dddddddd-dddd-dddd-dddd-dddddddddddd',
+            venueId: SEED_VENUE_ID,
+            ruleId: SEED_RULE_ID_1,
+            userLabel: 'Guest #117',
+            discountApplied: 15,
+            verifiedAt: '2026-05-13T10:20:00.000Z',
+        },
+        {
+            id: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
+            venueId: SEED_VENUE_ID,
+            ruleId: SEED_RULE_ID_2,
+            userLabel: 'Guest #391',
+            discountApplied: 10,
+            verifiedAt: '2026-05-18T18:05:00.000Z',
+        },
+    ];
+
 const createEmptyDb = (): MockDb => ({
     users: createSeedUsers(),
     activeRefreshTokens: new Map(),
     currentRefreshToken: null,
     venues: createSeedVenues(),
+    loyaltyRules: createSeedLoyaltyRules(),
+    loyaltyVerifications: createSeedLoyaltyVerifications(),
 });
 
 export const mockDb: MockDb = window.__mockDb ?? createEmptyDb();
