@@ -1,0 +1,65 @@
+.loyalty-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 28px;
+    color: $color-text;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text-secondary;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: minmax(420px, 560px) minmax(0, 1fr);
+    gap: $spacing-xl;
+  }
+
+  &__list,
+  &__form {
+    min-width: 0;
+  }
+}
+
+@media (max-width: $desktop) {
+  .loyalty-page {
+    &__columns {
+      grid-template-columns: 1fr;
+    }
+
+    &__list--hidden-on-mobile,
+    &__form--hidden-on-mobile {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $tablet) {
+  .loyalty-page {
+    &__columns {
+      grid-template-columns: 1fr;
+    }
+
+    &__list--hidden-on-mobile,
+    &__form--hidden-on-mobile {
+      display: none;
+    }
+  }
+}
