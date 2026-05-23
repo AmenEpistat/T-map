@@ -19,12 +19,7 @@ const MapView = observer(() => {
 
     const activeLayers = isMapLoaded ? layers : [];
 
-    const {
-        mapRef,
-        handleViewStateChange,
-        handleInteractionStateChange,
-        handleMapLoad,
-    } = useMapControl();
+    const { mapRef, handleViewStateChange, handleMapLoad } = useMapControl();
 
     return (
         <div className={styles['map']}>
@@ -32,7 +27,6 @@ const MapView = observer(() => {
             <DeckGL
                 viewState={mapStore.viewState}
                 onViewStateChange={handleViewStateChange}
-                onInteractionStateChange={handleInteractionStateChange}
                 controller={true}
                 layers={activeLayers}
             >
