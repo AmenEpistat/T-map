@@ -35,6 +35,9 @@ class MapStore {
 
     venues = new RequestState<PublicVenue[]>();
 
+    private _clusterController: AbortController | null = null;
+    private _venuesController: AbortController | null = null;
+
     selectedTeamMember: TeamMember | null = null;
     isTeamVisible: boolean = false;
 
@@ -57,13 +60,23 @@ class MapStore {
     }
 
     async loadClusters() {
-        if (!this.bounds || this.clusters.isLoading) return;
+        if (!this.bounds) return;
+        if (this.clusters.isLoading) {
+            this._clusterController?.abort();
+        }
+
+        this._clusterController = new AbortController();
 
         await this.clusters.execute(heatmapApi.getClusters(this.bounds));
     }
 
     async loadClusterDetails() {
         if (!this.selectedClusterIndex) return;
+        if (this.clusterDetail.isLoading) {
+            this._venuesController?.abort();
+        }
+
+        this._venuesController = new AbortController();
 
         await this.clusterDetail.execute(
             heatmapApi.getClusterByIndex(this.selectedClusterIndex)

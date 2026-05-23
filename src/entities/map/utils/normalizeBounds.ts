@@ -1,9 +1,9 @@
 import type { Bounds } from '@/entities/map';
 
-const BOUNDS_THRESHOLD = 1e-3;
+const BOUNDS_THRESHOLD = 1e-7;
 
 export const normalizeBounds = (bounds: Bounds) => {
-    const f = 1e4;
+    const f = 1e2;
 
     return {
         swLat: Math.round(bounds.swLat * f) / f,

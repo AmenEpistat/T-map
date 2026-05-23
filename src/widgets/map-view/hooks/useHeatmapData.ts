@@ -5,26 +5,40 @@ import { ZOOM_ICON } from '@/widgets/map-view/model/constants.ts';
 
 export const useHeatmapData = () => {
     useEffect(() => {
-        const dispose = reaction(
+        const disposeCluster = reaction(
             () => ({
                 bounds: mapStore.bounds,
-                categories: mapStore.selectedCategories.slice(),
-                zoom: Math.round(mapStore.viewState.zoom * 10) / 10,
             }),
-            ({ zoom }) => {
-                if (zoom >= ZOOM_ICON) {
-                    mapStore.loadVenues();
-                }
+            async () => {
+                const zoom = mapStore.viewState.zoom;
                 if (zoom < ZOOM_ICON) {
-                    mapStore.loadClusters();
+                    await mapStore.loadClusters();
                 }
             },
             {
-                fireImmediately: true,
                 delay: 500,
             }
         );
 
-        return () => dispose();
+        const disposeVenue = reaction(
+            () => ({
+                bounds: mapStore.bounds,
+                categories: mapStore.selectedCategories.slice(),
+            }),
+            async () => {
+                const zoom = mapStore.viewState.zoom;
+                if (zoom >= ZOOM_ICON) {
+                    await mapStore.loadVenues();
+                }
+            },
+            {
+                delay: 500,
+            }
+        );
+
+        return () => {
+            disposeCluster();
+            disposeVenue();
+        };
     }, []);
 };
