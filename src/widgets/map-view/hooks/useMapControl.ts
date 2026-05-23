@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { mapStore } from '@/entities/map';
 import type { ViewStateChangeEvent } from 'react-map-gl/mapbox-legacy';
+import type { InteractionState } from '@deck.gl/core';
 
 export const useMapControl = () => {
     const mapRef = useRef<any>(null);
-    const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const updateBounds = useCallback(() => {
         if (!mapRef.current) return;
@@ -21,21 +21,18 @@ export const useMapControl = () => {
         }
     }, []);
 
-    const handleViewStateChange = useCallback(
-        (e: ViewStateChangeEvent) => {
-            mapStore.setViewState(e.viewState);
+    const handleViewStateChange = useCallback((e: ViewStateChangeEvent) => {
+        mapStore.setViewState(e.viewState);
+    }, []);
 
-            if (debounceTimer.current) clearTimeout(debounceTimer.current);
-            debounceTimer.current = setTimeout(updateBounds, 500);
+    const handleInteractionStateChange = useCallback(
+        (state: InteractionState) => {
+            if (!state.isDragging && !state.isPanning && !state.isZooming) {
+                updateBounds();
+            }
         },
         [updateBounds]
     );
-
-    useEffect(() => {
-        return () => {
-            if (debounceTimer.current) clearTimeout(debounceTimer.current);
-        };
-    }, []);
 
     const handleMapLoad = useCallback(() => {
         updateBounds();
@@ -44,6 +41,7 @@ export const useMapControl = () => {
     return {
         mapRef,
         handleViewStateChange,
+        handleInteractionStateChange,
         handleMapLoad,
     };
 };
