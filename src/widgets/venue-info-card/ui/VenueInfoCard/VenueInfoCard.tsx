@@ -20,6 +20,7 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
     const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
     const isEditing = location.pathname.endsWith('/edit');
+    const isOnLoyaltyPage = location.pathname.includes('/loyalty');
 
     const handleComingSoon = () => {
         void message.info(COMING_SOON);
@@ -145,8 +146,18 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
 
                 <button
                     type='button'
-                    className={styles['venue-info-card__link']}
-                    onClick={handleComingSoon}
+                    className={classNames(
+                        styles['venue-info-card__link'],
+                        isOnLoyaltyPage
+                            ? styles['venue-info-card__link--disabled']
+                            : ''
+                    )}
+                    onClick={
+                        isOnLoyaltyPage
+                            ? undefined
+                            : () => navigate(`/business/${venue.id}/loyalty`)
+                    }
+                    disabled={isOnLoyaltyPage}
                 >
                     Настройка программы лояльности
                 </button>

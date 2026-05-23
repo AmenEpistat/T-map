@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Button, Spin } from 'antd';
 import { loyaltyRulesStore } from '@/entities/loyalty-rule';
 import { LoyaltyRuleCard } from '../LoyaltyRuleCard/LoyaltyRuleCard';
+import { PlusOutlined } from '@ant-design/icons';
 import styles from './LoyaltyRulesList.module.scss';
 
 interface LoyaltyRulesListProps {
@@ -38,15 +39,22 @@ export const LoyaltyRulesList = observer(
                     </h2>
                     <Button
                         type='primary'
+                        size='large'
+                        icon={<PlusOutlined />}
                         onClick={handleAdd}
                         disabled={isFormOpen}
+                        className={styles['loyalty-rules-list__add-button']}
                     >
                         Добавить акцию
                     </Button>
                 </div>
 
                 <div className={styles['loyalty-rules-list__content']}>
-                    {isLoading && data === null && <Spin size='large' />}
+                    {isLoading && data === null && (
+                        <div className={styles['loyalty-rules-list__loading']}>
+                            <Spin size='large' />
+                        </div>
+                    )}
 
                     {error && data === null && (
                         <div className={styles['loyalty-rules-list__error']}>
