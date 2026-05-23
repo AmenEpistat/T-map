@@ -1,0 +1,45 @@
+ .loyalty-rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-lg;
+
+      &__header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: $spacing-md;
+      }
+
+      &__title {
+          font-size: 18px;
+          font-weight: 600;
+          color: $color-text;
+          margin: 0;
+      }
+
+      &__content {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-md;
+      }
+
+      &__items {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-md;
+      }
+
+      &__empty {
+          color: $color-text-secondary;
+          font-size: 14px;
+      }
+
+      &__error {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-md;
+          color: $color-text-secondary;
+          font-size: 14px;
+      }
+  }
