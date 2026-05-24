@@ -1,30 +1,11 @@
 .history-item {
   display: grid;
-  grid-template-columns: 70px 1fr;
   align-items: center;
   column-gap: $spacing-sm;
   padding: $spacing-sm $spacing-md;
   border: 1px solid $color-border-field;
   border-radius: $card-radius;
   background: $color-bg-card;
-
-  &__discount {
-    font-size: 36px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: $color-link;
-    margin: 0;
-    position: relative;
-  }
-
-  &__percent {
-    position: absolute;
-    color: $color-border-field;
-    z-index: -1;
-    transform: scale(3);
-  }
 
   &__info {
     display: flex;

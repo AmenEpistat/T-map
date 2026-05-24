@@ -16,10 +16,6 @@ export const LoyaltyRuleHistoryItem = ({ item }: Props) => {
 
     return (
         <div className={styles['history-item']}>
-            <p className={styles['history-item__discount']}>
-                {item.discountApplied}
-                <span className={styles['history-item__percent']}>%</span>
-            </p>
             <div className={styles['history-item__info']}>
                 <span className={styles['history-item__label']}>
                     {item.userLabel}
