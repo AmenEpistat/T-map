@@ -19,10 +19,13 @@ const VenuePopup = observer(() => {
         <MapPopup
             isOpen={isPopupOpen}
             isMobile={isMobile}
-            isLoading={isLoading || !data}
+            isLoading={isLoading}
             onClose={closeVenuePopup}
             handleShare={handleShare}
-            title={data?.name || 'Заведение'}
+            title={
+                data?.name ||
+                'Тут должно было быть название заведения, но что-то пошло не так :('
+            }
             imageUrl={data?.photoUrl}
         >
             {!isNotContent && (

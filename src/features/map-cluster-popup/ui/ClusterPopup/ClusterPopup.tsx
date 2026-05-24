@@ -22,11 +22,15 @@ export const ClusterPopup = observer(() => {
     return (
         <MapPopup
             isOpen={isPopupOpen}
-            isLoading={isLoading || !data}
+            isLoading={isLoading}
             isMobile={isMobile}
             onClose={closeClusterPopup}
             handleShare={handleShare}
-            title={`${data?.districtName} район`}
+            title={
+                data?.districtName
+                    ? `${data?.districtName} район`
+                    : 'Тут должно было быть название района, но что-то пошло не так :('
+            }
             imageUrl={data?.districtImageUrl}
             skeleton={<ClusterPopupSkeleton />}
         >
