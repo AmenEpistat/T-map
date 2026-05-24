@@ -1,29 +1,25 @@
 import { Button, Input } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
 import styles from './MapPanel.module.scss';
 import { SearchPanel } from '@/features/map-search';
 import { ProfilePanel } from '@/features/profile-panel';
-import { useSearchParams } from 'react-router-dom';
+import { useMapPanel } from '@/widgets/map-panel/hooks/useMapPanel.ts';
 
 const MapPanel = () => {
-    const [isSearchOpen, setSearchOpen] = useState(false);
-    const [isPanelOpen, setPanelOpen] = useState(false);
-    const [searchParams] = useSearchParams();
-
-    useEffect(() => {
-        if (searchParams.has('venue')) {
-            setPanelOpen(false);
-            setSearchOpen(false);
-        }
-    }, [searchParams]);
+    const {
+        setSearchOpen,
+        isSearchOpen,
+        isPanelOpen,
+        handleCloseProfile,
+        handleOpenProfile,
+    } = useMapPanel();
 
     return (
         <>
             <div className={styles['map-search']}>
                 <Button
                     className={styles['map-search__button']}
-                    onClick={() => setPanelOpen(true)}
+                    onClick={handleOpenProfile}
                 >
                     <MenuOutlined />
                 </Button>
@@ -40,10 +36,7 @@ const MapPanel = () => {
                 isOpen={isSearchOpen}
                 onClose={() => setSearchOpen(false)}
             />
-            <ProfilePanel
-                isOpen={isPanelOpen}
-                onClose={() => setPanelOpen(false)}
-            />
+            <ProfilePanel isOpen={isPanelOpen} onClose={handleCloseProfile} />
         </>
     );
 };

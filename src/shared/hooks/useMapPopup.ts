@@ -27,6 +27,16 @@ export const useMapPopup = <T>(options: {
         setSearchParams(searchParams);
     };
 
+    const open = (id: string) => {
+        searchParams.delete('profile');
+
+        if (id) {
+            searchParams.set(paramName, String(id));
+        }
+
+        setSearchParams(searchParams);
+    };
+
     const handleShare = async () => {
         const shareUrl = new URL(window.location.href);
         const id = data?.[idKey];
@@ -43,5 +53,5 @@ export const useMapPopup = <T>(options: {
         await navigator.share(shareData);
     };
 
-    return { close, handleShare };
+    return { close, handleShare, open };
 };
