@@ -13,6 +13,7 @@ export const useVenueDetails = () => {
             async (id: string | null) => {
                 if (!id) return;
                 mapStore.setClusterIndex(null);
+                open(id);
                 await publicVenueStore.loadVenueDetails();
             }
         );
@@ -20,11 +21,14 @@ export const useVenueDetails = () => {
         return () => dispose();
     }, []);
 
-    const { close, handleShare } = useMapPopup({
+    const { close, handleShare, open } = useMapPopup({
         paramName: 'venue',
         data,
         idKey: 'id',
-        reset: () => publicVenueStore.venueDetail.reset(),
+        reset: () => {
+            publicVenueStore.setSelectedVenueIndex(null);
+            publicVenueStore.venueDetail.reset();
+        },
         onSelect: (id: string | null) =>
             publicVenueStore.setSelectedVenueIndex(id),
         shareText: (d) =>

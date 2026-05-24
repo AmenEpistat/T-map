@@ -13,6 +13,9 @@ export const useClusterDetails = () => {
             async (h3Index) => {
                 if (!h3Index) return;
                 publicVenueStore.setSelectedVenueIndex(null);
+
+                open(h3Index);
+
                 await mapStore.loadClusterDetails();
             }
         );
@@ -20,10 +23,13 @@ export const useClusterDetails = () => {
         return () => dispose();
     }, []);
 
-    const { close, handleShare } = useMapPopup({
+    const { close, handleShare, open } = useMapPopup({
         paramName: 'cluster',
         onSelect: (h3Index: string | null) => mapStore.setClusterIndex(h3Index),
-        reset: () => mapStore.clusterDetail.reset(),
+        reset: () => {
+            mapStore.setClusterIndex(null);
+            mapStore.clusterDetail.reset();
+        },
         idKey: 'h3Index',
         data,
         shareTitle: (d) => `Район ${d.districtName}`,
