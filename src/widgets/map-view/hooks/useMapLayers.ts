@@ -24,7 +24,7 @@ import { getIconMapping } from '@/widgets/map-view/utils/iconUtils.ts';
 import { cellToLatLng } from 'h3-js';
 
 export const useMapLayers = () => {
-    const clusters = mapStore.clusters.data?.clusters;
+    const clusters = mapStore.cachedClusters;
     const venues = mapStore.venues.data || [];
 
     const currentZoom = mapStore.viewState.zoom;

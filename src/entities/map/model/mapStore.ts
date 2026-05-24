@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { INITIAL_VIEW } from '@/widgets/map-view/model/constants.ts';
 import {
     ANIMATION_DURATION,
@@ -23,6 +23,11 @@ type AnimateViewState = ViewState & {
 
 class MapStore {
     clusters = new RequestState<{ clusters: ClusterDataType[] }>();
+    clustersCache = observable.map<string, ClusterDataType>(
+        {},
+        { deep: false }
+    );
+
     bounds: Bounds | null = null;
 
     viewState: AnimateViewState = INITIAL_VIEW;
@@ -68,6 +73,16 @@ class MapStore {
         this._clusterController = new AbortController();
 
         await this.clusters.execute(heatmapApi.getClusters(this.bounds));
+
+        if (this.clusters.data?.clusters) {
+            const incomingEntries = this.clusters.data.clusters.map(
+                (c) => [c.h3Index, c] as const
+            );
+
+            runInAction(() => {
+                this.clustersCache.merge(incomingEntries);
+            });
+        }
     }
 
     async loadClusterDetails() {
@@ -111,7 +126,7 @@ class MapStore {
                 (c) => c !== key
             );
         } else {
-            this.selectedCategories.push(key);
+            this.selectedCategories = [...this.selectedCategories, key];
         }
     }
 
@@ -141,7 +156,11 @@ class MapStore {
     }
 
     get mode3D() {
-        return mapStore.viewState.pitch === 0;
+        return this.viewState.pitch === 0;
+    }
+
+    get cachedClusters(): ClusterDataType[] {
+        return Array.from(this.clustersCache.values());
     }
 }
 
