@@ -1,0 +1,30 @@
+.history-item {
+  display: grid;
+  align-items: center;
+  column-gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $color-border-field;
+  border-radius: $card-radius;
+  background: $color-bg-card;
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: $color-text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__date {
+    font-size: 13px;
+    color: $color-text-secondary;
+  }
+}

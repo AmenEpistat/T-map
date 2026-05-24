@@ -1,0 +1,28 @@
+.history-modal {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding-top: $spacing-sm;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  &__skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__empty {
+    display: block;
+    text-align: center;
+    padding: $spacing-xl 0;
+    color: $color-text-secondary;
+    font-size: 14px;
+  }
+}
