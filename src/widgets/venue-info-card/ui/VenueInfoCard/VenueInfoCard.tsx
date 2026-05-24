@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Popconfirm, message, notification } from 'antd';
+import { Button, Popconfirm, notification } from 'antd';
 import { EnvironmentOutlined, CameraOutlined } from '@ant-design/icons';
 import { venuesStore, type OwnerVenue } from '@/entities/venue';
 import { PhotoManagerModal } from '@/features/venue-photo-manager';
@@ -12,8 +12,6 @@ interface VenueInfoCardProps {
     venue: OwnerVenue;
 }
 
-const COMING_SOON = 'Скоро будет доступно';
-
 export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -21,11 +19,6 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
     const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
     const isEditing = location.pathname.endsWith('/edit');
-    const isOnLoyaltyPage = location.pathname.includes('/loyalty');
-
-    const handleComingSoon = () => {
-        void message.info(COMING_SOON);
-    };
 
     const handleEdit = () => {
         navigate(`/business/${venue.id}/edit`);
@@ -115,9 +108,9 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                     type='primary'
                     size='large'
                     className={styles['venue-info-card__button']}
-                    onClick={handleComingSoon}
+                    onClick={() => navigate(`/business/${venue.id}/loyalty`)}
                 >
-                    Статистика
+                    Лояльность
                 </Button>
 
                 <Button
@@ -143,24 +136,6 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                     disabled={isEditing}
                 >
                     Редактирование информации о заведении
-                </button>
-
-                <button
-                    type='button'
-                    className={classNames(
-                        styles['venue-info-card__link'],
-                        isOnLoyaltyPage
-                            ? styles['venue-info-card__link--disabled']
-                            : ''
-                    )}
-                    onClick={
-                        isOnLoyaltyPage
-                            ? undefined
-                            : () => navigate(`/business/${venue.id}/loyalty`)
-                    }
-                    disabled={isOnLoyaltyPage}
-                >
-                    Настройка программы лояльности
                 </button>
 
                 <Popconfirm
