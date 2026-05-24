@@ -12,6 +12,9 @@ import {
 } from '@/pages/admin';
 import { AddVenueForm } from '@/features/venue-create';
 import { EditVenueForm } from '@/features/venue-edit';
+import { CreateLoyaltyRuleForm } from '@/features/loyalty-rule-create';
+import { EditLoyaltyRuleForm } from '@/features/loyalty-rule-edit';
+import { LoyaltyPage } from '@/pages/business';
 import { AdminProtectedRoute, ProtectedRoute } from '@/shared/ui';
 import { NotFoundPage } from '@/pages/not-found';
 
@@ -49,6 +52,15 @@ export const router = createBrowserRouter([
                 children: [
                     { index: true, element: null },
                     { path: 'edit', element: <EditVenueForm /> },
+                ],
+            },
+            {
+                path: ':id/loyalty',
+                element: <LoyaltyPage />,
+                children: [
+                    { index: true, element: null },
+                    { path: 'new', element: <CreateLoyaltyRuleForm /> },
+                    { path: ':ruleId/edit', element: <EditLoyaltyRuleForm /> },
                 ],
             },
         ],

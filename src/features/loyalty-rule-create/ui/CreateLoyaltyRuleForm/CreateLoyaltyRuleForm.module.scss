@@ -1,0 +1,50 @@
+.loyalty-rule-create-form {
+  background: $color-bg-card;
+  border-radius: $card-radius;
+  padding: $spacing-xl;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: $border-radius-base;
+    color: $color-text-secondary;
+    font-size: 18px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: $color-bg-control;
+      color: $color-text;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__submit {
+    margin-top: $spacing-md;
+    margin-bottom: 0;
+  }
+}
