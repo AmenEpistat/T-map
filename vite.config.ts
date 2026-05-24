@@ -53,10 +53,7 @@ export default defineConfig({
                         if (id.includes('react') || id.includes('mobx')) {
                             return 'react-vendor';
                         }
-                        if (
-                            id.includes('antd') ||
-                            id.includes('@ant-design')
-                        ) {
+                        if (id.includes('antd') || id.includes('@ant-design')) {
                             return 'ui-vendor';
                         }
                         return 'vendor';

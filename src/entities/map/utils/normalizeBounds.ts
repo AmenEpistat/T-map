@@ -1,7 +1,5 @@
 import type { Bounds } from '@/entities/map';
 
-const BOUNDS_THRESHOLD = 1e-7;
-
 export const normalizeBounds = (bounds: Bounds) => {
     const f = 1e2;
 
@@ -15,9 +13,9 @@ export const normalizeBounds = (bounds: Bounds) => {
 
 export const isSameBounds = (a: Bounds, b: Bounds) => {
     return (
-        Math.abs(a.swLat - b.swLat) < BOUNDS_THRESHOLD &&
-        Math.abs(a.swLng - b.swLng) < BOUNDS_THRESHOLD &&
-        Math.abs(a.neLat - b.neLat) < BOUNDS_THRESHOLD &&
-        Math.abs(a.neLng - b.neLng) < BOUNDS_THRESHOLD
+        a.swLat === b.swLat &&
+        a.swLng === b.swLng &&
+        a.neLat === b.neLat &&
+        a.neLng === b.neLng
     );
 };
