@@ -3,7 +3,9 @@ import type {
     LoyaltyRuleResponse,
     LoyaltyRuleCreateRequest,
     LoyaltyRuleUpdateRequest,
+    LoyaltyActivateRequest,
     BusinessLoyaltyVerificationPage,
+    BusinessLoyaltyVerificationResponse,
 } from '@/shared/api';
 
 const VENUE_BASE = '/business/venues';
@@ -55,6 +57,17 @@ export const loyaltyRuleApi = {
             `${RULE_BASE}/${ruleId}/history`,
             { params: { page, size } }
         );
+        return data;
+    },
+
+    activateRule: async (
+        payload: LoyaltyActivateRequest
+    ): Promise<BusinessLoyaltyVerificationResponse> => {
+        const { data } =
+            await apiClient.post<BusinessLoyaltyVerificationResponse>(
+                `${RULE_BASE}/activate`,
+                payload
+            );
         return data;
     },
 };

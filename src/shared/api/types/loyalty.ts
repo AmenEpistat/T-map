@@ -48,3 +48,7 @@ export interface BusinessLoyaltyVerificationResponse {
 export type BusinessLoyaltyVerificationPage = PaginationType & {
     items: BusinessLoyaltyVerificationResponse[];
 };
+
+export interface LoyaltyActivateRequest {
+    qrPayload: string;
+}
