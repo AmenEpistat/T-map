@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { Modal, Button, Spin, Result } from 'antd';
+import { Modal, Button, Spin, Result, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import QrScanner from 'qr-scanner';
 import { qrScanStore } from '../../model/qrScanStore';
@@ -22,7 +22,7 @@ const ScannerView = observer(() => {
             });
             handleScan(result.data);
         } catch {
-            // QR-код не найден в изображении — пользователь попробует другой файл
+            void message.warning('QR-код не найден в изображении');
         }
     };
 
@@ -77,11 +77,6 @@ export const QrScanModal = observer(() => {
                         subTitle={
                             <>
                                 <span>
-                                    Покупатель:{' '}
-                                    <strong>{activation.data.userLabel}</strong>
-                                </span>
-                                <br />
-                                <span>
                                     Скидка:{' '}
                                     <strong>
                                         {activation.data.discountApplied}%
@@ -92,6 +87,7 @@ export const QrScanModal = observer(() => {
                     />
                     <Button
                         type='primary'
+                        size='large'
                         block
                         onClick={() => activation.reset()}
                     >
