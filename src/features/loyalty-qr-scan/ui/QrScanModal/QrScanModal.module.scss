@@ -1,0 +1,57 @@
+.qr-scan-modal {
+  &__scanner {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    align-items: center;
+    padding-top: $spacing-sm;
+  }
+
+  &__video-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: $border-radius-base;
+    overflow: hidden;
+    background: $color-text;
+  }
+
+  &__video {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    display: block;
+    object-fit: cover;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  &__file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xs;
+    cursor: pointer;
+    color: $color-link;
+    font-size: 14px;
+
+    &:hover {
+      color: $color-link-hover;
+    }
+  }
+
+  &__file-input {
+    display: none;
+  }
+
+  &__result {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    padding-bottom: $spacing-sm;
+  }
+}

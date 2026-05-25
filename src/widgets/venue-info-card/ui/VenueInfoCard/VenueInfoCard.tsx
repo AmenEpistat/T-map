@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Popconfirm, message, notification } from 'antd';
+import { Button, Popconfirm, notification } from 'antd';
 import { EnvironmentOutlined, CameraOutlined } from '@ant-design/icons';
 import { venuesStore, type OwnerVenue } from '@/entities/venue';
 import { PhotoManagerModal } from '@/features/venue-photo-manager';
+import { qrScanStore, QrScanModal } from '@/features/loyalty-qr-scan';
 import { classNames } from '@/shared/utils/classNames';
 import styles from './VenueInfoCard.module.scss';
 
 interface VenueInfoCardProps {
     venue: OwnerVenue;
 }
-
-const COMING_SOON = 'Скоро будет доступно';
 
 export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
     const navigate = useNavigate();
@@ -20,11 +19,6 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
     const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
     const isEditing = location.pathname.endsWith('/edit');
-    const isOnLoyaltyPage = location.pathname.includes('/loyalty');
-
-    const handleComingSoon = () => {
-        void message.info(COMING_SOON);
-    };
 
     const handleEdit = () => {
         navigate(`/business/${venue.id}/edit`);
@@ -114,16 +108,16 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                     type='primary'
                     size='large'
                     className={styles['venue-info-card__button']}
-                    onClick={handleComingSoon}
+                    onClick={() => navigate(`/business/${venue.id}/loyalty`)}
                 >
-                    Статистика
+                    Лояльность
                 </Button>
 
                 <Button
                     type='primary'
                     size='large'
                     className={styles['venue-info-card__button']}
-                    onClick={handleComingSoon}
+                    onClick={() => qrScanStore.open()}
                 >
                     QR-скан
                 </Button>
@@ -142,24 +136,6 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                     disabled={isEditing}
                 >
                     Редактирование информации о заведении
-                </button>
-
-                <button
-                    type='button'
-                    className={classNames(
-                        styles['venue-info-card__link'],
-                        isOnLoyaltyPage
-                            ? styles['venue-info-card__link--disabled']
-                            : ''
-                    )}
-                    onClick={
-                        isOnLoyaltyPage
-                            ? undefined
-                            : () => navigate(`/business/${venue.id}/loyalty`)
-                    }
-                    disabled={isOnLoyaltyPage}
-                >
-                    Настройка программы лояльности
                 </button>
 
                 <Popconfirm
@@ -185,6 +161,7 @@ export const VenueInfoCard = ({ venue }: VenueInfoCardProps) => {
                 open={isPhotoModalOpen}
                 onClose={() => setIsPhotoModalOpen(false)}
             />
+            <QrScanModal />
         </section>
     );
 };
