@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api';
+import { apiClient, refreshAuthSession } from '@/shared/api';
 import type {
     AuthResponse,
     LoginRequest,
@@ -22,10 +22,7 @@ export const authApi = {
         return response.data;
     },
 
-    refresh: async (): Promise<AuthResponse> => {
-        const response = await apiClient.post<AuthResponse>('/auth/refresh');
-        return response.data;
-    },
+    refresh: refreshAuthSession,
 
     logout: async (): Promise<void> => {
         await apiClient.post('/auth/logout');

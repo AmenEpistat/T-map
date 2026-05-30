@@ -1,0 +1,22 @@
+.cluster-stat {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 8px 16px;
+}
+
+.cluster-stat__icon {
+  grid-row: 1/-1;
+}
+
+.cluster-stat__name {
+  font-size: 14px;
+  margin: 0;
+}
+
+.cluster-stat__count {
+  grid-column: 2/-1;
+  margin: 0;
+
+}
+

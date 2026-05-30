@@ -1,9 +1,22 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import React from 'react';
 import { AuthPage } from '@/pages/auth';
 import { MapPage } from '@/pages/map';
-import { ProfilePage } from '@/pages/profile';
-import { ProtectedRoute } from '@/shared/ui';
+import { BusinessLayout, VenuesPage, VenueManagePage } from '@/pages/business';
+import {
+    AdminLayout,
+    AdminModerationPage,
+    AdminVenueDetailsPage,
+    AdminModerationEmptyState,
+    AdminUsersPage,
+} from '@/pages/admin';
+import { AddVenueForm } from '@/features/venue-create';
+import { EditVenueForm } from '@/features/venue-edit';
+import { CreateLoyaltyRuleForm } from '@/features/loyalty-rule-create';
+import { EditLoyaltyRuleForm } from '@/features/loyalty-rule-edit';
+import { LoyaltyPage } from '@/pages/business';
+import { AdminProtectedRoute, ProtectedRoute } from '@/shared/ui';
+import { NotFoundPage } from '@/pages/not-found';
 
 export const router = createBrowserRouter([
     {
@@ -19,11 +32,69 @@ export const router = createBrowserRouter([
         element: <AuthPage mode='register' />,
     },
     {
-        path: '/profile',
+        path: '/business',
         element: (
             <ProtectedRoute>
-                <ProfilePage />
+                <BusinessLayout />
             </ProtectedRoute>
         ),
+        children: [
+            {
+                element: <VenuesPage />,
+                children: [
+                    { index: true, element: null },
+                    { path: 'new', element: <AddVenueForm /> },
+                ],
+            },
+            {
+                path: ':id',
+                element: <VenueManagePage />,
+                children: [
+                    { index: true, element: null },
+                    { path: 'edit', element: <EditVenueForm /> },
+                ],
+            },
+            {
+                path: ':id/loyalty',
+                element: <LoyaltyPage />,
+                children: [
+                    { index: true, element: null },
+                    { path: 'new', element: <CreateLoyaltyRuleForm /> },
+                    { path: ':ruleId/edit', element: <EditLoyaltyRuleForm /> },
+                ],
+            },
+        ],
+    },
+    {
+        path: '/admin',
+        element: (
+            <ProtectedRoute>
+                <AdminProtectedRoute>
+                    <AdminLayout />
+                </AdminProtectedRoute>
+            </ProtectedRoute>
+        ),
+        children: [
+            {
+                index: true,
+                element: <Navigate to='moderation' replace />,
+            },
+            {
+                path: 'moderation',
+                element: <AdminModerationPage />,
+                children: [
+                    { index: true, element: <AdminModerationEmptyState /> },
+                    { path: ':id', element: <AdminVenueDetailsPage /> },
+                ],
+            },
+            {
+                path: 'users',
+                element: <AdminUsersPage />,
+            },
+        ],
+    },
+    {
+        path: '*',
+        element: <NotFoundPage />,
     },
 ]);

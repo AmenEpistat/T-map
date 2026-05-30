@@ -1,1 +1,1 @@
-export { default as MapSearch } from '@/features/map-search/ui/MapSearch/MapSearch';
+export { SearchPanel } from './ui/SearchPanel/SearchPanel.tsx';

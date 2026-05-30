@@ -4,26 +4,43 @@ import { Map } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useMapLayers } from '@/widgets/map-view/hooks/useMapLayers.ts';
 import { MAP_STYLE } from '@/widgets/map-view/model/constants.ts';
-import { mockClusters } from '@/widgets/map-view/model/mock.ts';
 import styles from './MapView.module.scss';
-
-import type { ViewState } from '@/entities/map/model/types.ts';
 import { mapStore } from '@/entities/map';
+import { useHeatmapData } from '@/widgets/map-view/hooks/useHeatmapData.ts';
+import { useMapControl } from '@/widgets/map-view/hooks/useMapControl.ts';
+import { useState } from 'react';
+import { Splash } from '@/shared/ui';
 
 const MapView = observer(() => {
-    const layers = useMapLayers(mockClusters);
+    const [isMapLoaded, setIsMapLoaded] = useState(false);
+    useHeatmapData();
+
+    const layers = useMapLayers();
+
+    const activeLayers = isMapLoaded ? layers : [];
+
+    const { mapRef, handleViewStateChange, handleMapLoad } = useMapControl();
 
     return (
         <div className={styles['map']}>
+            {!isMapLoaded && <Splash />}
             <DeckGL
                 viewState={mapStore.viewState}
-                onViewStateChange={(e) =>
-                    mapStore.setViewState(e.viewState as ViewState)
-                }
+                onViewStateChange={handleViewStateChange}
                 controller={true}
-                layers={layers}
+                layers={activeLayers}
             >
-                <Map mapStyle={MAP_STYLE} />
+                <Map
+                    ref={mapRef}
+                    reuseMaps
+                    mapStyle={MAP_STYLE}
+                    onLoad={() => {
+                        setTimeout(() => {
+                            setIsMapLoaded(true);
+                            handleMapLoad();
+                        }, 300);
+                    }}
+                />
             </DeckGL>
         </div>
     );

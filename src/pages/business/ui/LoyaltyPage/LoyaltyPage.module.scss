@@ -1,0 +1,93 @@
+.loyalty-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__header-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 28px;
+    color: $color-text;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text-secondary;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: minmax(420px, 560px) minmax(0, 1fr);
+    gap: $spacing-xl;
+  }
+
+  &__list,
+  &__form {
+    min-width: 0;
+  }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: $border-radius-base;
+    color: $color-text-secondary;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    padding: 0;
+    flex-shrink: 0;
+
+    &:hover {
+      background: $color-bg-control;
+      color: $color-text;
+    }
+  }
+}
+
+@media (max-width: $desktop) {
+  .loyalty-page {
+    &__columns {
+      grid-template-columns: 1fr;
+    }
+
+    &__list--hidden-on-mobile,
+    &__form--hidden-on-mobile {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: $tablet) {
+  .loyalty-page {
+    &__columns {
+      grid-template-columns: 1fr;
+    }
+
+    &__list--hidden-on-mobile,
+    &__form--hidden-on-mobile {
+      display: none;
+    }
+  }
+}

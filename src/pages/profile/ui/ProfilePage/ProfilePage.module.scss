@@ -35,6 +35,15 @@
     text-align: center;
   }
 
+  &__info {
+    margin: 0;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text;
+    text-align: center;
+  }
+
+  &__action,
   &__logout {
     margin-top: $spacing-sm;
   }

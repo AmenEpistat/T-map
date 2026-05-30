@@ -1,0 +1,21 @@
+.cluster-popup__district {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.cluster-popup__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &:first-child {
+    margin-top: 16px;
+  }
+}
+
+.cluster-popup__divider {
+  border-top: 4px solid $color-bg-control;
+  margin-block: 16px;
+}

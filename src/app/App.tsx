@@ -8,9 +8,11 @@ import './styles/global.scss';
 import { observer } from 'mobx-react-lite';
 import { authStore } from '@/features/auth';
 import { Splash } from '@/shared/ui';
+import { setupStores } from './providers/setupStores.ts';
 
 const App = observer(() => {
     useEffect(() => {
+        setupStores();
         void authStore.initialize();
     }, []);
 

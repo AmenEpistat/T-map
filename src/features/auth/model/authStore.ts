@@ -8,6 +8,9 @@ import type {
 import { authApi } from '../api';
 import type { User } from './types';
 
+let initializePromise: Promise<void> | null = null;
+let hasInitialized = false;
+
 class AuthStore {
     accessToken: string | null = null;
     user: User | null = null;
@@ -29,9 +32,18 @@ class AuthStore {
         return this.accessToken !== null && this.user !== null;
     }
 
+    get isAdmin(): boolean {
+        return this.user?.role === 'ADMIN';
+    }
+
     setAuth = (response: AuthResponse): void => {
         this.accessToken = response.accessToken;
-        this.user = { userId: response.userId, role: response.role };
+        this.user = {
+            userId: response.userId,
+            email: response.email,
+            nickname: response.nickname,
+            role: response.role,
+        };
         setAccessToken(response.accessToken);
     };
 
@@ -64,7 +76,20 @@ class AuthStore {
         this.setAuth(response);
     };
 
-    initialize = async (): Promise<void> => {
+    initialize = (): Promise<void> => {
+        if (hasInitialized) {
+            return Promise.resolve();
+        }
+
+        initializePromise ??= this.runInitialize().finally(() => {
+            hasInitialized = true;
+            initializePromise = null;
+        });
+
+        return initializePromise;
+    };
+
+    private runInitialize = async (): Promise<void> => {
         try {
             await this.refresh();
         } catch {

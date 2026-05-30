@@ -1,0 +1,80 @@
+.profile-auth__header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background-color: $color-bg;
+  padding-top: 12px;
+
+  @media (max-width: $tablet) {
+    position: sticky;
+    top: 0;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  button:last-child {
+    padding: 0 !important;
+  }
+
+  @media (min-width: $tablet) {
+    padding-top: 90px;
+  }
+}
+
+.profile-auth__avatar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-grow: 1;
+
+  @media (min-width: $tablet) {
+    gap: 16px;
+  }
+}
+
+.profile-auth__avatar-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: url("@/shared/assets/avatar.png") no-repeat center center;
+  background-size: contain;
+  flex-shrink: 0;
+}
+
+.profile-auth__name-btn {
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+
+  span {
+    margin-top: 4px;
+  }
+}
+
+.profile-auth__name {
+  font-weight: 500;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  margin: 0;
+
+  span span:not(.profile-auth__email) {
+    margin-left: 16px;
+  }
+}
+
+.profile-auth__email {
+  font-size: 14px;
+  font-weight: 400;
+  color: $color-placeholder;
+}
+
+.profile-auth__menu-icon {
+  font-size: 32px;
+}

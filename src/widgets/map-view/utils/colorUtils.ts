@@ -1,4 +1,6 @@
 import type { Color } from '@deck.gl/core';
+import { VENUES_COLOR } from '@/widgets/map-view/config/venuesColor.ts';
+import type { MapCategory } from '@/entities/map';
 
 export const getClusterColor = (
     txCount: number,
@@ -22,4 +24,8 @@ export const getBorderColor = (txCount: number, maxTx: number): Color => {
         Math.round(baseColor[2] * 0.9),
         255,
     ] as Color;
+};
+
+export const getNameColor = (category: MapCategory) => {
+    return VENUES_COLOR[category] as Color;
 };

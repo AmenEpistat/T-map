@@ -1,0 +1,189 @@
+.venue-info-card {
+  background: $color-bg-card;
+  border-radius: $card-radius;
+  padding: $spacing-xl;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'photo'
+    'buttons'
+    'links'
+    'reject-reason';
+  gap: $spacing-xl;
+  align-items: start;
+
+  &__photo {
+    grid-area: photo;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: $color-bg-control;
+    border-radius: $border-radius-base;
+    overflow: hidden;
+  }
+
+  &__photo-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__photo-placeholder-icon {
+    font-size: 48px;
+    color: $color-text-secondary;
+  }
+
+  &__photo-action {
+    position: absolute;
+    right: $spacing-md;
+    bottom: $spacing-md;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: $border-radius-base;
+    background: $color-primary;
+    color: $color-text;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  &__buttons {
+    grid-area: buttons;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $spacing-md;
+  }
+
+  &__button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  &__links {
+    grid-area: links;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-link;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: $color-link-hover;
+    }
+
+    &--disabled {
+      color: $color-text-secondary;
+      cursor: default;
+
+      &:hover {
+        color: $color-text-secondary;
+      }
+    }
+  }
+
+  &__reject-reason {
+    grid-area: reject-reason;
+    padding: $spacing-md;
+    background: $color-error-bg;
+    border-radius: $border-radius-base;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  &__reject-reason-label {
+    font-family: $font-family-base;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__reject-reason-text {
+    margin: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text;
+    overflow-wrap: anywhere;
+  }
+
+}
+
+@media (width <= 767px) {
+  .venue-info-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'photo'
+      'buttons'
+      'links'
+      'reject-reason';
+    gap: $spacing-md;
+    padding: $spacing-md;
+    border-radius: $card-radius;
+
+    &__photo {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+    }
+
+    &__photo-placeholder-icon {
+      font-size: 40px;
+    }
+
+    &__photo-action {
+      right: $spacing-sm;
+      bottom: $spacing-sm;
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+    }
+
+    &__buttons {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: $spacing-sm;
+    }
+
+    &__links {
+      gap: $spacing-xs;
+    }
+  }
+}
+
+@media (width <= 374px) {
+  .venue-info-card {
+    &__buttons {
+      grid-template-columns: 1fr;
+    }
+  }
+}
