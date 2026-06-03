@@ -12,7 +12,6 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
     { label: 'Заведения', path: '/business' },
-    { label: 'Настройки' },
     { label: 'Карта', path: '/' },
 ];
 

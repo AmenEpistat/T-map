@@ -26,6 +26,7 @@ const ProfileNoAuth = ({ onClose, isMobile }: Props) => {
                 </p>
                 <Button
                     type={'primary'}
+                    size={'large'}
                     className={styles['profile-no-auth__btn']}
                     onClick={() => navigate('/auth/login')}
                 >
