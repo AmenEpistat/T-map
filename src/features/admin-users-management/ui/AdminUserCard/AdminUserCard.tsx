@@ -8,6 +8,7 @@ interface AdminUserCardProps {
     user: AdminUserModeration;
     onBlock?: (id: string) => void;
     onUnblock?: (id: string) => void;
+    onChangeRole?: (id: string) => void;
 }
 
 const formatDate = (value: string): string =>
@@ -21,8 +22,11 @@ export const AdminUserCard = ({
     user,
     onBlock,
     onUnblock,
+    onChangeRole,
 }: AdminUserCardProps) => {
-    const canShowActions = user.blocked ? Boolean(onUnblock) : Boolean(onBlock);
+    const canShowActions = user.blocked
+        ? Boolean(onUnblock)
+        : Boolean(onBlock) || Boolean(onChangeRole);
 
     const menuItems: MenuProps['items'] = user.blocked
         ? [
@@ -32,17 +36,29 @@ export const AdminUserCard = ({
                   onClick: () => onUnblock?.(user.id),
               },
           ]
-        : [
-              {
+        : ([
+              onChangeRole &&
+                  user.role === 'USER' && {
+                      key: 'promote',
+                      label: 'Назначить владельцем бизнеса',
+                      onClick: () => onChangeRole(user.id),
+                  },
+              onChangeRole &&
+                  user.role === 'BUSINESS_OWNER' && {
+                      key: 'demote',
+                      label: 'Снять роль владельца',
+                      onClick: () => onChangeRole(user.id),
+                  },
+              onBlock && {
                   key: 'block',
                   label: (
                       <span className={styles['admin-user-card__danger']}>
                           Заблокировать
                       </span>
                   ),
-                  onClick: () => onBlock?.(user.id),
+                  onClick: () => onBlock(user.id),
               },
-          ];
+          ].filter(Boolean) as MenuProps['items']);
 
     return (
         <article className={styles['admin-user-card']}>
@@ -51,7 +67,11 @@ export const AdminUserCard = ({
                     {user.nickname}
                 </h3>
 
-                <p className={styles['admin-user-card__email']}>{user.email}</p>
+                <p className={styles['admin-user-card__email']}>
+                    {user.email} {user.role === 'USER' && ' - Пользователь'}
+                    {user.role === 'BUSINESS_OWNER' && ' - Владелец бизнеса'}
+                    {user.role === 'ADMIN' && ' - Администратор'}
+                </p>
 
                 <p className={styles['admin-user-card__date']}>
                     Зарегистрирован {formatDate(user.createdAt)}

@@ -8,7 +8,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'https://t-map.duckdns.org',
+                target: 'https://t-map.ru',
                 changeOrigin: true,
                 secure: true,
             },
