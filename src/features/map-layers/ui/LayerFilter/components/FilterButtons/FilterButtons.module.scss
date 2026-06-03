@@ -33,30 +33,9 @@
   }
 }
 
-.filter-buttons__btn--food {
-  &.filter-buttons__btn--active svg {
-    color: $color-food;
-    background-color: $color-food-bg;
-  }
-}
-
-.filter-buttons__btn--entertainment {
-  &.filter-buttons__btn--active svg {
-    color: $color-entertainment;
-    background-color: $color-entertainment-bg;
-  }
-}
-
-.filter-buttons__btn--shopping {
-  &.filter-buttons__btn--active svg {
-    color: $color-shopping;
-    background-color: $color-shopping-bg;
-  }
-}
-
 .filter-buttons__btn--active {
   svg {
-    color: #1D4ED8;
+    color: $color-primary;
     background-color: $color-primary-light;
     border-radius: 8px;
   }
