@@ -6,7 +6,7 @@ export const INITIAL_VIEW = {
     bearing: 0,
 } as const;
 
-export const MAP_STYLE = `https://api.maptiler.com/maps/019de233-3207-7134-8869-4ce2c08a9f27/style.json?key=${import.meta.env.VITE_MAPTILER_API_KEY}`;
+export const MAP_STYLE = `https://api.maptiler.com/maps/019e7a44-1028-739e-8595-842fc1def1a7/style.json?key=${import.meta.env.VITE_MAPTILER_API_KEY}`;
 
 export const ZOOM_ICON = 14;
 export const ZOOM_TEXT = 16;
