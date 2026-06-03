@@ -25,7 +25,6 @@
 
   svg {
     padding: 8px;
-    color: $color-text-dark-gray;
   }
 
   &:hover, &:focus-visible {
@@ -35,7 +34,7 @@
 
 .filter-buttons__btn--active {
   svg {
-    color: $color-primary;
+    color: $color-primary-hover;
     background-color: $color-primary-light;
     border-radius: 8px;
   }
@@ -65,7 +64,7 @@
   }
 
   &.filter-buttons__btn--active svg{
-    color: $color-entertainment;
-    background-color: $color-entertainment-bg;
+    color: #5420BCFF;
+    background-color: #E4DBF6FF;
   }
 }
