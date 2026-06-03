@@ -31,6 +31,7 @@ export const FilterButtons = observer(
                         type={'text'}
                         className={classNames(
                             styles['filter-buttons__btn'],
+                            styles[`filter-buttons__btn--${key}`],
                             isSelected(key as MapCategory) &&
                                 styles['filter-buttons__btn--active']
                         )}

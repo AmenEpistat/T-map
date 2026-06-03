@@ -25,6 +25,7 @@
 
   svg {
     padding: 8px;
+    color: $color-text-dark-gray;
   }
 
   &:hover, &:focus-visible {
@@ -32,9 +33,30 @@
   }
 }
 
+.filter-buttons__btn--food {
+  &.filter-buttons__btn--active svg {
+    color: $color-food;
+    background-color: $color-food-bg;
+  }
+}
+
+.filter-buttons__btn--entertainment {
+  &.filter-buttons__btn--active svg {
+    color: $color-entertainment;
+    background-color: $color-entertainment-bg;
+  }
+}
+
+.filter-buttons__btn--shopping {
+  &.filter-buttons__btn--active svg {
+    color: $color-shopping;
+    background-color: $color-shopping-bg;
+  }
+}
+
 .filter-buttons__btn--active {
   svg {
-    color: $color-primary-hover;
+    color: #1D4ED8;
     background-color: $color-primary-light;
     border-radius: 8px;
   }
@@ -64,7 +86,7 @@
   }
 
   &.filter-buttons__btn--active svg{
-    color: #5420BCFF;
-    background-color: #E4DBF6FF;
+    color: $color-entertainment;
+    background-color: $color-entertainment-bg;
   }
 }
