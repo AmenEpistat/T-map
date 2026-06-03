@@ -46,7 +46,11 @@ export class RequestState<T> {
                 this.isLoading = false;
             });
 
-            void message.error(errorMessage);
+            const isClientError = status >= 400 && status < 500;
+
+            if (!isClientError) {
+                void message.error(errorMessage);
+            }
         }
     }
 

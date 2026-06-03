@@ -1,7 +1,7 @@
 import type { Bounds } from '@/entities/map';
 
 export const normalizeBounds = (bounds: Bounds) => {
-    const f = 1e2;
+    const f = 1e4;
 
     return {
         swLat: Math.round(bounds.swLat * f) / f,
