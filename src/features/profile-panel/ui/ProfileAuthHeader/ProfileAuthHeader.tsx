@@ -18,49 +18,37 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
     const user = authStore.user!;
 
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
     const items = [
         {
             key: '1',
-            label: (
-                <Button
-                    type={'text'}
-                    onClick={() => setIsPasswordModalOpen(true)}
-                >
-                    Сменить пароль
-                </Button>
-            ),
+            label: 'Сменить пароль',
+            onClick: () => setIsPasswordModalOpen(true),
         },
         user?.role === 'BUSINESS_OWNER' && {
             key: '3',
-            label: (
-                <Button onClick={() => navigate('/business')} type={'text'}>
-                    Мои заведения
-                </Button>
-            ),
+            label: 'Мои заведения',
+            onClick: () => navigate('/business'),
         },
         authStore.isAdmin && {
             key: '4',
-            label: (
-                <Button onClick={() => navigate('/admin')} type={'text'}>
-                    Админ-панель
-                </Button>
-            ),
+            label: 'Админ-панель',
+            onClick: () => navigate('/admin'),
+        },
+        {
+            key: '5',
+            label: 'Связаться с нами',
+            onClick: () => setIsContactModalOpen(true),
         },
         {
             key: '2',
-            label: (
-                <Button
-                    onClick={() => {
-                        authStore.logout();
-                        onClose();
-                    }}
-                    type={'text'}
-                    danger
-                >
-                    Выйти
-                </Button>
-            ),
+            label: 'Выйти',
+            danger: true,
+            onClick: () => {
+                authStore.logout();
+                onClose();
+            },
         },
     ].filter(Boolean) as MenuProps['items'];
 
@@ -132,6 +120,17 @@ const ProfileAuthHeader = observer(({ onClose, isMobile }: Props) => {
                 <ChangePasswordForm
                     onCancel={() => setIsPasswordModalOpen(false)}
                 />
+            </Modal>
+
+            <Modal
+                title='Связаться с нами'
+                open={isContactModalOpen}
+                onCancel={() => setIsContactModalOpen(false)}
+                footer={null}
+                centered={isMobile}
+            >
+                <p>По всем вопросам пишите нам на почту:</p>
+                <a href='mailto:admin@t-map.ru'>admin@t-map.ru</a>
             </Modal>
         </div>
     );
