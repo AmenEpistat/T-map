@@ -61,6 +61,25 @@ export const useMapLayers = () => {
     const iconCategoryMapping = getIconMapping(iconsCategoryJson);
     const iconAnomaly = getIconMapping(iconsAnomalyJson);
 
+    const sanitizeVenueName = (name: string): string => {
+        if (!name) return '';
+        if (name === name.toUpperCase() && name.length > 3) {
+            name = name.charAt(0) + name.slice(1).toLowerCase();
+        }
+
+        const words = name.split(/\s+/);
+
+        if (words.length >= 2 && name.length > 10) {
+            const mid = Math.ceil(words.length / 2);
+            const line1 = words.slice(0, mid).join(' ');
+            const line2 = words.slice(mid).join(' ');
+
+            return `${line1}\n${line2}`; //
+        }
+
+        return name;
+    };
+
     const layers = useMemo(
         () => [
             new H3HexagonLayer<ClusterDataType>({
@@ -106,7 +125,7 @@ export const useMapLayers = () => {
                 iconAtlas: iconsPng,
                 iconMapping: iconCategoryMapping,
                 getIcon: (d) => d.category,
-                getSize: 40,
+                getSize: 30,
                 getPosition: (d) => [d.lng, d.lat],
                 pickable: true,
                 onClick: ({ object }) => {
@@ -123,12 +142,20 @@ export const useMapLayers = () => {
                 id: 'poi-labels',
                 data: visibleVenuesText,
                 getPosition: (d) => [d.lng, d.lat],
-                getText: (d) => d.name,
+                getText: (d) => sanitizeVenueName(d.name),
                 getSize: 14,
                 getColor: (d: PublicVenue) => getNameColor(d.category),
-                fontFamily: 'Inter, sans-serif',
+                fontFamily: 'Roboto, sans-serif',
                 fontWeight: 'bold',
-                getPixelOffset: [10, -50],
+                getTextAnchor: 'middle',
+                getAlignmentBaseline: 'top',
+                fontSettings: {
+                    sdf: true,
+                    fontSize: 28,
+                    buffer: 14,
+                },
+                outlineWidth: 2,
+                outlineColor: [255, 255, 255, 255],
                 characterSet: characterSet,
                 onClick: ({ object }) => {
                     if (!object) return;
