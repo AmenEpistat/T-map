@@ -43,7 +43,11 @@
     border-radius: 4px;
     width: 24px;
     height: 32px;
-    background: $color-text-dark-gray;
+    background: white;
+
+    &:hover {
+      background: $color-border-field !important;
+    }
   }
 }
 
