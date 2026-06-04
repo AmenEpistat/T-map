@@ -27,7 +27,7 @@ const MapView = observer(() => {
             <DeckGL
                 viewState={mapStore.viewState}
                 onViewStateChange={handleViewStateChange}
-                controller={true}
+                controller={{ inertia: 600 }}
                 layers={activeLayers}
             >
                 <Map

@@ -21,6 +21,7 @@ import {
 import { defaultClusters } from '@/widgets/map-view/model/mock.ts';
 import { publicVenueStore } from '@/entities/public-venue';
 import { getIconMapping } from '@/widgets/map-view/utils/iconUtils.ts';
+import { sanitizeVenueName } from '@/widgets/map-view/utils/labelUtils.ts';
 import { cellToLatLng } from 'h3-js';
 
 export const useMapLayers = () => {
@@ -106,7 +107,7 @@ export const useMapLayers = () => {
                 iconAtlas: iconsPng,
                 iconMapping: iconCategoryMapping,
                 getIcon: (d) => d.category,
-                getSize: 40,
+                getSize: 30,
                 getPosition: (d) => [d.lng, d.lat],
                 pickable: true,
                 onClick: ({ object }) => {
@@ -123,12 +124,20 @@ export const useMapLayers = () => {
                 id: 'poi-labels',
                 data: visibleVenuesText,
                 getPosition: (d) => [d.lng, d.lat],
-                getText: (d) => d.name,
+                getText: (d) => sanitizeVenueName(d.name),
                 getSize: 14,
                 getColor: (d: PublicVenue) => getNameColor(d.category),
-                fontFamily: 'Inter, sans-serif',
+                fontFamily: 'Roboto, sans-serif',
                 fontWeight: 'bold',
-                getPixelOffset: [10, -50],
+                getTextAnchor: 'middle',
+                getAlignmentBaseline: 'top',
+                fontSettings: {
+                    sdf: true,
+                    fontSize: 28,
+                    buffer: 14,
+                },
+                outlineWidth: 2,
+                outlineColor: [255, 255, 255, 255],
                 characterSet: characterSet,
                 onClick: ({ object }) => {
                     if (!object) return;

@@ -4,6 +4,7 @@ import { adminUsersApi } from '../api/adminUsersApi';
 import type {
     AdminUserModeration,
     AdminUserModerationPage,
+    UserRole,
 } from '@/shared/api/types';
 
 const wrap = <T>(promise: Promise<T>): Promise<{ data: T }> =>
@@ -58,6 +59,19 @@ class AdminUsersStore {
         this.searchQuery = '';
         this.currentPage = 0;
         this.pageSize = 20;
+    };
+
+    changeRole = async (
+        id: string,
+        role: UserRole
+    ): Promise<AdminUserModeration> => {
+        const user = await adminUsersApi.changeRole(id, role);
+
+        runInAction(() => {
+            this.syncUser(user);
+        });
+
+        return user;
     };
 
     private loadCurrentPage = async (): Promise<void> => {

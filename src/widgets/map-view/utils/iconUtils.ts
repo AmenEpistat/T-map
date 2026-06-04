@@ -15,7 +15,7 @@ export const getIconMapping = (icons: { frames: IconType[] }) => {
                 width: value.frame.w,
                 height: value.frame.h,
                 anchorY: value.frame.h,
-                anchorX: value.frame.w,
+                anchorX: value.frame.w / 2,
                 mask: false,
             };
 

@@ -3,6 +3,7 @@ import type {
     AdminUserModeration,
     AdminUserModerationPage,
     AdminUsersSearchParams,
+    UserRole,
 } from '@/shared/api/types';
 
 type AdminUsersSearchRequest = Omit<
@@ -44,6 +45,18 @@ export const adminUsersApi = {
     unblock: async (id: string): Promise<AdminUserModeration> => {
         const response = await apiClient.patch<AdminUserModeration>(
             `/admin/users/${id}/unblock`
+        );
+
+        return response.data;
+    },
+
+    changeRole: async (
+        id: string,
+        role: UserRole
+    ): Promise<AdminUserModeration> => {
+        const response = await apiClient.patch<AdminUserModeration>(
+            `/admin/users/${id}/role`,
+            { role }
         );
 
         return response.data;

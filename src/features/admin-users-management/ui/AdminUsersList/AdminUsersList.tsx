@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Button, Input, Modal, Pagination, Spin, message } from 'antd';
 import { isAxiosError } from 'axios';
 import { getErrorMessage } from '@/shared/utils/getErrorMessage';
-import type { AdminUserModeration } from '@/shared/api/types';
+import type { AdminUserModeration, UserRole } from '@/shared/api/types';
 import { SearchOutlined } from '@ant-design/icons';
 import { adminUsersStore } from '@/entities/admin-user';
 import { AdminUserCard } from '../AdminUserCard/AdminUserCard';
@@ -119,6 +119,35 @@ export const AdminUsersList = observer(() => {
         });
     };
 
+    const changeUserRole = async (user: AdminUserModeration): Promise<void> => {
+        const newRole: UserRole =
+            user.role === 'USER' ? 'BUSINESS_OWNER' : 'USER';
+
+        try {
+            await adminUsersStore.changeRole(user.id, newRole);
+            void message.success('Роль пользователя изменена');
+        } catch (error) {
+            void message.error(
+                getErrorMessage('Не удалось изменить роль', error)
+            );
+        }
+    };
+    const handleChangeRole = (id: string): void => {
+        const user = users.find((item) => item.id === id);
+        if (!user) return;
+
+        const newRole =
+            user.role === 'USER' ? 'Владелец бизнеса' : 'Пользователь';
+
+        Modal.confirm({
+            title: 'Изменить роль пользователя?',
+            content: `${user.email} получит роль: ${newRole}.`,
+            okText: 'Изменить',
+            cancelText: 'Отмена',
+            onOk: () => changeUserRole(user),
+        });
+    };
+
     const isProtectedUser = (user: AdminUserModeration): boolean =>
         user.id === authStore.user?.userId || user.role === 'ADMIN';
 
@@ -188,6 +217,11 @@ export const AdminUsersList = observer(() => {
                                                 isProtectedUser(user)
                                                     ? undefined
                                                     : handleUnblock
+                                            }
+                                            onChangeRole={
+                                                isProtectedUser(user)
+                                                    ? undefined
+                                                    : handleChangeRole
                                             }
                                         />
                                     </li>
